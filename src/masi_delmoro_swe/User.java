@@ -15,7 +15,7 @@ public class User {
     private String surname;
     private String email;
     private BookingManager bm;
-    public int balance = 0;
+    private int balance = 0;
 
     public User(String username, Person person, BookingManager bm) {
         this.username = username;
@@ -24,7 +24,14 @@ public class User {
         this.email = person.email;
         this.bm = bm;
     }
-    
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
     
     public boolean sendRequest(Club club) {
         //Pagamento costo associazione

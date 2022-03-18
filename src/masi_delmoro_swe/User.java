@@ -15,7 +15,7 @@ public class User {
     private String surname;
     private String email;
     private BookingManager bm;
-    private int balance = 0;
+    public int balance = 0;
 
     public User(String username, Person person, BookingManager bm) {
         this.username = username;
@@ -33,5 +33,9 @@ public class User {
     
     public boolean bookField(String clb, String date, int hour, String user2, String user3, String user4) {
        return bm.requestBooking(clb, date, hour,this.username, user2, user3, user4);
+    }
+    
+    public void addFunds(int money){
+        bm.rechargeAccount(this, money);
     }
 }

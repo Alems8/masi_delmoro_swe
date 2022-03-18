@@ -27,36 +27,59 @@ public class BookingManager {
     
     private Club checkClub(String clb) {
         for(Club c : clubs) {
-            if(c.name == clb)
+            if(c.name.equals(clb))
                     return c;
         }
         return null;
     }
-    private boolean pay(){
-        return true;//FIXME
+    private boolean pay(User user){
+        if(user.balance < 15){
+            return false;
+        }
+        user.balance = user.balance - 15;
+        return true;
     }
     
-    private boolean checkUsers(){
-        return true; //FIXME
+    private void refund(User user){
+        user.balance = user.balance + 15;
     }
     
-    public boolean requestBooking(String clb, String date, int hour, String user1, String user2, String user3, String user4) {
+    private User checkUsers(String usernm){
+        for(User u : users){
+            if(u.username.equals(usernm)){
+                return u;
+            }
+        }
+        return null;
+    }
+    
+    public boolean requestBooking(String clb, String date, int hour, String username1, String username2, String username3, String username4) {
         Club club = checkClub(clb);
         if(club == null)
             return false; //fix me
-        if(!checkUsers())
+        
+        User user1 = checkUsers(username1);
+        User user2 = checkUsers(username2);
+        User user3 = checkUsers(username3);
+        User user4 = checkUsers(username4);
+        if(user1 == null || user2 == null || user3 == null || user4 == null)
             return false; //fix me
         
-        if(!pay())
+        if(! (pay(user1) && pay(user2) && pay(user3) && pay(user4) ) )
             return false; //fix me
         
         Date day = new Date(date); //MODIFICATO
-        for(Field field : club.fields) {
+        
+        int i = 0;
+        boolean booked = false;
+        while(booked == false || i < club.fields.size()){
+            Field field = club.fields.get(i++);
             if(field.timeTable.containsKey(day)){
                 ArrayList<Integer> times = field.timeTable.get(day);
                 if(times.contains(hour)){
                     times.remove(hour);
-                    break;
+                    booked = true;
+                    
                 }
                     
                 
@@ -65,14 +88,25 @@ public class BookingManager {
               ArrayList<Integer> updatedTimes = club.times;
               updatedTimes.remove(hour);
               field.timeTable.put(day, updatedTimes);
-              break;
+              booked = true;
+              
             }
-            
-        }
+        }   
         
+        if(!booked){
+            refund(user1);
+            refund(user2);
+            refund(user3);
+            refund(user4);
+            return false;
+        }
         return true;
         
         
         
+    }
+    
+    public void rechargeAccount(User user, int money){
+        user.balance = user.balance + money;
     }
 }

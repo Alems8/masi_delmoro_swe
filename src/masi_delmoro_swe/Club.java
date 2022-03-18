@@ -15,6 +15,7 @@ public class Club {
     public String name;
     public ArrayList<Field> fields = new ArrayList<>();
     public int price;
+    public int memberPrice;
     private float gains;
     private ArrayList<User> members = new ArrayList<>();
     int opening;

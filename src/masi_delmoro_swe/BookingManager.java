@@ -32,16 +32,20 @@ public class BookingManager {
         }
         return null;
     }
-    private boolean pay(User user){
-        if(user.balance < 15){
+    private boolean pay(User user, Club club){
+        int price = club.price;
+        if(club.isMember(user))
+            price = club.memberPrice;
+        
+        if(user.getBalance() < price){
             return false;
         }
-        user.balance = user.balance - 15;
+        user.setBalance(user.getBalance() - price);
         return true;
     }
     
     private void refund(User user){
-        user.balance = user.balance + 15;
+        user.setBalance(user.getBalance() + 15);
     }
     
     private User checkUsers(String usernm){
@@ -65,7 +69,7 @@ public class BookingManager {
         if(user1 == null || user2 == null || user3 == null || user4 == null)
             return false; //fix me
         
-        if(! (pay(user1) && pay(user2) && pay(user3) && pay(user4) ) )
+        if(! (pay(user1, club) && pay(user2, club) && pay(user3, club) && pay(user4, club) ) )
             return false; //fix me
         
         Date day = new Date(date); //MODIFICATO
@@ -82,8 +86,7 @@ public class BookingManager {
                     
                 }
                     
-                
-                    
+                                    
             }else{
               ArrayList<Integer> updatedTimes = club.times;
               updatedTimes.remove(hour);
@@ -107,6 +110,6 @@ public class BookingManager {
     }
     
     public void rechargeAccount(User user, int money){
-        user.balance = user.balance + money;
+        user.setBalance(user.getBalance() + money);
     }
 }

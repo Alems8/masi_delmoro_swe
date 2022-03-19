@@ -16,6 +16,68 @@ public class Masi_delmoro_swe {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        BookingManager bm = new BookingManager();
+        Club clb1 = new Club("LaFiorita", 15, 9,19);
+        Club clb2 = new Club("Gracciano", 30, 10,23);
+        Club clb3 = new Club("UPP", 10, 9,0);
+        Club clb4 = new Club("Certaldo", 20, 8,20);
+        Club clb5 = new Club("Firenze Padel", 18, 9,18);
+        
+        clb1.addField("Padel 1");
+        clb1.addField("Padel 2");
+        clb1.addField("Padel 3");
+        clb2.addField("Padel 1");
+        clb2.addField("Padel 2");
+        clb3.addField("Padel 3");
+        clb4.addField("Padel 1");
+        clb4.addField("Padel 2");
+        clb4.addField("Padel 3");
+        clb4.addField("Padel 1");
+        clb4.addField("Padel 2");
+        clb5.addField("Padel 3");
+        clb5.addField("Padel 1");
+        clb5.addField("Padel 2");
+        clb5.addField("Padel 3");
+        
+        clb1.subscribe(bm);
+        clb2.subscribe(bm);
+        clb3.subscribe(bm);
+        clb4.subscribe(bm);
+        clb5.subscribe(bm);
+        
+        Person mattia = new Person("Mattia","Rossi","matt.rossi@gmail.com");
+        Person francesco = new Person("Francesco","Rossi","fra.rossi@gmail.com");
+        Person ludovico = new Person("Ludovico","Rossi","lud.rossi@gmail.com");
+        Person marta = new Person("Marta","Rossi","mart.rossi@gmail.com");
+        Person alessia = new Person("Alessia","Tedeschi","ale.tedeschi@gmail.com");
+        Person federica = new Person("Federica","Rossi","fede.rossi@gmail.com");
+        Person marco = new Person("Marco","Rossi","marco.rossi@gmail.com");
+        Person lorenzo = new Person("Lorenzo","Rossi","lore.rossi@gmail.com");
+        Person elisabetta = new Person("Elisabetta","Bianchi","betti.bianchi@gmail.com");
+        Person martina = new Person("Martina","Gialli","marti.gialli@gmail.com");
+        Person camilla = new Person("Camilla","Verdi","cami.verdi@gmail.com");
+        Person matteo = new Person("Matteo","Bianchi","matte.bianchi@gmail.com");
+        
+        User matti = mattia.subscribe(bm, "matti");
+        User france = francesco.subscribe(bm, "france");
+        User ludo = ludovico.subscribe(bm, "ludo");
+        User martaRos = marta.subscribe(bm, "martaRos");
+        User ale = alessia.subscribe(bm, "ale");
+        User fede = federica.subscribe(bm, "fede");
+        User marcoRos = marco.subscribe(bm, "marcoRos");
+        User lore = lorenzo.subscribe(bm, "lore");
+        User eli = elisabetta.subscribe(bm, "eli");
+        User marti = martina.subscribe(bm, "marti");
+        User cami = camilla.subscribe(bm, "cami");
+        User matte = matteo.subscribe(bm, "matte");
+        
+        matti.addFunds(50);
+        france.addFunds(50);
+        ale.addFunds(50);
+        eli.addFunds(50);
+        
+        System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
+        System.out.println(eli.getBalance());
     }
     
 }

@@ -6,7 +6,9 @@
 package masi_delmoro_swe;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  *
@@ -16,9 +18,10 @@ public class BookingManager {
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Club> clubs = new ArrayList<>();
     
-    public void addUser(Person person, String username) {
+    public User addUser(Person person, String username) { //MODIFICATO
         User user = new User(username, person, this);
         users.add(user);
+        return user;
     }
     
     public void addClub(Club club) {
@@ -44,8 +47,12 @@ public class BookingManager {
         return true;
     }
     
-    private void refund(User user){
-        user.setBalance(user.getBalance() + 15);
+    private void refund(User user, Club club){
+        int price = club.price;
+        if(club.isMember(user))
+            price = club.memberPrice;
+        
+        user.setBalance(user.getBalance() + price);
     }
     
     private User checkUsers(String usernm){
@@ -72,41 +79,41 @@ public class BookingManager {
         if(! (pay(user1, club) && pay(user2, club) && pay(user3, club) && pay(user4, club) ) )
             return false; //fix me
         
-        Date day = new Date(date); //MODIFICATO
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate day = LocalDate.parse(date, dtf);
         
         int i = 0;
         boolean booked = false;
-        while(booked == false || i < club.fields.size()){
+        while( booked == false && i < club.fields.size() ){
             Field field = club.fields.get(i++);
-            if(field.timeTable.containsKey(day)){
-                ArrayList<Integer> times = field.timeTable.get(day);
-                if(times.contains(hour)){
-                    times.remove(hour);
-                    booked = true;
-                    
-                }
-                    
-                                    
-            }else{
-              ArrayList<Integer> updatedTimes = club.times;
-              updatedTimes.remove(hour);
+            
+            if( !(field.timeTable.containsKey(day)) ){
+              ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
+              int j = updatedTimes.indexOf(hour);
+              updatedTimes.remove(j);
               field.timeTable.put(day, updatedTimes);
               booked = true;
-              
+            }
+            
+            else{
+                ArrayList<Integer> times = field.timeTable.get(day);
+                int k = times.indexOf(hour);
+                if(k != -1){
+                    times.remove(k);
+                    booked = true;
+                }
             }
         }   
         
         if(!booked){
-            refund(user1);
-            refund(user2);
-            refund(user3);
-            refund(user4);
+            refund(user1, club);
+            refund(user2, club);
+            refund(user3, club);
+            refund(user4, club);
             return false;
         }
         return true;
-        
-        
-        
     }
     
     public void rechargeAccount(User user, int money){

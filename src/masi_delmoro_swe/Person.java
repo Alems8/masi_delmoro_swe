@@ -20,7 +20,7 @@ public class Person {
         this.email = email;
     }
     
-    public void subscribe(BookingManager bm, String username) {
-        bm.addUser(this, username);
+    public User subscribe(BookingManager bm, String username) {
+        return bm.addUser(this, username);
     }
 }

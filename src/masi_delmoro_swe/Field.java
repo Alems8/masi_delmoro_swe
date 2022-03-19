@@ -8,20 +8,21 @@ package masi_delmoro_swe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
+import java.time.LocalDate;
+//import java.util.Date;
 /**
  *
  * @author Alessio
  */
 public class Field {
     private String name;
-    public Map<Date, ArrayList<Integer>> timeTable = new HashMap<>();
+    public Map<LocalDate, ArrayList<Integer>> timeTable = new HashMap<>();
     
     
     public Field(String name, ArrayList hours) { //MODIFICATO
         this.name = name;
 
-        Date day = new Date();
+        LocalDate day = LocalDate.now();
         
         timeTable.put(day, hours);
     }

@@ -5,6 +5,10 @@
  */
 package masi_delmoro_swe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Alessio
@@ -16,6 +20,7 @@ public class User {
     private String email;
     private BookingManager bm;
     private int balance = 0;
+    //private Map<Integer,Booking> bookings = new HashMap();
 
     public User(String username, Person person, BookingManager bm) {
         this.username = username;
@@ -40,9 +45,19 @@ public class User {
     
     public boolean bookField(String clb, String date, int hour, String user2, String user3, String user4) {
        return bm.requestBooking(clb, date, hour,this.username, user2, user3, user4);
+       //bookings.put(bookings.size()+1,booking);
     }
     
     public void addFunds(int money){
         bm.rechargeAccount(this, money);
+    }
+    
+    public void deleteBooking(Integer key){
+        //Booking booking = bookings.remove(key);
+        bm.cancelBooking(key);
+    }
+    
+    public void viewBookings(){
+        bm.displayList(this);
     }
 }

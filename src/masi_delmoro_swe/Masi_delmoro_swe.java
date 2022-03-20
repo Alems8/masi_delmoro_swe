@@ -19,7 +19,7 @@ public class Masi_delmoro_swe {
         BookingManager bm = new BookingManager();
         Club clb1 = new Club("LaFiorita", 15, 9,19);
         Club clb2 = new Club("Gracciano", 30, 10,23);
-        Club clb3 = new Club("UPP", 10, 9,0);
+        Club clb3 = new Club("UPP", 10, 9,1);
         Club clb4 = new Club("Certaldo", 20, 8,20);
         Club clb5 = new Club("Firenze Padel", 18, 9,18);
         
@@ -71,12 +71,22 @@ public class Masi_delmoro_swe {
         User cami = camilla.subscribe(bm, "cami");
         User matte = matteo.subscribe(bm, "matte");
         
-        matti.addFunds(50);
+        matti.addFunds(250);
         france.addFunds(50);
         ale.addFunds(50);
         eli.addFunds(50);
+        cami.addFunds(50);
+        marcoRos.addFunds(50);
         
         System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
+        System.out.println(eli.getBalance());
+        
+        
+        System.out.println(eli.bookField("UPP", "28/03/2022", 0, "cami", "marcoRos", "matti"));
+        eli.viewBookings();
+        System.out.println(eli.getBalance());
+        eli.deleteBooking(2);
+        eli.viewBookings();
         System.out.println(eli.getBalance());
     }
     

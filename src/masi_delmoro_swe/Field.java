@@ -15,7 +15,7 @@ import java.time.LocalDate;
  * @author Alessio
  */
 public class Field {
-    private String name;
+    public String name;
     public Map<LocalDate, ArrayList<Integer>> timeTable = new HashMap<>();
     
     
@@ -26,4 +26,6 @@ public class Field {
         
         timeTable.put(day, hours);
     }
+    
+    
 }

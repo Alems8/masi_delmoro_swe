@@ -27,8 +27,14 @@ public class Club {
         this.price = price;
         this.opening = opening;
         this.closure = closure;
-        for(int i=opening; i<closure; i++){
-            times.add(i);
+        int fakeClosure = closure;
+        if(closure < opening)
+            fakeClosure = closure + 24;
+        for(int i=opening; i<fakeClosure; i++){ //FIX ME
+            if(i>=24)
+                times.add(i-24);
+            else
+                times.add(i);
         }
     }
     

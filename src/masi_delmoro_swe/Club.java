@@ -22,11 +22,12 @@ public class Club {
     int closure;
     public ArrayList<Integer> times = new ArrayList<>(); //MODIFICATO
 
-    public Club(String name, int price, int opening, int closure) { //MODIFICATO
+    public Club(String name, int price, int memberPrice,int opening, int closure) { //MODIFICATO
         this.name = name;
         this.price = price;
         this.opening = opening;
         this.closure = closure;
+        this.memberPrice = memberPrice;
         int fakeClosure = closure;
         if(closure < opening)
             fakeClosure = closure + 24;

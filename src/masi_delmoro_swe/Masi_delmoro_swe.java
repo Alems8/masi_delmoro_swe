@@ -17,11 +17,11 @@ public class Masi_delmoro_swe {
     public static void main(String[] args) {
         // TODO code application logic here
         BookingManager bm = new BookingManager();
-        Club clb1 = new Club("LaFiorita", 15, 9,19);
-        Club clb2 = new Club("Gracciano", 30, 10,23);
-        Club clb3 = new Club("UPP", 10, 9,1);
-        Club clb4 = new Club("Certaldo", 20, 8,20);
-        Club clb5 = new Club("Firenze Padel", 18, 9,18);
+        Club clb1 = new Club("LaFiorita", 15, 12,9,19);
+        Club clb2 = new Club("Gracciano", 30, 25,10,23);
+        Club clb3 = new Club("UPP", 10, 7,9,1);
+        Club clb4 = new Club("Certaldo", 20, 16,8,20);
+        Club clb5 = new Club("Firenze Padel", 18, 15,9,18);
         
         clb1.addField("Padel 1");
         clb1.addField("Padel 2");
@@ -88,6 +88,12 @@ public class Masi_delmoro_swe {
         eli.deleteBooking(2);
         eli.viewBookings();
         System.out.println(eli.getBalance());
+        
+        france.joinClub(clb5);
+        france.bookField("Firenze Padel", "22/03/2022", 17, "eli", "ale", "marcoRos");
+        System.out.println(france.getBalance());
     }
     
 }
+
+// LISTA PREFERITI, STORICO PARTITE, PRENOTAZIONE BUIO, AGGIUNTA RISULTATO.

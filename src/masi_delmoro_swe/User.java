@@ -38,13 +38,13 @@ public class User {
         this.balance = balance;
     }
     
-    public boolean sendRequest(Club club) {
+    public boolean joinClub(Club club) {
         //Pagamento costo associazione
         return club.getRequest(this);
     }
     
     public boolean bookField(String clb, String date, int hour, String user2, String user3, String user4) {
-       return bm.requestBooking(clb, date, hour,this.username, user2, user3, user4);
+       return bm.requestBooking(clb, date, hour,this, user2, user3, user4);
        //bookings.put(bookings.size()+1,booking);
     }
     
@@ -60,4 +60,7 @@ public class User {
     public void viewBookings(){
         bm.displayList(this);
     }
+     public boolean blindBook(String clb, String date, int hour){
+         return bm.requestBlindBooking(clb, date, hour, this);
+     }
 }

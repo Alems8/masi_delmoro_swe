@@ -21,6 +21,7 @@ public class BookingManager {
     private ArrayList<Club> clubs = new ArrayList<>();
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private ArrayList<Booking> blindBookings = new ArrayList<>();
     
     public User addUser(Person person, String username) { //MODIFICATO
         User user = new User(username, person, this);
@@ -68,15 +69,13 @@ public class BookingManager {
         return null;
     }
     
-    public boolean requestBooking(String clb, String date, int hour, String username1, String username2, String username3, String username4) {
+    public boolean requestBooking(String clb, String date, int hour, User user1, String username2, String username3, String username4) {
         Club club = checkClub(clb);
         if(club == null){
              System.out.println("sonoio1");
-             return false;//fix me
-             
+             return false;//fix me     
         }
         
-        User user1 = checkUsers(username1);
         User user2 = checkUsers(username2);
         User user3 = checkUsers(username3);
         User user4 = checkUsers(username4);
@@ -96,8 +95,8 @@ public class BookingManager {
         
         
         LocalDate day = LocalDate.parse(date, dtf);
-        
-        int i = 0;
+        Field field = checkField(day, hour, club);
+    /*    int i = 0;
         boolean booked = false;
         Field field = null;
         while( booked == false && i < club.fields.size() ){
@@ -119,9 +118,9 @@ public class BookingManager {
                     booked = true;
                 }
             }
-        }   
+        } */  
         
-        if(!booked){
+        if(field == null){
             refund(user1, club);
             refund(user2, club);
             refund(user3, club);
@@ -156,5 +155,61 @@ public class BookingManager {
                 System.out.println(i+" "+booking.getClub().name+" "+booking.getField().name+" "+booking.getDate().format(dtf)+" "+booking.getHour());
             }
         }
+    }
+    
+    public boolean requestBlindBooking(String clb, String date, int hour, User user){
+        Club club = checkClub(clb);
+        if(club == null){
+             System.out.println("sonoio1");
+             return false;//fix me    
+        }
+        
+        if(! (pay(user, club)) ){
+            return false;
+        }
+        
+        LocalDate day = LocalDate.parse(date, dtf);
+        Field field = checkField(day, hour, club);
+        
+        if(field == null){
+            refund(user, club);
+            return false;
+        }
+        
+        ArrayList<User> players = new ArrayList<>(){{add(user);}};
+        Booking booking = new Booking(club, field, day, hour, players);
+        blindBookings.add(booking);
+        
+        return true;
+        
+    }
+    
+    private Field checkField(LocalDate day, int hour, Club club){
+        int i = 0;
+        boolean booked = false;
+        Field field = null;
+        while( booked == false && i < club.fields.size() ){
+             field = club.fields.get(i++);
+            
+            if( !(field.timeTable.containsKey(day)) ){
+              ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
+              int j = updatedTimes.indexOf(hour);
+              updatedTimes.remove(j);
+              field.timeTable.put(day, updatedTimes);
+              booked = true;
+            }
+            
+            else{
+                ArrayList<Integer> times = field.timeTable.get(day);
+                int k = times.indexOf(hour);
+                if(k != -1){
+                    times.remove(k);
+                    booked = true;
+                }
+            }
+        }
+        if(!booked)
+            return null;
+        return field;
     }
 }

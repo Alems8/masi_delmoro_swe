@@ -56,9 +56,12 @@ public class BookingManager {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
-        
         user.setBalance(user.getBalance() + price);
     }
+    
+    //private boolean checkBookings(User user, LocalDate date, int hour){
+    //    for(int i=)
+    //}
     
     private User checkUsers(String usernm){
         for(User u : users){
@@ -70,6 +73,7 @@ public class BookingManager {
     }
     
     public boolean requestBooking(String clb, String date, int hour, User user1, String username2, String username3, String username4) {
+        LocalDate day = LocalDate.parse(date, dtf);
         Club club = checkClub(clb);
         if(club == null){
              System.out.println("sonoio1");
@@ -79,31 +83,39 @@ public class BookingManager {
         User user2 = checkUsers(username2);
         User user3 = checkUsers(username3);
         User user4 = checkUsers(username4);
-        if(user1 == null || user2 == null || user3 == null || user4 == null){
-            System.out.println("sonoio2");
-            return false;//fix me
+        ArrayList<User> players = new ArrayList<>(){{add(user1);add(user2);add(user3);add(user4);}};
+        for(int i=1; i<=players.size();i++){
+            if(players.get(i-1) == null){
+                System.out.println("L'utente "+i + " non è registrato");
+                return false;//fix me
+            }
         }
-            
-          
         
-        if(! (pay(user1, club) && pay(user2, club) && pay(user3, club) && pay(user4, club) ) ){
-            System.out.println("sonoio3");
-            return false;//fix me
+        /*
+        for(User u : players){
+            if(!checkBookings(u, day, hour)){
+                System.out.println(u.username + " è già impegnato");
+                return false;
+            }
         }
-             
-        LocalDate day = LocalDate.parse(date, dtf);
+*/
+        
+        for(User u : players){
+            if(!pay(u, club)){
+                System.out.println(u.username + " non ha credito sufficiente");
+                return false;//fix me
+            }
+        }
+        
         Field field = checkField(day, hour, club); 
         
         if(field == null){
-            refund(user1, club);
-            refund(user2, club);
-            refund(user3, club);
-            refund(user4, club);
+            for(User u : players)
+                refund(u, club);
             System.out.println("sonoio4");
             return false;
             
         }
-        ArrayList<User> players = new ArrayList<>(){{add(user1);add(user2);add(user3);add(user4);}};
         Booking booking = new Booking(club, field, day, hour, players);
         bookings.put(bookings.size()+1, booking);
         return true;

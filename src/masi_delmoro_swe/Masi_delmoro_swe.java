@@ -77,6 +77,8 @@ public class Masi_delmoro_swe {
         eli.addFunds(50);
         cami.addFunds(50);
         marcoRos.addFunds(50);
+        lore.addFunds(60);
+        matte.addFunds(60);
         
         System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
         System.out.println(eli.getBalance());
@@ -92,6 +94,14 @@ public class Masi_delmoro_swe {
         france.joinClub(clb5);
         france.bookField("Firenze Padel", "22/03/2022", 17, "eli", "ale", "marcoRos");
         System.out.println(france.getBalance());
+        
+        matte.blindBook("Firenze Padel", "23/03/2022", 16);
+        
+        lore.viewBlindBookings();
+        lore.blindBook("Firenze Padel", "23/03/2022", 16); //PROBLEMA
+        
+        eli.viewBlindBookings();
+        
     }
     
 }

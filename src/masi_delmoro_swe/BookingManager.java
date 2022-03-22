@@ -185,7 +185,7 @@ public class BookingManager {
         }
     }
     
-    public boolean requestSpotBooking(int key, User user){
+    public boolean requestSpotBooking(int key, User user){ //FIX ME
         if(!blindBookings.containsKey(key))
             return false;
         Booking booking = blindBookings.get(key);

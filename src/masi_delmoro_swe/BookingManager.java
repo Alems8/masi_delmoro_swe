@@ -21,7 +21,7 @@ public class BookingManager {
     private ArrayList<Club> clubs = new ArrayList<>();
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private ArrayList<Booking> blindBookings = new ArrayList<>();
+    private Map<Integer, Booking> blindBookings = new HashMap();
     
     public User addUser(Person person, String username) { //MODIFICATO
         User user = new User(username, person, this);
@@ -91,34 +91,8 @@ public class BookingManager {
             return false;//fix me
         }
              
-        
-        
-        
         LocalDate day = LocalDate.parse(date, dtf);
-        Field field = checkField(day, hour, club);
-    /*    int i = 0;
-        boolean booked = false;
-        Field field = null;
-        while( booked == false && i < club.fields.size() ){
-             field = club.fields.get(i++);
-            
-            if( !(field.timeTable.containsKey(day)) ){
-              ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
-              int j = updatedTimes.indexOf(hour);
-              updatedTimes.remove(j);
-              field.timeTable.put(day, updatedTimes);
-              booked = true;
-            }
-            
-            else{
-                ArrayList<Integer> times = field.timeTable.get(day);
-                int k = times.indexOf(hour);
-                if(k != -1){
-                    times.remove(k);
-                    booked = true;
-                }
-            }
-        } */  
+        Field field = checkField(day, hour, club); 
         
         if(field == null){
             refund(user1, club);
@@ -148,11 +122,13 @@ public class BookingManager {
         }
     }
     
-    public void displayList(User user){
+    public void displayUserBookings(User user){
         for (int i = 1; i <= bookings.size(); i++){
             Booking booking = bookings.get(i);
             if(booking.getPlayers().indexOf(user) != -1){
-                System.out.println(i+" "+booking.getClub().name+" "+booking.getField().name+" "+booking.getDate().format(dtf)+" "+booking.getHour());
+                System.out.println(i+" "+booking.getClub().name+" "+booking.getField().name+" "+
+                        booking.getDate().format(dtf)+" "+booking.getHour()+" "+
+                        (booking.getIsBlind()?"Partita al buio":"Partita privata"));
             }
         }
     }
@@ -178,10 +154,33 @@ public class BookingManager {
         
         ArrayList<User> players = new ArrayList<>(){{add(user);}};
         Booking booking = new Booking(club, field, day, hour, players);
-        blindBookings.add(booking);
+        booking.setIsBlind(true);
+        blindBookings.put(blindBookings.size()+1, booking);
         
         return true;
         
+    }
+    
+    public void displayBlindBookings(){
+        if(blindBookings.size() == 0){
+            System.out.println("Nessuna partita disponibile");
+        }
+        for(int i = 1; i <= blindBookings.size(); i++){
+            Booking booking = blindBookings.get(i);
+            System.out.println(i+" "+booking.getClub().name+" "+booking.getField().name+" "+
+                    booking.getDate().format(dtf)+" "+booking.getHour()+" Posti prenotati: "+
+                    booking.getPlayers().size());
+        }
+    }
+    
+    public boolean requestSpotBooking(int key, User user){
+        if(!blindBookings.containsKey(key))
+            return false;
+        Booking booking = blindBookings.get(key);
+        booking.getPlayers().add(user);
+        if(booking.getPlayers().size() == 4)
+            bookings.put(bookings.size()+1, blindBookings.remove(key));
+        return true;
     }
     
     private Field checkField(LocalDate day, int hour, Club club){
@@ -189,14 +188,14 @@ public class BookingManager {
         boolean booked = false;
         Field field = null;
         while( booked == false && i < club.fields.size() ){
-             field = club.fields.get(i++);
+            field = club.fields.get(i++);
             
             if( !(field.timeTable.containsKey(day)) ){
-              ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
-              int j = updatedTimes.indexOf(hour);
-              updatedTimes.remove(j);
-              field.timeTable.put(day, updatedTimes);
-              booked = true;
+                ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
+                int j = updatedTimes.indexOf(hour);
+                updatedTimes.remove(j);
+                field.timeTable.put(day, updatedTimes);
+                booked = true;
             }
             
             else{

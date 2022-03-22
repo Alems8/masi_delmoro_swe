@@ -73,12 +73,12 @@ public class Masi_delmoro_swe {
         
         matti.addFunds(250);
         france.addFunds(50);
-        ale.addFunds(50);
-        eli.addFunds(50);
+        ale.addFunds(100);
+        eli.addFunds(400);
         cami.addFunds(50);
-        marcoRos.addFunds(50);
+        marcoRos.addFunds(100);
         lore.addFunds(60);
-        matte.addFunds(60);
+        matte.addFunds(100);
         
         System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
         System.out.println(eli.getBalance());
@@ -92,13 +92,18 @@ public class Masi_delmoro_swe {
         System.out.println(eli.getBalance());
         
         france.joinClub(clb5);
-        france.bookField("Firenze Padel", "22/03/2022", 17, "eli", "ale", "marcoRos");
+        france.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos");
         System.out.println(france.getBalance());
+        
+        eli.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos"); //Questo funziona
         
         matte.blindBook("Firenze Padel", "23/03/2022", 16);
         
         lore.viewBlindBookings();
+        
         lore.blindBook("Firenze Padel", "23/03/2022", 16); //PROBLEMA
+        
+        eli.blindBook("UPP", "23/03/2022", 10);
         
         eli.viewBlindBookings();
         

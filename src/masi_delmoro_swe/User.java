@@ -72,4 +72,8 @@ public class User {
     public boolean bookSpot(int key){
         return bm.requestSpotBooking(key, this);
     }
+    
+    public void deleteSpot(Integer key){
+        bm.cancelSpot(key, this);
+    }
 }

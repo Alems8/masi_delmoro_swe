@@ -106,10 +106,11 @@ public class Masi_delmoro_swe {
         eli.blindBook("UPP", "23/03/2022", 10);
         
         lore.viewBlindBookings();
-        lore.blindBook("Gracciano", "23/03/2022", 10);
+        lore.blindBook("Gracciano", "23/03/2022", 15);
         matte.bookSpot(3);
         lore.bookSpot(3);
-        
+        matti.viewBlindBookings();
+        lore.deleteSpot(3);
         matti.viewBlindBookings();
     }
     

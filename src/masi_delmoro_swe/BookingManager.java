@@ -230,6 +230,16 @@ public class BookingManager {
         return true;
     }
     
+    public void cancelSpot(Integer key, User user){
+        Booking booking = blindBookings.get(key);
+        booking.getPlayers().remove(user);
+        refund(user, booking.getClub());
+        if (booking.getPlayers().isEmpty()){
+            blindBookings.remove(key);
+            booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
+        }
+    }
+    
     private Field checkField(LocalDate day, int hour, Club club){
         int i = 0;
         boolean booked = false;

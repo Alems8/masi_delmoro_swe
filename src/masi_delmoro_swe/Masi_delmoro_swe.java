@@ -28,13 +28,13 @@ public class Masi_delmoro_swe {
         clb1.addField("Padel 3");
         clb2.addField("Padel 1");
         clb2.addField("Padel 2");
-        clb3.addField("Padel 3");
+        clb3.addField("Padel 1");
         clb4.addField("Padel 1");
         clb4.addField("Padel 2");
         clb4.addField("Padel 3");
-        clb4.addField("Padel 1");
-        clb4.addField("Padel 2");
-        clb5.addField("Padel 3");
+        clb4.addField("Padel 4");
+        clb4.addField("Padel 5");
+        clb4.addField("Padel 6");
         clb5.addField("Padel 1");
         clb5.addField("Padel 2");
         clb5.addField("Padel 3");
@@ -72,12 +72,12 @@ public class Masi_delmoro_swe {
         User matte = matteo.subscribe(bm, "matte");
         
         matti.addFunds(250);
-        france.addFunds(50);
+        france.addFunds(500);
         ale.addFunds(100);
         eli.addFunds(400);
-        cami.addFunds(50);
+        cami.addFunds(500);
         marcoRos.addFunds(100);
-        lore.addFunds(60);
+        lore.addFunds(600);
         matte.addFunds(100);
         
         System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
@@ -99,14 +99,16 @@ public class Masi_delmoro_swe {
         
         matte.blindBook("Firenze Padel", "23/03/2022", 16);
         
-        lore.viewBlindBookings();
-        
         lore.blindBook("Firenze Padel", "23/03/2022", 16); //PROBLEMA
         
         eli.blindBook("UPP", "23/03/2022", 10);
         
-        eli.viewBlindBookings();
+        lore.viewBlindBookings();
+        lore.bookSpot(3);
+        matte.bookSpot(3);
+        matti.bookSpot(3);
         
+        matti.viewBookings();
     }
     
 }

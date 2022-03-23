@@ -19,6 +19,7 @@ public class Booking {
     private Field field;
     private LocalDate date;
     private Integer hour;
+    private boolean isBlind = false;
 
     public Booking(Club club, Field field, LocalDate date, Integer hour, ArrayList<User> users) {
         this.club = club;
@@ -48,7 +49,13 @@ public class Booking {
     public Integer getHour() {
         return hour;
     }
-    
-    
+
+    public boolean getIsBlind() {
+        return isBlind;
+    }
+
+    public void setIsBlind(boolean isBlind) {
+        this.isBlind = isBlind;
+    }
     
 }

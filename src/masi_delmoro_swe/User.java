@@ -58,9 +58,18 @@ public class User {
     }
     
     public void viewBookings(){
-        bm.displayList(this);
+        bm.displayUserBookings(this);
     }
-     public boolean blindBook(String clb, String date, int hour){
-         return bm.requestBlindBooking(clb, date, hour, this);
-     }
+    
+    public boolean blindBook(String clb, String date, int hour){
+        return bm.requestBlindBooking(clb, date, hour, this);
+    }
+    
+    public void viewBlindBookings(){
+        bm.displayBlindBookings();
+    }
+    
+    public boolean bookSpot(int key){
+        return bm.requestSpotBooking(key, this);
+    }
 }

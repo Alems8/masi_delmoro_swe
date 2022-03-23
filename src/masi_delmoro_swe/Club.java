@@ -62,6 +62,6 @@ public class Club {
     }
     
     public void addField(String name) {
-        fields.add(new Field(name, times));
+        fields.add(new Field(name, new ArrayList<>(times)));
     }
 }

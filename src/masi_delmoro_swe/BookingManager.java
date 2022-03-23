@@ -63,7 +63,7 @@ public class BookingManager {
     //    for(int i=)
     //}
     
-    private User checkUsers(String usernm){
+    private User checkUser(String usernm){
         for(User u : users){
             if(u.username.equals(usernm)){
                 return u;
@@ -80,9 +80,9 @@ public class BookingManager {
              return false;//fix me     
         }
         
-        User user2 = checkUsers(username2);
-        User user3 = checkUsers(username3);
-        User user4 = checkUsers(username4);
+        User user2 = checkUser(username2);
+        User user3 = checkUser(username3);
+        User user4 = checkUser(username4);
         ArrayList<User> players = new ArrayList<>(){{add(user1);add(user2);add(user3);add(user4);}};
         for(int i=1; i<=players.size();i++){
             if(players.get(i-1) == null){
@@ -152,6 +152,8 @@ public class BookingManager {
              return false;//fix me    
         }
         
+        //Aggiungere checkUser?
+        
         if(! (pay(user, club)) ){
             return false;
         }
@@ -174,7 +176,7 @@ public class BookingManager {
     }
     
     public void displayBlindBookings(){
-        if(blindBookings.size() == 0){
+        if(blindBookings.isEmpty()){
             System.out.println("Nessuna partita disponibile");
         }
         for(int i = 1; i <= blindBookings.size(); i++){
@@ -188,7 +190,12 @@ public class BookingManager {
     public boolean requestSpotBooking(int key, User user){ //FIX ME
         if(!blindBookings.containsKey(key))
             return false;
+        
         Booking booking = blindBookings.get(key);
+        
+        if(!pay(user, booking.getClub()))
+            return false;
+        
         booking.getPlayers().add(user);
         if(booking.getPlayers().size() == 4)
             bookings.put(bookings.size()+1, blindBookings.remove(key));

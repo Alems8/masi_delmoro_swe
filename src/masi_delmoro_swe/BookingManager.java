@@ -59,9 +59,35 @@ public class BookingManager {
         user.setBalance(user.getBalance() + price);
     }
     
-    //private boolean checkBookings(User user, LocalDate date, int hour){
-    //    for(int i=)
-    //}
+    private boolean checkBookings(User user, LocalDate date, int hour){
+        if(!bookings.isEmpty()){
+            for(int i=1; i<=bookings.size(); i++){
+                Booking booking = bookings.get(i);
+                if(booking.getPlayers().contains(user)){
+                    if(booking.getDate().equals(date)){
+                        if(booking.getHour() == hour){
+                            System.out.println("L'utente " + user.username + " è già impegnato");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        if(!blindBookings.isEmpty()){
+            for(int i=1; i<=blindBookings.size(); i++){
+                Booking booking = blindBookings.get(i);
+                if(booking.getPlayers().contains(user)){
+                    if(booking.getDate().equals(date)){
+                        if(booking.getHour() == hour){
+                            System.out.println("L'utente " + user.username + " è già impegnato");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
     
     private User checkUser(String usernm){
         for(User u : users){
@@ -91,14 +117,10 @@ public class BookingManager {
             }
         }
         
-        /*
         for(User u : players){
-            if(!checkBookings(u, day, hour)){
-                System.out.println(u.username + " è già impegnato");
+            if(!checkBookings(u, day, hour))
                 return false;
-            }
         }
-*/
         
         for(User u : players){
             if(!pay(u, club)){
@@ -113,9 +135,9 @@ public class BookingManager {
             for(User u : players)
                 refund(u, club);
             System.out.println("sonoio4");
-            return false;
-            
+            return false;            
         }
+        
         Booking booking = new Booking(club, field, day, hour, players);
         bookings.put(bookings.size()+1, booking);
         return true;
@@ -166,6 +188,9 @@ public class BookingManager {
             return false;
         }
         
+        if(!checkBookings(user, day, hour))
+            return false;
+        
         ArrayList<User> players = new ArrayList<>(){{add(user);}};
         Booking booking = new Booking(club, field, day, hour, players);
         booking.setIsBlind(true);
@@ -192,6 +217,9 @@ public class BookingManager {
             return false;
         
         Booking booking = blindBookings.get(key);
+        
+        if(!checkBookings(user, booking.getDate(), booking.getHour()))
+            return false;
         
         if(!pay(user, booking.getClub()))
             return false;

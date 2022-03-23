@@ -95,20 +95,22 @@ public class Masi_delmoro_swe {
         france.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos");
         System.out.println(france.getBalance());
         
-        eli.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos"); //Questo funziona
+        eli.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos");
+        eli.viewBookings();
+        
         
         matte.blindBook("Firenze Padel", "23/03/2022", 16);
         
-        lore.blindBook("Firenze Padel", "23/03/2022", 16); //PROBLEMA
+        lore.blindBook("Firenze Padel", "23/03/2022", 16);
         
         eli.blindBook("UPP", "23/03/2022", 10);
         
         lore.viewBlindBookings();
-        lore.bookSpot(3);
+        lore.blindBook("Gracciano", "23/03/2022", 10);
         matte.bookSpot(3);
-        matti.bookSpot(3);
+        lore.bookSpot(3);
         
-        matti.viewBookings();
+        matti.viewBlindBookings();
     }
     
 }

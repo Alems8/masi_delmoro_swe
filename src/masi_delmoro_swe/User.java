@@ -20,7 +20,7 @@ public class User {
     private String email;
     private BookingManager bm;
     private int balance = 0;
-    ArrayList<Club> favouriteClubs;
+    ArrayList<Club> favouriteClubs = new ArrayList<>();
     public int[] record = new int[2];
     //private Map<Integer,Booking> bookings = new HashMap();
 
@@ -42,9 +42,9 @@ public class User {
         this.balance = balance;
     }
     
-    public boolean joinClub(Club club) {
+    public boolean joinClub(String club) {
         //Pagamento costo associazione
-        return club.getRequest(this);
+        return bm.requestJoinClub(this, club);
     }
     
     public boolean bookField(String clb, String date, int hour, String user2, String user3, String user4) {
@@ -77,7 +77,7 @@ public class User {
         return bm.requestSpotBooking(key, this);
     }
     
-    public void deleteSpot(Integer key){
+    public void deleteSpot(int key){
         bm.cancelSpot(key, this);
     }
     

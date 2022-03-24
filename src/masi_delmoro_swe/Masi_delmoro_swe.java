@@ -17,11 +17,11 @@ public class Masi_delmoro_swe {
     public static void main(String[] args) {
         // TODO code application logic here
         BookingManager bm = new BookingManager();
-        Club clb1 = new Club("LaFiorita", 15, 12,9,19);
-        Club clb2 = new Club("Gracciano", 30, 25,10,23);
-        Club clb3 = new Club("UPP", 10, 7,9,1);
-        Club clb4 = new Club("Certaldo", 20, 16,8,20);
-        Club clb5 = new Club("Firenze Padel", 18, 15,9,18);
+        Club clb1 = new Club("LaFiorita", 15, 12,9,19,100);
+        Club clb2 = new Club("Gracciano", 30, 25,10,23,100);
+        Club clb3 = new Club("UPP", 10, 7,9,1,120);
+        Club clb4 = new Club("Certaldo", 20, 16,8,20,150);
+        Club clb5 = new Club("Firenze Padel", 18, 15,9,18,90);
         
         clb1.addField("Padel 1");
         clb1.addField("Padel 2");
@@ -83,43 +83,23 @@ public class Masi_delmoro_swe {
         System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
         System.out.println(eli.getBalance());
         
+        cami.blindBook("UPP", "30/03/2022", 15);
+        lore.bookField("LaFiorita", "26/04/2022", 17, "lore", "cami", "marcoRos");
+        matte.bookField("LaFiorita", "27/03/2022", 15, "cami", "ale", "eli");
+        matte.bookSpot(2);
+        lore.bookSpot(2);
+        ale.bookSpot(2);
+        //ale.viewBookings();
+        marcoRos.joinClub("LaFiorita");
+        ale.deleteSpot(2);
+        marcoRos.viewBlindBookings();
+        marcoRos.bookSpot(2);
         
-        System.out.println(eli.bookField("UPP", "28/03/2022", 0, "cami", "marcoRos", "matti"));
-        eli.viewBookings();
-        System.out.println(eli.getBalance());
-        eli.deleteBooking(2);
-        eli.viewBookings();
-        System.out.println(eli.getBalance());
+        marcoRos.addFavouriteClub("LaFiorita");
         
-        france.joinClub(clb5);
-        france.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos");
-        System.out.println(france.getBalance());
-        
-        eli.bookField("Firenze Padel", "22/03/2022", 17, "matte", "ale", "marcoRos");
-        eli.viewBookings();
-        
-        
-        matte.blindBook("Firenze Padel", "23/03/2022", 16);
-        
-        lore.blindBook("Firenze Padel", "23/03/2022", 16);
-        
-        eli.blindBook("UPP", "23/03/2022", 10);
-        
-        lore.viewBlindBookings();
-        lore.blindBook("Gracciano", "23/03/2022", 15);
-        matte.bookSpot(3);
-        lore.bookSpot(3);
-        matti.viewBlindBookings();
-        lore.deleteSpot(3);
-        matti.viewBlindBookings();
-        matti.viewRecord();
-        eli.viewBookings();
-        eli.addMatchResult("eli", "ale", 1);
-        eli.viewRecord();
-        france.viewRecord();
-        matte.viewRecord();
+        marcoRos.addMatchResult("lore", "cami", 2);
+        marcoRos.viewRecord();
+        lore.viewRecord();
     }
     
 }
-
-// LISTA PREFERITI, STORICO PARTITE, PRENOTAZIONE BUIO, AGGIUNTA RISULTATO.

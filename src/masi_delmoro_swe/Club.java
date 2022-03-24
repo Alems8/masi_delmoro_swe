@@ -16,16 +16,17 @@ public class Club {
     public ArrayList<Field> fields = new ArrayList<>();
     public int price;
     public int memberPrice;
-    private float gains;
+    public int joinClubPrice;
     private ArrayList<User> members = new ArrayList<>();
     int opening;
     int closure;
     public ArrayList<Integer> times = new ArrayList<>(); //MODIFICATO
 
-    public Club(String name, int price, int memberPrice,int opening, int closure) { //MODIFICATO
+    public Club(String name, int price, int memberPrice,int opening, int closure, int joinClubPrice) { //MODIFICATO
         this.name = name;
         this.price = price;
         this.opening = opening;
+        this.joinClubPrice = joinClubPrice;
         this.closure = closure;
         this.memberPrice = memberPrice;
         int fakeClosure = closure;
@@ -48,13 +49,8 @@ public class Club {
         return false;
     }
     
-    
-    public boolean getRequest(User user) {
-        if(isMember(user)) {
-            return false;
-        }
+    public void addMember(User user){
         members.add(user);
-        return true;
     }
    
     public void subscribe(BookingManager bm) {

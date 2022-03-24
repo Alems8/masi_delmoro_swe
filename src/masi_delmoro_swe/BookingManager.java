@@ -22,6 +22,7 @@ public class BookingManager {
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Map<Integer, Booking> blindBookings = new HashMap();
+    private int key = 0;
     
     public User addUser(Person person, String username) { //MODIFICATO
         User user = new User(username, person, this);
@@ -61,8 +62,9 @@ public class BookingManager {
     
     private boolean checkBookings(User user, LocalDate date, int hour){
         if(!bookings.isEmpty()){
-            for(int i=1; i<=bookings.size(); i++){
-                Booking booking = bookings.get(i);
+            //for(int i=1; i<=bookings.size(); i++){
+            for(int k : bookings.keySet()){
+                Booking booking = bookings.get(k);
                 if(booking.getPlayers().contains(user)){
                     if(booking.getDate().equals(date)){
                         if(booking.getHour() == hour){
@@ -74,8 +76,9 @@ public class BookingManager {
             }
         }
         if(!blindBookings.isEmpty()){
-            for(int i=1; i<=blindBookings.size(); i++){
-                Booking booking = blindBookings.get(i);
+            //for(int i=1; i<=blindBookings.size(); i++){
+            for(int k : bookings.keySet()){
+                Booking booking = blindBookings.get(k);
                 if(booking.getPlayers().contains(user)){
                     if(booking.getDate().equals(date)){
                         if(booking.getHour() == hour){
@@ -139,7 +142,7 @@ public class BookingManager {
         }
         
         Booking booking = new Booking(club, field, day, hour, players);
-        bookings.put(bookings.size()+1, booking);
+        bookings.put(key++, booking);
         return true;
     }
     
@@ -147,7 +150,7 @@ public class BookingManager {
         user.setBalance(user.getBalance() + money);
     }
     
-    public void cancelBooking(Integer key){
+    public void cancelBooking(int key){
         Booking booking = bookings.remove(key);
         booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
         ArrayList <User> users = booking.getPlayers();
@@ -157,13 +160,24 @@ public class BookingManager {
     }
     
     public void displayUserBookings(User user){
-        for (int i = 1; i <= bookings.size(); i++){
-            Booking booking = bookings.get(i);
+       // for (int i = 1; i <= bookings.size(); i++){
+       for(int k : bookings.keySet()){
+            Booking booking = bookings.get(k);
             if(booking.getPlayers().indexOf(user) != -1){
-                System.out.println(i+" "+booking.getClub().name+" "+booking.getField().name+" "+
+                System.out.println(k +  " "+booking.getClub().name+" "+booking.getField().name+" "+
                         booking.getDate().format(dtf)+" "+booking.getHour()+" "+
-                        (booking.getIsBlind()?"Partita al buio":"Partita privata"));
+                        (booking.getIsBlind()?"Partita al buio ":"Partita privata ")+
+                        booking.getPlayers().size()+" giocatori");
             }
+        }
+        for(int k : blindBookings.keySet()){
+            Booking booking = blindBookings.get(k);
+          if(booking.getPlayers().indexOf(user) != -1){
+                System.out.println(k +  " "+booking.getClub().name+" "+booking.getField().name+" "+
+                        booking.getDate().format(dtf)+" "+booking.getHour()+" "+
+                        (booking.getIsBlind()?"Partita al buio ":"Partita privata ")+
+                        booking.getPlayers().size()+" giocatori");
+            }            
         }
     }
     
@@ -194,7 +208,7 @@ public class BookingManager {
         ArrayList<User> players = new ArrayList<>(){{add(user);}};
         Booking booking = new Booking(club, field, day, hour, players);
         booking.setIsBlind(true);
-        blindBookings.put(blindBookings.size()+1, booking);
+        blindBookings.put(key++, booking);
         
         return true;
         
@@ -204,9 +218,10 @@ public class BookingManager {
         if(blindBookings.isEmpty()){
             System.out.println("Nessuna partita disponibile");
         }
-        for(int i = 1; i <= blindBookings.size(); i++){
-            Booking booking = blindBookings.get(i);
-            System.out.println(i+" "+booking.getClub().name+" "+booking.getField().name+" "+
+        //for(int i = 1; i <= blindBookings.size(); i++){
+        for(int k : bookings.keySet()){
+            Booking booking = blindBookings.get(k);
+            System.out.println(k+" "+booking.getClub().name+" "+booking.getField().name+" "+
                     booking.getDate().format(dtf)+" "+booking.getHour()+" Posti prenotati: "+
                     booking.getPlayers().size());
         }
@@ -230,12 +245,12 @@ public class BookingManager {
         return true;
     }
     
-    public void cancelSpot(Integer key, User user){
-        Booking booking = blindBookings.get(key);
+    public void cancelSpot(int id, User user){
+        Booking booking = blindBookings.get(id);
         booking.getPlayers().remove(user);
         refund(user, booking.getClub());
         if (booking.getPlayers().isEmpty()){
-            blindBookings.remove(key);
+            blindBookings.remove(id);
             booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
         }
     }
@@ -267,5 +282,32 @@ public class BookingManager {
         if(!booked)
             return null;
         return field;
+    }
+
+    public boolean addUserFavouriteClub(User user, String clb) {
+        Club club = checkClub(clb);
+        if(club == null)
+            return false;
+        user.favouriteClubs.add(club);
+        return true;
+    }
+    
+    public void addResult(String username1, String username2, int key){
+        Booking booking = bookings.remove(key);
+        ArrayList<User> players = booking.getPlayers();
+        for (User user : players){
+            if(user.username == username1)
+                user.record[1]++;
+            else if(user.username == username2)
+                user.record[1]++;
+            else
+                user.record[0]++;
+        }
+        
+    }
+    
+    public void displayUserRecord(User user){
+        System.out.println("Il tuo storico è: " + user.record[1] + " vittorie - "
+                            + user.record[0] + " sconfitte");
     }
 }

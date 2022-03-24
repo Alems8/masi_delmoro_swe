@@ -20,6 +20,8 @@ public class User {
     private String email;
     private BookingManager bm;
     private int balance = 0;
+    ArrayList<Club> favouriteClubs;
+    public int[] record = new int[2];
     //private Map<Integer,Booking> bookings = new HashMap();
 
     public User(String username, Person person, BookingManager bm) {
@@ -28,6 +30,8 @@ public class User {
         this.surname = person.surname;
         this.email = person.email;
         this.bm = bm;
+        this.record[0] = 0;
+        this.record[1] = 0;
     }
 
     public int getBalance() {
@@ -52,7 +56,7 @@ public class User {
         bm.rechargeAccount(this, money);
     }
     
-    public void deleteBooking(Integer key){
+    public void deleteBooking(int key){
         //Booking booking = bookings.remove(key);
         bm.cancelBooking(key);
     }
@@ -75,5 +79,17 @@ public class User {
     
     public void deleteSpot(Integer key){
         bm.cancelSpot(key, this);
+    }
+    
+    public boolean addFavouriteClub(String club){
+        return bm.addUserFavouriteClub(this, club);
+    }
+    
+    public void addMatchResult(String winner1, String winner2, int key){
+        bm.addResult(winner1, winner2, key);
+    }
+    
+    public void viewRecord(){
+        bm.displayUserRecord(this);
     }
 }

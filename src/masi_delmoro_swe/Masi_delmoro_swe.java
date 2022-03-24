@@ -112,6 +112,12 @@ public class Masi_delmoro_swe {
         matti.viewBlindBookings();
         lore.deleteSpot(3);
         matti.viewBlindBookings();
+        matti.viewRecord();
+        eli.viewBookings();
+        eli.addMatchResult("eli", "ale", 1);
+        eli.viewRecord();
+        france.viewRecord();
+        matte.viewRecord();
     }
     
 }

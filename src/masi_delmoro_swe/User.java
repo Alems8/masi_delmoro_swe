@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public class User {
     public String username;
-    private String name;
-    private String surname;
-    private String email;
+    private Person person;
     private BookingManager bm;
     private int balance = 0;
     ArrayList<Club> favouriteClubs = new ArrayList<>();
@@ -26,9 +24,7 @@ public class User {
 
     public User(String username, Person person, BookingManager bm) {
         this.username = username;
-        this.name = person.name;
-        this.surname = person.surname;
-        this.email = person.email;
+        this.person = person;
         this.bm = bm;
         this.record[0] = 0;
         this.record[1] = 0;

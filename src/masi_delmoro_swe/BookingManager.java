@@ -126,7 +126,8 @@ public class BookingManager {
 */
     
     public void releaseField(int id){
-        //Booking booking = bookings.remove(id);
+        Booking booking = bookings.remove(id);
+        booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
     }
     
     public void displayUserRecord(User user){
@@ -166,8 +167,10 @@ public class BookingManager {
         if(club == null)
             return false;
         Field field = checkField(club, sport, date, hour);
-        if(field == null)
+        if(field == null){
+            System.out.println("Nessun campo disponibile");
             return false;
+        }
         int size = field.sport.numPlayers;
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
@@ -175,17 +178,17 @@ public class BookingManager {
         for(int i=0; i<size-1; i++){
             Scanner scanner = new Scanner(System.in);
             User u = checkUser(scanner.next());
-            if(u != null)
-                players.add(u);
-            else{
-                System.out.println("Il giocatore non esiste");
+            if(u == null){
+                field.timeTable.get(date).add(hour);
+                System.out.println("L'utente non esiste");
                 return false;
             }
-        }
-        for(User u : players){
-            if(!pay(u, club))
+            if(!pay(u, club)){
+                field.timeTable.get(date).add(hour);
+                System.out.println("L'utente non ha credito sufficiente");
                 return false;
-            //libera campo
+            }
+            players.add(u);
         }
         Booking booking = new PrivateBooking(club, field, date, hour, players);
         bookings.put(key++, booking);

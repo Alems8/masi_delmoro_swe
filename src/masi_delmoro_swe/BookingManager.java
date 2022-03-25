@@ -57,7 +57,7 @@ public class BookingManager {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
-        user.setBalance(user.getBalance() + price);
+        rechargeAccount(user, price);
     }
     
     private User checkUser(String usernm){
@@ -109,8 +109,8 @@ public class BookingManager {
         user.favouriteClubs.add(club);
         return true;
     }
-    /*
-    public void addResult(String username1, String username2, int id){
+    
+    public void addResult(String username1, String username2, int id){ //FIX ME
         Booking booking = bookings.remove(id);
         ArrayList<User> players = booking.getPlayers();
         for (User user : players){
@@ -123,7 +123,6 @@ public class BookingManager {
         }
         
     }
-*/
     
     public void releaseField(int id){
         Booking booking = bookings.remove(id);
@@ -208,6 +207,14 @@ public class BookingManager {
         Booking booking = new BlindBooking(club, field, date, hour, players);
         bookings.put(key++, booking);
         return true;
+    }
+    
+    public void displayBlindBookings(){
+        for(int k : bookings.keySet()){
+            Booking booking = bookings.get(k);
+            if(booking.getPlayers().size() < booking.getField().sport.numPlayers)
+                System.out.println(k+booking.toString());
+        }
     }
     
     public boolean requestSpot(int id, User user){

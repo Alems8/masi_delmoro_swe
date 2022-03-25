@@ -71,10 +71,6 @@ public class User {
         return bm.requestSpot(key, this);
     }
     
-    public void deleteSpot(int key){
-        bm.cancelSpot(key, this);
-    }
-    
     public boolean addFavouriteClub(String club){
         return bm.addUserFavouriteClub(this, club);
     }

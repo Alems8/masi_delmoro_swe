@@ -5,6 +5,7 @@
  */
 package masi_delmoro_swe;
 
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,9 +22,7 @@ public class BookingManager {
     private ArrayList<Club> clubs = new ArrayList<>();
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private Map<Integer, Booking> blindBookings = new HashMap();
     private int key = 1;
-   //ciao
     
     public User addUser(Person person, String username) { //MODIFICATO
         User user = new User(username, person, this);
@@ -61,38 +60,6 @@ public class BookingManager {
         user.setBalance(user.getBalance() + price);
     }
     
-    private boolean checkBookings(User user, LocalDate date, int hour){
-        if(!bookings.isEmpty()){
-            //for(int i=1; i<=bookings.size(); i++){
-            for(int k : bookings.keySet()){
-                Booking booking = bookings.get(k);
-                if(booking.getPlayers().contains(user)){
-                    if(booking.getDate().equals(date)){
-                        if(booking.getHour() == hour){
-                            System.out.println("L'utente " + user.username + " è già impegnato");
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        if(!blindBookings.isEmpty()){
-            //for(int i=1; i<=blindBookings.size(); i++){
-            for(int k : blindBookings.keySet()){
-                Booking booking = blindBookings.get(k);
-                if(booking.getPlayers().contains(user)){
-                    if(booking.getDate().equals(date)){
-                        if(booking.getHour() == hour){
-                            System.out.println("L'utente " + user.username + " è già impegnato");
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-    
     private User checkUser(String usernm){
         for(User u : users){
             if(u.username.equals(usernm)){
@@ -102,182 +69,27 @@ public class BookingManager {
         return null;
     }
     
-    public boolean requestBooking(String clb, String date, int hour, User user1, String username2, String username3, String username4) {
-        LocalDate day = LocalDate.parse(date, dtf);
-        Club club = checkClub(clb);
-        if(club == null){
-             System.out.println("sonoio1");
-             return false;//fix me     
-        }
-        
-        User user2 = checkUser(username2);
-        User user3 = checkUser(username3);
-        User user4 = checkUser(username4);
-        ArrayList<User> players = new ArrayList<>(){{add(user1);add(user2);add(user3);add(user4);}};
-        for(int i=1; i<=players.size();i++){
-            if(players.get(i-1) == null){
-                System.out.println("L'utente "+i + " non è registrato");
-                return false;//fix me
-            }
-        }
-        
-        for(User u : players){
-            if(!checkBookings(u, day, hour))
-                return false;
-        }
-        
-        for(User u : players){
-            if(!pay(u, club)){
-                System.out.println(u.username + " non ha credito sufficiente");
-                return false;//fix me
-            }
-        }
-        
-        Field field = checkField(day, hour, club); 
-        
-        if(field == null){
-            for(User u : players)
-                refund(u, club);
-            System.out.println("sonoio4");
-            return false;            
-        }
-        
-        Booking booking = new Booking(club, field, day, hour, players);
-        bookings.put(key++, booking);
-        return true;
-    }
-    
     public void rechargeAccount(User user, int money){
         user.setBalance(user.getBalance() + money);
     }
     
-    public void cancelBooking(int id){
-        Booking booking = bookings.remove(id);
-        booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
-        ArrayList <User> users = booking.getPlayers();
-        for(User u : users){
-            refund(u, booking.getClub());
-        }
-    }
-    
-    public void displayUserBookings(User user){
-       // for (int i = 1; i <= bookings.size(); i++){
-       for(int k : bookings.keySet()){
-            Booking booking = bookings.get(k);
-            if(booking.getPlayers().indexOf(user) != -1){
-                System.out.println(k +  " "+booking.getClub().name+" "+booking.getField().name+" "+
-                        booking.getDate().format(dtf)+" "+booking.getHour()+" "+
-                        (booking.getIsBlind()?"Partita al buio ":"Partita privata ")+
-                        booking.getPlayers().size()+" giocatori");
-            }
-        }
-        for(int k : blindBookings.keySet()){
-            Booking booking = blindBookings.get(k);
-          if(booking.getPlayers().indexOf(user) != -1){
-                System.out.println(k +  " "+booking.getClub().name+" "+booking.getField().name+" "+
-                        booking.getDate().format(dtf)+" "+booking.getHour()+" "+
-                        (booking.getIsBlind()?"Partita al buio ":"Partita privata ")+
-                        booking.getPlayers().size()+" giocatori");
-            }            
-        }
-    }
-    
-    public boolean requestBlindBooking(String clb, String date, int hour, User user){
-        Club club = checkClub(clb);
-        if(club == null){
-             System.out.println("sonoio1");
-             return false;//fix me    
-        }
-        
-        //Aggiungere checkUser?
-        
-        if(! (pay(user, club)) ){
-            return false;
-        }
-        
-        LocalDate day = LocalDate.parse(date, dtf);
-        Field field = checkField(day, hour, club);
-        
-        if(field == null){
-            refund(user, club);
-            return false;
-        }
-        
-        if(!checkBookings(user, day, hour))
-            return false;
-        
-        ArrayList<User> players = new ArrayList<>(){{add(user);}};
-        Booking booking = new Booking(club, field, day, hour, players);
-        booking.setIsBlind(true);
-        blindBookings.put(key++, booking);
-        
-        return true;
-        
-    }
-    
-    public void displayBlindBookings(){
-        if(blindBookings.isEmpty()){
-            System.out.println("Nessuna partita disponibile");
-        }
-        //for(int i = 1; i <= blindBookings.size(); i++){
-        for(int k : blindBookings.keySet()){
-            Booking booking = blindBookings.get(k);
-            System.out.println(k+" "+booking.getClub().name+" "+booking.getField().name+" "+
-                    booking.getDate().format(dtf)+" "+booking.getHour()+" Posti prenotati: "+
-                    booking.getPlayers().size());
-        }
-    }
-    
-    public boolean requestSpotBooking(int id, User user){ //FIX ME
-        if(!blindBookings.containsKey(id))
-            return false;
-        
-        Booking booking = blindBookings.get(id);
-        
-        if(!checkBookings(user, booking.getDate(), booking.getHour()))
-            return false;
-        
-        if(!pay(user, booking.getClub()))
-            return false;
-        
-        booking.getPlayers().add(user);
-        if(booking.getPlayers().size() == 4)
-            bookings.put(id, blindBookings.remove(id));
-        return true;
-    }
-    
-    public void cancelSpot(int id, User user){
-        Booking booking = blindBookings.get(id);
-        if(booking == null){
-            booking = bookings.remove(id);
-            blindBookings.put(id,booking);
-        }
-        booking.getPlayers().remove(user);
-        refund(user, booking.getClub());
-        if (booking.getPlayers().isEmpty()){
-            blindBookings.remove(id);
-            booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
-        }
-        
-    }
-    
-    private Field checkField(LocalDate day, int hour, Club club){
+    private Field checkField(Club club, String sport, LocalDate date, int hour){
         int i = 0;
         boolean booked = false;
         Field field = null;
         while( booked == false && i < club.fields.size() ){
             field = club.fields.get(i++);
             
-            if( !(field.timeTable.containsKey(day)) ){
+            if( !(field.timeTable.containsKey(date)) ){
                 ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
                 int j = updatedTimes.indexOf(hour);
                 updatedTimes.remove(j);
-                field.timeTable.put(day, updatedTimes);
+                field.timeTable.put(date, updatedTimes);
                 booked = true;
             }
             
             else{
-                ArrayList<Integer> times = field.timeTable.get(day);
+                ArrayList<Integer> times = field.timeTable.get(date);
                 int k = times.indexOf(hour);
                 if(k != -1){
                     times.remove(k);
@@ -297,7 +109,7 @@ public class BookingManager {
         user.favouriteClubs.add(club);
         return true;
     }
-    
+    /*
     public void addResult(String username1, String username2, int id){
         Booking booking = bookings.remove(id);
         ArrayList<User> players = booking.getPlayers();
@@ -311,6 +123,7 @@ public class BookingManager {
         }
         
     }
+*/
     
     public void displayUserRecord(User user){
         System.out.println("Il tuo storico è: " + user.record[1] + " vittorie - "
@@ -341,5 +154,60 @@ public class BookingManager {
         }
         user.setBalance(user.getBalance() - club.joinClubPrice);
         return true;
+    }
+    
+    public boolean requestBooking(String sport, String clb, String day, int hour, User user){
+        LocalDate date = LocalDate.parse(day, dtf);
+        Club club = checkClub(clb);
+        if(club == null)
+            return false;
+        Field field = checkField(club, sport, date, hour);
+        if(field == null)
+            return false;
+        int size = field.sport.numPlayers;
+        ArrayList<User> players = new ArrayList<>();
+        players.add(user);
+        System.out.println("Inserisci i nomi utente degli altri giocatori");
+        for(int i=0; i<size-1; i++){
+            Scanner scanner = new Scanner(System.in);
+            User u = checkUser(scanner.next());
+            if(u != null)
+                players.add(u);
+            else{
+                System.out.println("Il giocatore non esiste");
+                return false;
+            }
+        }
+        for(User u : players){
+            if(!pay(u, club))
+                return false;
+            //libera campo
+        }
+        Booking booking = new PrivateBooking(club, field, date, hour, players);
+        bookings.put(key++, booking);
+        return true;
+    }
+    
+    public boolean requestBlindBooking(String sport, String clb, String day, int hour, User user){
+        LocalDate date = LocalDate.parse(day, dtf);
+        Club club = checkClub(clb);
+        if(club == null)
+            return false;
+        Field field = checkField(club, sport, date, hour);
+        if(field == null)
+            return false;
+        Booking booking = new BlindBooking(club, field, date, hour, user);
+        bookings.put(key++, booking);
+        return true;
+    }
+    
+    public boolean requestSpot(int id, User user){
+        Booking booking = bookings.get(id);
+        if(booking == null){
+            System.out.println("");
+            return false;
+        }
+        ((BlindBooking) booking).addUser(user);
+            return true;
     }
 }

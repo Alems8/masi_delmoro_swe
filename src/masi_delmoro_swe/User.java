@@ -43,9 +43,8 @@ public class User {
         return bm.requestJoinClub(this, club);
     }
     
-    public boolean bookField(String clb, String date, int hour, String user2, String user3, String user4) {
-       return bm.requestBooking(clb, date, hour,this, user2, user3, user4);
-       //bookings.put(bookings.size()+1,booking);
+    public boolean bookField(String sport, String clb, String date, int hour) {
+       return bm.requestBooking(sport, clb, date, hour, this);
     }
     
     public void addFunds(int money){
@@ -53,7 +52,6 @@ public class User {
     }
     
     public void deleteBooking(int key){
-        //Booking booking = bookings.remove(key);
         bm.cancelBooking(key);
     }
     
@@ -61,8 +59,8 @@ public class User {
         bm.displayUserBookings(this);
     }
     
-    public boolean blindBook(String clb, String date, int hour){
-        return bm.requestBlindBooking(clb, date, hour, this);
+    public boolean blindBook(String sport, String clb, String date, int hour){
+        return bm.requestBlindBooking(sport, clb, date, hour, this);
     }
     
     public void viewBlindBookings(){
@@ -70,7 +68,7 @@ public class User {
     }
     
     public boolean bookSpot(int key){
-        return bm.requestSpotBooking(key, this);
+        return bm.requestSpot(key, this);
     }
     
     public void deleteSpot(int key){

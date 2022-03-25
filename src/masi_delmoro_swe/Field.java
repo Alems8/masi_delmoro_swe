@@ -16,12 +16,14 @@ import java.time.LocalDate;
  */
 public class Field {
     public String name;
+    public Sport sport;
     public Map<LocalDate, ArrayList<Integer>> timeTable = new HashMap<>();
     
     
-    public Field(String name, ArrayList hours) { //MODIFICATO
+    public Field(String name, Sport sport, ArrayList hours) { //MODIFICATO
         this.name = name;
-
+        this.sport = sport;
+        
         LocalDate day = LocalDate.now();
         
         timeTable.put(day, hours);

@@ -57,7 +57,7 @@ public class Club {
         bm.addClub(this);
     }
     
-    public void addField(String name) {
-        fields.add(new Field(name, new ArrayList<>(times)));
+    public void addField(String name, Sport sport) {
+        fields.add(new Field(name, sport, new ArrayList<>(times)));
     }
 }

@@ -14,24 +14,16 @@ import java.util.Random;
  * @author aleal
  */
 public class Booking {
-    private ArrayList<User> players;
-    private Club club;
-    private Field field;
-    private LocalDate date;
-    private Integer hour;
-    private boolean isBlind = false;
+    protected Club club;
+    protected Field field;
+    protected LocalDate date;
+    protected int hour;
 
-    public Booking(Club club, Field field, LocalDate date, Integer hour, ArrayList<User> users) {
+    public Booking(Club club, Field field, LocalDate date, int hour) {
         this.club = club;
         this.field = field;
         this.date = date;
         this.hour = hour;
-        this.players = new ArrayList<>(users);
-        
-    }
-
-    public ArrayList<User> getPlayers() {
-        return players;
     }
 
     public Club getClub() {
@@ -46,16 +38,7 @@ public class Booking {
         return date;
     }
 
-    public Integer getHour() {
+    public int getHour() {
         return hour;
     }
-
-    public boolean getIsBlind() {
-        return isBlind;
-    }
-
-    public void setIsBlind(boolean isBlind) {
-        this.isBlind = isBlind;
-    }
-    
 }

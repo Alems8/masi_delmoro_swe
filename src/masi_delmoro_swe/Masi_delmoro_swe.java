@@ -16,6 +16,9 @@ public class Masi_delmoro_swe {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Sport soccer = new Soccer();
+        Sport padel = new Padel();
+        
         BookingManager bm = new BookingManager();
         Club clb1 = new Club("LaFiorita", 15, 12,9,19,100);
         Club clb2 = new Club("Gracciano", 30, 25,10,23,100);
@@ -23,21 +26,21 @@ public class Masi_delmoro_swe {
         Club clb4 = new Club("Certaldo", 20, 16,8,20,150);
         Club clb5 = new Club("Firenze Padel", 18, 15,9,18,90);
         
-        clb1.addField("Padel 1");
-        clb1.addField("Padel 2");
-        clb1.addField("Padel 3");
-        clb2.addField("Padel 1");
-        clb2.addField("Padel 2");
-        clb3.addField("Padel 1");
-        clb4.addField("Padel 1");
-        clb4.addField("Padel 2");
-        clb4.addField("Padel 3");
-        clb4.addField("Padel 4");
-        clb4.addField("Padel 5");
-        clb4.addField("Padel 6");
-        clb5.addField("Padel 1");
-        clb5.addField("Padel 2");
-        clb5.addField("Padel 3");
+        clb1.addField("Soccer 1", soccer);
+        clb1.addField("Padel 2", padel);
+        clb1.addField("Padel 3", padel);
+        clb2.addField("Soccer 1", soccer);
+        clb2.addField("Padel 2", padel);
+        clb3.addField("Soccer 1", soccer);
+        clb4.addField("Soccer 1", soccer);
+        clb4.addField("Soccer 2", soccer);
+        clb4.addField("Padel 3", padel);
+        clb4.addField("Padel 4", padel);
+        clb4.addField("Padel 5", padel);
+        clb4.addField("Padel 6", padel);
+        clb5.addField("Padel 1", padel);
+        clb5.addField("Padel 2", padel);
+        clb5.addField("Padel 3", padel);
         
         clb1.subscribe(bm);
         clb2.subscribe(bm);
@@ -80,26 +83,8 @@ public class Masi_delmoro_swe {
         lore.addFunds(600);
         matte.addFunds(100);
         
-        System.out.println(matti.bookField("LaFiorita", "25/03/2022", 15, "france", "ale", "eli"));
-        System.out.println(eli.getBalance());
-        
-        cami.blindBook("UPP", "30/03/2022", 15);
-        lore.bookField("LaFiorita", "26/04/2022", 17, "lore", "cami", "marcoRos");
-        matte.bookField("LaFiorita", "27/03/2022", 15, "cami", "ale", "eli");
-        matte.bookSpot(2);
-        lore.bookSpot(2);
-        ale.bookSpot(2);
-        //ale.viewBookings();
-        marcoRos.joinClub("LaFiorita");
-        ale.deleteSpot(2);
-        marcoRos.viewBlindBookings();
-        marcoRos.bookSpot(2);
-        
-        marcoRos.addFavouriteClub("LaFiorita");
-        
-        marcoRos.addMatchResult("lore", "cami", 2);
-        marcoRos.viewRecord();
-        lore.viewRecord();
+        matti.bookField(padel, "Firenze Padel", "26/03/2022", 16);
+        cami.viewBookings();
     }
     
 }

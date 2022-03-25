@@ -43,7 +43,7 @@ public class User {
         return bm.requestJoinClub(this, club);
     }
     
-    public boolean bookField(String sport, String clb, String date, int hour) {
+    public boolean bookField(Sport sport, String clb, String date, int hour) {
        return bm.requestBooking(sport, clb, date, hour, this);
     }
     
@@ -59,7 +59,7 @@ public class User {
         bm.displayUserBookings(this);
     }
     
-    public boolean blindBook(String sport, String clb, String date, int hour){
+    public boolean blindBook(Sport sport, String clb, String date, int hour){
         return bm.requestBlindBooking(sport, clb, date, hour, this);
     }
     

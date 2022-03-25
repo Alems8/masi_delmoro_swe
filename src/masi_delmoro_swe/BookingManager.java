@@ -73,27 +73,30 @@ public class BookingManager {
         user.setBalance(user.getBalance() + money);
     }
     
-    private Field checkField(Club club, String sport, LocalDate date, int hour){
+    private Field checkField(Club club, Sport sport, LocalDate date, int hour){
         int i = 0;
         boolean booked = false;
         Field field = null;
         while( booked == false && i < club.fields.size() ){
             field = club.fields.get(i++);
             
-            if( !(field.timeTable.containsKey(date)) ){
-                ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
-                int j = updatedTimes.indexOf(hour);
-                updatedTimes.remove(j);
-                field.timeTable.put(date, updatedTimes);
-                booked = true;
-            }
-            
-            else{
-                ArrayList<Integer> times = field.timeTable.get(date);
-                int k = times.indexOf(hour);
-                if(k != -1){
-                    times.remove(k);
+            //Controllare se la richiesta è fuori orario
+            if(field.sport.equals(sport)){
+                if( !(field.timeTable.containsKey(date)) ){
+                    ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
+                    int j = updatedTimes.indexOf(hour);
+                    updatedTimes.remove(j);
+                    field.timeTable.put(date, updatedTimes);
                     booked = true;
+                }
+
+                else{
+                    ArrayList<Integer> times = field.timeTable.get(date);
+                    int k = times.indexOf(hour);
+                    if(k != -1){
+                        times.remove(k);
+                        booked = true;
+                    }
                 }
             }
         }
@@ -160,7 +163,7 @@ public class BookingManager {
         return true;
     }
     
-    public boolean requestBooking(String sport, String clb, String day, int hour, User user){
+    public boolean requestBooking(Sport sport, String clb, String day, int hour, User user){
         LocalDate date = LocalDate.parse(day, dtf);
         Club club = checkClub(clb);
         if(club == null)
@@ -194,7 +197,7 @@ public class BookingManager {
         return true;
     }
     
-    public boolean requestBlindBooking(String sport, String clb, String day, int hour, User user){
+    public boolean requestBlindBooking(Sport sport, String clb, String day, int hour, User user){
         LocalDate date = LocalDate.parse(day, dtf);
         Club club = checkClub(clb);
         if(club == null)

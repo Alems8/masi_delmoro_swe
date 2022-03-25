@@ -51,8 +51,8 @@ public class User {
         bm.rechargeAccount(this, money);
     }
     
-    public void deleteBooking(int key){
-        bm.cancelBooking(key);
+    public void deleteBooking(){
+        bm.cancelBooking(this);
     }
     
     public void viewBookings(){

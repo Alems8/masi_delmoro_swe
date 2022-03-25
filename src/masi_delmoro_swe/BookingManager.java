@@ -210,4 +210,16 @@ public class BookingManager {
         ((BlindBooking) booking).addUser(user);
             return true;
     }
+    
+    public void displayUserBookings(User user){
+        {
+            
+        }
+    }
+    
+    public void cancelBooking(User user){
+        displayUserBookings(user);
+        System.out.println("Inserire la chiave della prenotazione");
+        
+    }
 }

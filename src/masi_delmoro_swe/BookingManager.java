@@ -23,7 +23,7 @@ public class BookingManager {
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Map<Integer, Booking> blindBookings = new HashMap();
     private int key = 1;
-    
+   //ciao
     
     public User addUser(Person person, String username) { //MODIFICATO
         User user = new User(username, person, this);

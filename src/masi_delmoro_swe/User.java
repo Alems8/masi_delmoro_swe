@@ -52,7 +52,7 @@ public class User {
     }
     
     public void deleteBooking(){
-        bm.cancelBooking(this);
+        bm.deleteBooking(this);
     }
     
     public void viewBookings(){

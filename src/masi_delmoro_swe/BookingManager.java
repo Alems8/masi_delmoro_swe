@@ -125,6 +125,10 @@ public class BookingManager {
     }
 */
     
+    public void releaseField(int id){
+        //Booking booking = bookings.remove(id);
+    }
+    
     public void displayUserRecord(User user){
         System.out.println("Il tuo storico è: " + user.record[1] + " vittorie - "
                             + user.record[0] + " sconfitte");
@@ -196,7 +200,9 @@ public class BookingManager {
         Field field = checkField(club, sport, date, hour);
         if(field == null)
             return false;
-        Booking booking = new BlindBooking(club, field, date, hour, user);
+        ArrayList<User> players = new ArrayList<>();
+        players.add(user);
+        Booking booking = new BlindBooking(club, field, date, hour, players);
         bookings.put(key++, booking);
         return true;
     }
@@ -207,19 +213,50 @@ public class BookingManager {
             System.out.println("");
             return false;
         }
-        ((BlindBooking) booking).addUser(user);
+        ((BlindBooking) booking).addPlayer(user);
             return true;
     }
     
+    private ArrayList<Integer> getUserKeys(User user){
+        ArrayList<Integer> availableKeys = new ArrayList<>();
+        for(int k : bookings.keySet()){
+            Booking booking = bookings.get(k);
+            if(booking.containsUser(user)){
+                availableKeys.add(k);
+            }
+        }
+        return availableKeys;
+    }
+    
     public void displayUserBookings(User user){
-        {
-            
+        for(int k : bookings.keySet()){
+            Booking booking = bookings.get(k);
+            if(booking.containsUser(user)){
+                System.out.println(k+booking.toString());
+            }
         }
     }
     
-    public void cancelBooking(User user){
-        displayUserBookings(user);
-        System.out.println("Inserire la chiave della prenotazione");
-        
+    public void deleteBooking(User user){
+        ArrayList<Integer> availableKeys = getUserKeys(user);
+        System.out.println("Inserire la chiave della prenotazione da cancellare");
+        Scanner scanner = new Scanner(System.in);
+        int id = scanner.nextInt();
+        if(availableKeys.contains(id)){
+            Booking booking = bookings.get(id);
+            if(booking instanceof PrivateBooking)
+                releaseField(id);
+            else
+                releaseSpot(user, id);
+        }
+        else
+            System.out.println("Non hai diritti su questa prenotazione");
+    }
+    
+    private void releaseSpot(User user, int id){
+        Booking booking = bookings.get(id);
+        ((BlindBooking)booking).removePlayer(user);
+        if(booking.getPlayers().isEmpty())
+            releaseField(id);
     }
 }

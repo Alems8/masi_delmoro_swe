@@ -13,10 +13,8 @@ import java.util.ArrayList;
  * @author thomas
  */
 public class PrivateBooking extends Booking {
-    private ArrayList<User> users;
 
-    public PrivateBooking(Club club, Field field, LocalDate date, Integer hour, ArrayList<User> users) {
-        super(club, field, date, hour);
-        this.users = users;
+    public PrivateBooking(Club club, Field field, LocalDate date, Integer hour, ArrayList<User> players) {
+        super(club, field, date, hour, players);
     }
 }

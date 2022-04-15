@@ -252,6 +252,7 @@ public class BookingManager {
     
     public void deleteBooking(User user){
         ArrayList<Integer> availableKeys = getUserKeys(user);
+        displayUserBookings(user);
         System.out.println("Inserire la chiave della prenotazione da cancellare");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();

@@ -88,4 +88,5 @@ public class Masi_delmoro_swe {
         cami.viewBookings();
     }
     
+    //Aggiungere deleteAccount
 }

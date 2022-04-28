@@ -18,8 +18,9 @@ public class Masi_delmoro_swe {
         // TODO code application logic here
         Sport soccer = new Soccer();
         Sport padel = new Padel();
+        BalanceMonitor monitor = new BalanceMonitor();
         
-        BookingManager bm = new BookingManager();
+        BookingManager bm = new BookingManager(monitor);
         Club clb1 = new Club("LaFiorita", 15, 12,9,19,100);
         Club clb2 = new Club("Gracciano", 30, 25,10,23,100);
         Club clb3 = new Club("UPP", 10, 7,9,1,120);
@@ -77,7 +78,7 @@ public class Masi_delmoro_swe {
         matti.addFunds(250);
         france.addFunds(500);
         ale.addFunds(100);
-        eli.addFunds(400);
+        eli.addFunds(25);
         cami.addFunds(500);
         marcoRos.addFunds(100);
         lore.addFunds(600);

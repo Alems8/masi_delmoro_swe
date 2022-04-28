@@ -22,10 +22,14 @@ public class BookingManager {
     private ArrayList<Club> clubs = new ArrayList<>();
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private BalanceMonitor monitor;
     private int key = 1;
     
+    public BookingManager(BalanceMonitor monitor) {
+        this.monitor = monitor;
+    }
     public User addUser(Person person, String username) { //MODIFICATO
-        User user = new User(username, person, this);
+        User user = new User(username, person, monitor, this);
         users.add(user);
         return user;
     }
@@ -252,6 +256,7 @@ public class BookingManager {
     
     public void deleteBooking(User user){
         ArrayList<Integer> availableKeys = getUserKeys(user);
+        displayUserBookings(user);
         System.out.println("Inserire la chiave della prenotazione da cancellare");
         Scanner scanner = new Scanner(System.in);
         int id = scanner.nextInt();

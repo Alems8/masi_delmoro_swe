@@ -35,6 +35,7 @@ public class BookingManager {
             username = scan.next();
         }
         User user = new User(username, person, monitor, this);
+        users.add(user);
         return user;
     }
     

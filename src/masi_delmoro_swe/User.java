@@ -106,4 +106,8 @@ public class User implements Subject {
     public void notifyChanges() {
         monitor.update();
     }
+    
+    public boolean deleteAccount() {
+        return bm.deleteUser(this);
+    }
 }

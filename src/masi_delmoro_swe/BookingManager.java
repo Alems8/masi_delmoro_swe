@@ -38,6 +38,15 @@ public class BookingManager {
         return user;
     }
     
+    public boolean deleteUser(User user) {
+        if(getUserKeys(user).isEmpty()) {
+            System.out.println("Hai delle prenotazioni in sospeso");
+            return false;
+        }
+        users.remove(user);
+        return true;
+    }
+    
     public void addClub(Club club) {
         clubs.add(club);
     }

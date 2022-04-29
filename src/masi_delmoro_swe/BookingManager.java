@@ -28,9 +28,13 @@ public class BookingManager {
     public BookingManager(BalanceMonitor monitor) {
         this.monitor = monitor;
     }
-    public User addUser(Person person, String username) { //MODIFICATO
+    public User addUser(Person person, String username) {
+        while(checkUser(username) != null) {
+            System.out.println("username già utilizzato, inseriscine un altro:");
+            Scanner scan = new Scanner(System.in);
+            username = scan.next();
+        }
         User user = new User(username, person, monitor, this);
-        users.add(user);
         return user;
     }
     

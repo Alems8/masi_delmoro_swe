@@ -13,19 +13,22 @@ import java.util.Map;
  *
  * @author Alessio
  */
-public class User {
+public class User implements Subject {
     public String username;
     private Person person;
     private BookingManager bm;
     private int balance = 0;
     ArrayList<Club> favouriteClubs = new ArrayList<>();
     public int[] record = new int[2];
+    BalanceMonitor monitor;
     //private Map<Integer,Booking> bookings = new HashMap();
 
-    public User(String username, Person person, BookingManager bm) {
+    public User(String username, Person person, BalanceMonitor monitor, BookingManager bm) {
         this.username = username;
         this.person = person;
         this.bm = bm;
+        this.monitor = monitor;
+        subscribe();
         this.record[0] = 0;
         this.record[1] = 0;
     }
@@ -44,7 +47,9 @@ public class User {
     }
     
     public boolean bookField(Sport sport, String clb, String date, int hour) {
-       return bm.requestBooking(sport, clb, date, hour, this);
+       boolean result = bm.requestBooking(sport, clb, date, hour, this);
+       notifyChanges();
+       return result;
     }
     
     public void addFunds(int money){
@@ -60,7 +65,9 @@ public class User {
     }
     
     public boolean blindBook(Sport sport, String clb, String date, int hour){
-        return bm.requestBlindBooking(sport, clb, date, hour, this);
+        boolean result = bm.requestBlindBooking(sport, clb, date, hour, this);
+        notifyChanges();
+        return result;
     }
     
     public void viewBlindBookings(){
@@ -68,7 +75,9 @@ public class User {
     }
     
     public boolean bookSpot(int key){
-        return bm.requestSpot(key, this);
+        boolean result = bm.requestSpot(key, this);
+        notifyChanges();
+        return result;
     }
     
     public boolean addFavouriteClub(String club){
@@ -81,5 +90,24 @@ public class User {
     
     public void viewRecord(){
         bm.displayUserRecord(this);
+    }
+
+    @Override
+    public void subscribe() {
+        monitor.attach(this);
+    }
+
+    @Override
+    public void unsubscribe() {
+        monitor.detach(this);
+    }
+
+    @Override
+    public void notifyChanges() {
+        monitor.update();
+    }
+    
+    public boolean deleteAccount() {
+        return bm.deleteUser(this);
     }
 }

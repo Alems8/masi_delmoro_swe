@@ -22,12 +22,30 @@ public class BookingManager {
     private ArrayList<Club> clubs = new ArrayList<>();
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private BalanceMonitor monitor;
     private int key = 1;
     
-    public User addUser(Person person, String username) { //MODIFICATO
-        User user = new User(username, person, this);
+    public BookingManager(BalanceMonitor monitor) {
+        this.monitor = monitor;
+    }
+    public User addUser(Person person, String username) {
+        while(checkUser(username) != null) {
+            System.out.println("username già utilizzato, inseriscine un altro:");
+            Scanner scan = new Scanner(System.in);
+            username = scan.next();
+        }
+        User user = new User(username, person, monitor, this);
         users.add(user);
         return user;
+    }
+    
+    public boolean deleteUser(User user) {
+        if(getUserKeys(user).isEmpty()) {
+            System.out.println("Hai delle prenotazioni in sospeso");
+            return false;
+        }
+        users.remove(user);
+        return true;
     }
     
     public void addClub(Club club) {

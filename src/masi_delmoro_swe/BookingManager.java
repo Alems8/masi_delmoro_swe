@@ -268,8 +268,12 @@ public class BookingManager {
         }
     }
     
-    public void deleteBooking(User user){
+    public boolean deleteUserBooking(User user){
         ArrayList<Integer> availableKeys = getUserKeys(user);
+        if(availableKeys.isEmpty()){
+            System.out.println("Non hai nessuna prenotazione");
+            return false;
+        }
         displayUserBookings(user);
         System.out.println("Inserire la chiave della prenotazione da cancellare");
         Scanner scanner = new Scanner(System.in);
@@ -280,9 +284,12 @@ public class BookingManager {
                 releaseField(id);
             else
                 releaseSpot(user, id);
+        return true;
         }
-        else
+        else{
             System.out.println("Non hai diritti su questa prenotazione");
+            return false;
+        }
     }
     
     private void releaseSpot(User user, int id){

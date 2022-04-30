@@ -5,6 +5,16 @@
  */
 package masi_delmoro_swe;
 
+import masi_delmoro_swe.BalanceMonitor;
+import masi_delmoro_swe.BalanceMonitor;
+import masi_delmoro_swe.BookingManager;
+import masi_delmoro_swe.BookingManager;
+import masi_delmoro_swe.Person;
+import masi_delmoro_swe.Person;
+import masi_delmoro_swe.Sport;
+import masi_delmoro_swe.Sport;
+import masi_delmoro_swe.User;
+import masi_delmoro_swe.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;

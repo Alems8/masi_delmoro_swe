@@ -54,6 +54,7 @@ public class Booking {
         return this.players.contains(user);
     }
    
+    @Override
     public String toString() {
         return ")" + this.club.name + " - " + this.field.name + " - " + this.date.format(dtf) + "  " 
                 +this.hour /*+ " - " +"giocatori: " + " - " + (for (User p:players){

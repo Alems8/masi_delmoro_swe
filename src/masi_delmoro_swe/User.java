@@ -56,8 +56,8 @@ public class User implements Subject {
         bm.rechargeAccount(this, money);
     }
     
-    public void deleteBooking(){
-        bm.deleteBooking(this);
+    public boolean deleteBooking(){
+        return bm.deleteUserBooking(this);
     }
     
     public void viewBookings(){

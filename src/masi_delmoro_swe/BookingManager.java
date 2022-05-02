@@ -38,7 +38,11 @@ public class BookingManager {
         users.add(user);
         return user;
     }
-    
+
+    Map<Integer, Booking> getBookings() {
+        return bookings;
+    }
+
     public boolean deleteUser(User user) {
         if(getUserKeys(user).isEmpty()) {
             System.out.println("Hai delle prenotazioni in sospeso");

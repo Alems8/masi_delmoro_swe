@@ -268,15 +268,21 @@ public class BookingManager {
                 System.out.println(k+booking.toString());
         }
     }
-    
-    public boolean requestSpot(int id, User user){
+
+    private void checkBlindBooking(int id) throws WrongKeyException {
         Booking booking = bookings.get(id);
-        if(booking == null){
-            System.out.println("");
-            return false;
+        if(booking == null || booking instanceof PrivateBooking) {
+            throw new WrongKeyException();
         }
+    }
+
+    public void requestSpot(User user, int id){
+        try{checkBlindBooking(id);}
+        catch(WrongKeyException e) {
+            System.out.printf("Non puoi prenotare un posto in questa partita");
+        }
+        Booking booking = bookings.get(id);
         ((BlindBooking) booking).addPlayer(user);
-            return true;
     }
     
     public Booking checkBooking(User user, int id) throws WrongKeyException{

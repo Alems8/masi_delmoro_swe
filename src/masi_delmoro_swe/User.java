@@ -46,20 +46,19 @@ public class User implements Subject {
         bm.requestJoinClub(this, club);
     }
     
-    public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4) throws LowBalanceException {
-        ArrayList<String> players = new ArrayList<String>();
+    public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4) throws LowBalanceException {
+        ArrayList<String> players = new ArrayList<>();
         players.add(this.username);
         players.add(player2);
         players.add(player3);
         players.add(player4);
-        boolean result = bm.requestBooking(sport, clb, date, hour, players);
-       notifyChanges();
-       return result;
+        bm.requestBooking(sport, clb, date, hour, players);
+        notifyChanges();
     }
 
-    public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4,
-                             String player5, String player6, String player7, String player8, String player9, String player10)
-            throws LowBalanceException {
+    public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3,
+                             String player4, String player5, String player6, String player7, String player8,
+                             String player9, String player10) {
         ArrayList<String> players = new ArrayList<String>();
         players.add(this.username);
         players.add(player2);
@@ -71,42 +70,38 @@ public class User implements Subject {
         players.add(player8);
         players.add(player9);
         players.add(player10);
-        boolean result = bm.requestBooking(sport, clb, date, hour, players);
+        bm.requestBooking(sport, clb, date, hour, players);
         notifyChanges();
-        return result;
     }
     
     public void addFunds(int money){
         bm.rechargeAccount(this, money);
     }
     
-    public boolean deleteBooking(int id){
-
-        return bm.deleteUserBooking(this, id);
+    public void deleteBooking(int id){
+        bm.deleteUserBooking(this, id);
     }
     
     public void viewBookings(){
         bm.displayUserBookings(this);
     }
     
-    public boolean blindBook(Sport sport, String clb, String date, int hour){
-        boolean result = bm.requestBlindBooking(sport, clb, date, hour, this);
+    public void blindBook(Sport sport, String clb, String date, int hour){
+        bm.requestBlindBooking(sport, clb, date, hour, this);
         notifyChanges();
-        return result;
     }
     
     public void viewBlindBookings(){
         bm.displayBlindBookings();
     }
     
-    public boolean bookSpot(int key){
-        boolean result = bm.requestSpot(key, this);
+    public void bookSpot(int key){
+        bm.requestSpot(this, key);
         notifyChanges();
-        return result;
     }
     
-    public boolean addFavouriteClub(String club){
-        return bm.addUserFavouriteClub(this, club);
+    public void addFavouriteClub(String club){
+        bm.addUserFavouriteClub(this, club);
     }
     
     public void addMatchResult(String winner1, String winner2, int key){

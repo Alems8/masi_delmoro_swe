@@ -21,6 +21,11 @@ public class Person {
     }
     
     public User subscribe(BookingManager bm, String username) {
-        return bm.addUser(this, username);
+        User user = null;
+        try{bm.addUser(this, username);}
+        catch(WrongNameException e) {
+            System.out.println("Il nome utente non è disponibile");
+        }
+        return user;
     }
 }

@@ -16,7 +16,7 @@ public class Masi_delmoro_swe {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LowBalanceException {
         // TODO code application logic here
         Sport soccer = new Soccer();
         Sport padel = new Padel();
@@ -88,7 +88,7 @@ public class Masi_delmoro_swe {
         
         matti.bookField(padel, "Firenze Padel", "26/03/2022", 16,"cami","eli","ale");
         cami.viewBookings();
-        System.out.println(cami.deleteBooking(1));
+        cami.deleteBooking(1);
         cami.viewBookings();
     }
 }

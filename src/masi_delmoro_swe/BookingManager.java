@@ -82,7 +82,7 @@ public class BookingManager {
         rechargeAccount(user, price);
     }
     
-    private User checkUser(String usernm){
+    User checkUser(String usernm){
         for(User u : users){
             if(u.username.equals(usernm)){
                 return u;

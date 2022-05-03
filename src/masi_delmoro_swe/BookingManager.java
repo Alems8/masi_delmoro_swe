@@ -6,6 +6,7 @@
 package masi_delmoro_swe;
 
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,14 +29,14 @@ public class BookingManager {
     public BookingManager(BalanceMonitor monitor) {
         this.monitor = monitor;
     }
-    public User addUser(Person person, String username) {
-        if(checkUser(username) != null) {
-            System.out.println("username già utilizzato, inseriscine un altro:");
-            return null;
+    public User addUser(Person person, String username) throws WrongNameException {
+        try{checkUser(username);}
+        catch (WrongNameException e) {
+            User user = new User(username, person, monitor, this);    //TEST ME
+            users.add(user);
+            return user;
         }
-        User user = new User(username, person, monitor, this);
-        users.add(user);
-        return user;
+        throw new WrongNameException();  //FIX ME
     }
 
     Map<Integer, Booking> getBookings() {
@@ -43,10 +44,12 @@ public class BookingManager {
     }
 
     public void deleteUser(User user) throws PendingBookingException {
-        if(getUserKeys(user).isEmpty()) throw new PendingBookingException();
-
-        else
+        try{getUserKeys(user);}
+        catch(NoActiveBookingsException e) {
             users.remove(user);
+            System.out.println("Utente rimosso correttamente");
+        }
+        throw new PendingBookingException(); //TEST ME
     }
     
     public void addClub(Club club) {
@@ -90,7 +93,7 @@ public class BookingManager {
         user.setBalance(user.getBalance() + money);
     }
     
-    private Field checkField(Club club, Sport sport, LocalDate date, int hour){
+    private Field checkField(Club club, Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
         int i = 0;
         boolean booked = false;
         Field field = null;
@@ -118,11 +121,11 @@ public class BookingManager {
             }
         }
         if(!booked)
-            return null;
+            throw new NoFreeFieldException();
         return field;
     }
 
-    public void addUserFavouriteClub(User user, String clb) throws WrongNameException {
+    public void addUserFavouriteClub(User user, String clb) {
         Club club = null;
         try {
             club = checkClub(clb);
@@ -147,7 +150,7 @@ public class BookingManager {
     }
     
     public void releaseField(int id){
-        Booking booking = bookings.remove(id);
+        Booking booking = bookings.get(id);
         booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
     }
     
@@ -180,8 +183,7 @@ public class BookingManager {
         user.setBalance(user.getBalance() - club.joinClubPrice);
     }
     
-    public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users)
-            throws LowBalanceException, WrongNameException {
+    public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {
         LocalDate date = LocalDate.parse(day, dtf);
         Club club = null;
         try{club = checkClub(clb);}
@@ -189,11 +191,12 @@ public class BookingManager {
             System.out.println("Il club non esiste o non è registrato al servizio");
         }
 
-        Field field = checkField(club, sport, date, hour);
-        if(field == null){                                      //FARE ECCEZIONE
+        Field field = null;
+        try{field = checkField(club, sport, date, hour);}
+        catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
-            return false;
         }
+
         int size = field.sport.numPlayers;
         ArrayList<User> players = new ArrayList<>();
         System.out.println("Inserisci i nomi utente degli altri giocatori");
@@ -215,17 +218,43 @@ public class BookingManager {
         Booking booking = new PrivateBooking(club, field, date, hour, players);
         bookings.put(key++, booking);
     }
-    
-    public void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) throws WrongNameException{
+
+    private ArrayList<Integer> getUserKeys(User user) throws NoActiveBookingsException {
+        ArrayList<Integer> userKeys = new ArrayList<>();
+        for(int k : bookings.keySet()){
+            Booking booking = bookings.get(k);
+            if(booking.containsUser(user)){
+                userKeys.add(k);
+            }
+        }
+        if(userKeys.isEmpty())
+            throw new NoActiveBookingsException();
+        return userKeys;
+    }
+
+    public void displayUserBookings(User user) {
+        ArrayList<Integer> keys = new ArrayList<>();
+        try{keys = getUserKeys(user);}
+        catch(NoActiveBookingsException e){
+            System.out.printf("Non hai nessuna prenotazione");
+        }
+        for(int k : keys){
+            System.out.println(k+bookings.get(k).toString());
+        }
+    }
+
+    public void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) {
         LocalDate date = LocalDate.parse(day, dtf);
         Club club = null;
         try {club = checkClub(clb);}
         catch (WrongNameException e) {
             System.out.printf("Il club inserito non è iscritto al servizio");
         }
-        Field field = checkField(club, sport, date, hour); //FARE ECCEZIONE
-        if(field == null)
-            return false;
+        Field field = null;
+        try{checkField(club, sport, date, hour);}
+        catch(NoFreeFieldException e) {
+            System.out.println("Nessun campo disponibile");
+        }
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
         Booking booking = new BlindBooking(club, field, date, hour, players);
@@ -250,45 +279,32 @@ public class BookingManager {
             return true;
     }
     
-    private ArrayList<Integer> getUserKeys(User user){
-        ArrayList<Integer> availableKeys = new ArrayList<>();
+    public Booking checkBooking(User user, int id) throws WrongKeyException{
+        Booking booking = null;
         for(int k : bookings.keySet()){
-            Booking booking = bookings.get(k);
-            if(booking.containsUser(user)){
-                availableKeys.add(k);
+            if(k == id){
+                booking = bookings.get(k);
+                if(!booking.containsUser(user)){
+                    throw new WrongKeyException();
+                }
             }
         }
-        return availableKeys;
+        return booking;
     }
     
-    public void displayUserBookings(User user){
-        for(int k : bookings.keySet()){
-            Booking booking = bookings.get(k);
-            if(booking.containsUser(user)){
-                System.out.println(k+booking.toString());
-            }
-        }
-    }
-    
-    public void deleteUserBooking(User user, int id){
-        ArrayList<Integer> availableKeys = getUserKeys(user);
-        if(availableKeys.isEmpty()){
-            System.out.println("Non hai nessuna prenotazione");
-            return false;
+    public void deleteUserBooking(User user, int id) {
+        Booking booking = null;
+        try {booking = checkBooking(user, id);}
+        catch(WrongKeyException e) {
+            System.out.println("Non hai diritti su questa prenotazione");
         }
 
-        if(availableKeys.contains(id)){
-            Booking booking = bookings.get(id);
-            if(booking instanceof PrivateBooking)
-                releaseField(id);
-            else
-                releaseSpot(user, id);
-        return true;
+        if(booking instanceof PrivateBooking) {
+            releaseField(id);
+            bookings.remove(id);
         }
-        else{
-            System.out.println("Non hai diritti su questa prenotazione");
-            return false;
-        }
+        else
+            releaseSpot(user, id);
     }
     
     private void releaseSpot(User user, int id){

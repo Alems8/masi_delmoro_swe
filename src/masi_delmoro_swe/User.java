@@ -46,18 +46,42 @@ public class User implements Subject {
         return bm.requestJoinClub(this, club);
     }
     
-    public boolean bookField(Sport sport, String clb, String date, int hour) {
-       boolean result = bm.requestBooking(sport, clb, date, hour, this);
+    public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4) {
+        ArrayList<String> players = new ArrayList<String>();
+        players.add(this.username);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        boolean result = bm.requestBooking(sport, clb, date, hour, players);
        notifyChanges();
        return result;
+    }
+
+    public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4,
+                             String player5, String player6, String player7, String player8, String player9, String player10) {
+        ArrayList<String> players = new ArrayList<String>();
+        players.add(this.username);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        players.add(player5);
+        players.add(player6);
+        players.add(player7);
+        players.add(player8);
+        players.add(player9);
+        players.add(player10);
+        boolean result = bm.requestBooking(sport, clb, date, hour, players);
+        notifyChanges();
+        return result;
     }
     
     public void addFunds(int money){
         bm.rechargeAccount(this, money);
     }
     
-    public boolean deleteBooking(){
-        return bm.deleteUserBooking(this);
+    public boolean deleteBooking(int id){
+
+        return bm.deleteUserBooking(this, id);
     }
     
     public void viewBookings(){
@@ -107,7 +131,7 @@ public class User implements Subject {
         monitor.update();
     }
     
-    public boolean deleteAccount() {
-        return bm.deleteUser(this);
+    public void deleteAccount() throws PendingBookingException {
+        bm.deleteUser(this);
     }
 }

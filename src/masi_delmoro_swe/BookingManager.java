@@ -5,7 +5,7 @@
  */
 package masi_delmoro_swe;
 
-import java.util.Scanner;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,10 +29,9 @@ public class BookingManager {
         this.monitor = monitor;
     }
     public User addUser(Person person, String username) {
-        while(checkUser(username) != null) {
+        if(checkUser(username) != null) {
             System.out.println("username già utilizzato, inseriscine un altro:");
-            Scanner scan = new Scanner(System.in);
-            username = scan.next();
+            return null;
         }
         User user = new User(username, person, monitor, this);
         users.add(user);
@@ -43,36 +42,32 @@ public class BookingManager {
         return bookings;
     }
 
-    public boolean deleteUser(User user) {
-        if(getUserKeys(user).isEmpty()) {
-            System.out.println("Hai delle prenotazioni in sospeso");
-            return false;
-        }
-        users.remove(user);
-        return true;
+    public void deleteUser(User user) throws PendingBookingException {
+        if(getUserKeys(user).isEmpty()) throw new PendingBookingException();
+
+        else
+            users.remove(user);
     }
     
     public void addClub(Club club) {
         clubs.add(club);
     }
     
-    private Club checkClub(String clb) {
+    private Club checkClub(String clb) throws WrongNameException {
         for(Club c : clubs) {
             if(c.name.equals(clb))
                     return c;
         }
-        return null;
+        throw new WrongNameException();
     }
-    private boolean pay(User user, Club club){
+    private void pay(User user, Club club) throws LowBalanceException{
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
         
-        if(user.getBalance() < price){
-            return false;
-        }
-        user.setBalance(user.getBalance() - price);
-        return true;
+        if(user.getBalance() < price) throw new LowBalanceException();
+        else
+            user.setBalance(user.getBalance() - price);
     }
     
     private void refund(User user, Club club){
@@ -82,13 +77,13 @@ public class BookingManager {
         rechargeAccount(user, price);
     }
     
-    User checkUser(String usernm){
+    private User checkUser(String usernm) throws WrongNameException {
         for(User u : users){
             if(u.username.equals(usernm)){
                 return u;
             }
         }
-        return null;
+        throw new WrongNameException();
     }
     
     public void rechargeAccount(User user, int money){
@@ -99,7 +94,7 @@ public class BookingManager {
         int i = 0;
         boolean booked = false;
         Field field = null;
-        while( booked == false && i < club.fields.size() ){
+        while( !booked && i < club.fields.size() ){
             field = club.fields.get(i++);
             
             //Controllare se la richiesta è fuori orario
@@ -127,12 +122,14 @@ public class BookingManager {
         return field;
     }
 
-    public boolean addUserFavouriteClub(User user, String clb) {
-        Club club = checkClub(clb);
-        if(club == null)
-            return false;
+    public void addUserFavouriteClub(User user, String clb) throws WrongNameException {
+        Club club = null;
+        try {
+            club = checkClub(clb);
+        } catch (WrongNameException e) {
+            System.out.println("Il club non esiste o non è registrato al servizio");
+        }
         user.favouriteClubs.add(club);
-        return true;
     }
     
     public void addResult(String username1, String username2, int id){ //FIX ME
@@ -159,20 +156,17 @@ public class BookingManager {
                             + user.record[0] + " sconfitte");
     }
     
-    public boolean requestJoinClub(User user, String clb){
-        Club club = checkClub(clb);
-        if(clb == null){
+    public void requestJoinClub(User user, String clb){
+        Club club = null;
+        try{club = checkClub(clb);}
+        catch (WrongNameException e){
             System.out.println("Il club non è iscritto al servizio");
-            return false;
         }
-        if(club.isMember(user)){
+        if(club.isMember(user)) throw new NullPointerException();{
             System.out.println("Sei già iscritto al club");
-            return false;
         }
-        if(!payJoinClub(user, club))
-            return false;
+        if(!payJoinClub(user, club)) throw new NullPointerException(); //TODO CREARE ECCEZIONE PER QUESTO METODO
         club.addMember(user);
-        return true;
             
     }
     
@@ -185,11 +179,14 @@ public class BookingManager {
         return true;
     }
     
-    public boolean requestBooking(Sport sport, String clb, String day, int hour, User user){
+    public boolean requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) throws LowBalanceException {
         LocalDate date = LocalDate.parse(day, dtf);
-        Club club = checkClub(clb);
-        if(club == null)
-            return false;
+        Club club = null;
+        try{club = checkClub(clb);}
+        catch (WrongNameException e){
+            System.out.println("Il club non esiste o non è registrato al servizio");
+        }
+
         Field field = checkField(club, sport, date, hour);
         if(field == null){
             System.out.println("Nessun campo disponibile");
@@ -197,20 +194,20 @@ public class BookingManager {
         }
         int size = field.sport.numPlayers;
         ArrayList<User> players = new ArrayList<>();
-        players.add(user);
         System.out.println("Inserisci i nomi utente degli altri giocatori");
-        for(int i=0; i<size-1; i++){
-            Scanner scanner = new Scanner(System.in);
-            User u = checkUser(scanner.next());
+        for(int i=0; i<size; i++){
+            User u = checkUser(users.get(i));
             if(u == null){
                 field.timeTable.get(date).add(hour);
                 System.out.println("L'utente non esiste");
                 return false;
             }
-            if(!pay(u, club)){
+
+            try{pay(u, club);}
+            catch(LowBalanceException e){
                 field.timeTable.get(date).add(hour);
                 System.out.println("L'utente non ha credito sufficiente");
-                return false;
+
             }
             players.add(u);
         }
@@ -272,16 +269,13 @@ public class BookingManager {
         }
     }
     
-    public boolean deleteUserBooking(User user){
+    public boolean deleteUserBooking(User user, int id){
         ArrayList<Integer> availableKeys = getUserKeys(user);
         if(availableKeys.isEmpty()){
             System.out.println("Non hai nessuna prenotazione");
             return false;
         }
-        displayUserBookings(user);
-        System.out.println("Inserire la chiave della prenotazione da cancellare");
-        Scanner scanner = new Scanner(System.in);
-        int id = scanner.nextInt();
+
         if(availableKeys.contains(id)){
             Booking booking = bookings.get(id);
             if(booking instanceof PrivateBooking)

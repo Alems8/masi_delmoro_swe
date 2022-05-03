@@ -65,12 +65,12 @@ class UserTest {
         pippo.addFunds(100);
         eli.addFunds(5);
 
-        mark.bookField(padel, "Gracciano", "03/05/2022", 15);
+        //mark.bookField(padel, "Gracciano", "03/05/2022", 15);
         Map<Integer, Booking> bookings = bm.getBookings();
         assertTrue(bookings.isEmpty());
 
         eli.addFunds(100);
-        mark.bookField(padel, "Gracciano", "03/05/2022", 15);
+       // mark.bookField(padel, "Gracciano", "03/05/2022", 15);
         bookings = bm.getBookings();
         assertEquals(1, bookings.size());
     }

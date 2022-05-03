@@ -165,21 +165,23 @@ public class BookingManager {
         if(club.isMember(user)) throw new NullPointerException();{
             System.out.println("Sei già iscritto al club");
         }
-        if(!payJoinClub(user, club)) throw new NullPointerException(); //TODO CREARE ECCEZIONE PER QUESTO METODO
+        try{payJoinClub(user, club);}
+        catch (LowBalanceException ex) {
+            System.out.println("Non hai abbastanza credito per associarti al club");
+        }
         club.addMember(user);
-            
+
     }
     
-    public boolean payJoinClub(User user, Club club){
+    public void payJoinClub(User user, Club club) throws LowBalanceException {
         if(user.getBalance() < club.joinClubPrice){
-            System.out.println("Saldo insufficiente");
-            return false;
+            throw new LowBalanceException();
         }
         user.setBalance(user.getBalance() - club.joinClubPrice);
-        return true;
     }
     
-    public boolean requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) throws LowBalanceException {
+    public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users)
+            throws LowBalanceException, WrongNameException {
         LocalDate date = LocalDate.parse(day, dtf);
         Club club = null;
         try{club = checkClub(clb);}
@@ -188,7 +190,7 @@ public class BookingManager {
         }
 
         Field field = checkField(club, sport, date, hour);
-        if(field == null){
+        if(field == null){                                      //FARE ECCEZIONE
             System.out.println("Nessun campo disponibile");
             return false;
         }
@@ -196,39 +198,38 @@ public class BookingManager {
         ArrayList<User> players = new ArrayList<>();
         System.out.println("Inserisci i nomi utente degli altri giocatori");
         for(int i=0; i<size; i++){
-            User u = checkUser(users.get(i));
-            if(u == null){
+            User u = null;
+            try {u = checkUser(users.get(i));}
+            catch(WrongNameException e) {
                 field.timeTable.get(date).add(hour);
-                System.out.println("L'utente non esiste");
-                return false;
+                System.out.println("L'utente inserito non esiste");
             }
 
             try{pay(u, club);}
             catch(LowBalanceException e){
                 field.timeTable.get(date).add(hour);
                 System.out.println("L'utente non ha credito sufficiente");
-
             }
             players.add(u);
         }
         Booking booking = new PrivateBooking(club, field, date, hour, players);
         bookings.put(key++, booking);
-        return true;
     }
     
-    public boolean requestBlindBooking(Sport sport, String clb, String day, int hour, User user){
+    public void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) throws WrongNameException{
         LocalDate date = LocalDate.parse(day, dtf);
-        Club club = checkClub(clb);
-        if(club == null)
-            return false;
-        Field field = checkField(club, sport, date, hour);
+        Club club = null;
+        try {club = checkClub(clb);}
+        catch (WrongNameException e) {
+            System.out.printf("Il club inserito non è iscritto al servizio");
+        }
+        Field field = checkField(club, sport, date, hour); //FARE ECCEZIONE
         if(field == null)
             return false;
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
         Booking booking = new BlindBooking(club, field, date, hour, players);
         bookings.put(key++, booking);
-        return true;
     }
     
     public void displayBlindBookings(){
@@ -269,7 +270,7 @@ public class BookingManager {
         }
     }
     
-    public boolean deleteUserBooking(User user, int id){
+    public void deleteUserBooking(User user, int id){
         ArrayList<Integer> availableKeys = getUserKeys(user);
         if(availableKeys.isEmpty()){
             System.out.println("Non hai nessuna prenotazione");

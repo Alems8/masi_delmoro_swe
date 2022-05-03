@@ -41,12 +41,12 @@ public class User implements Subject {
         this.balance = balance;
     }
     
-    public boolean joinClub(String club) {
+    public void joinClub(String club) {
         //Pagamento costo associazione
-        return bm.requestJoinClub(this, club);
+        bm.requestJoinClub(this, club);
     }
     
-    public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4) {
+    public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4) throws LowBalanceException {
         ArrayList<String> players = new ArrayList<String>();
         players.add(this.username);
         players.add(player2);
@@ -58,7 +58,8 @@ public class User implements Subject {
     }
 
     public boolean bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4,
-                             String player5, String player6, String player7, String player8, String player9, String player10) {
+                             String player5, String player6, String player7, String player8, String player9, String player10)
+            throws LowBalanceException {
         ArrayList<String> players = new ArrayList<String>();
         players.add(this.username);
         players.add(player2);

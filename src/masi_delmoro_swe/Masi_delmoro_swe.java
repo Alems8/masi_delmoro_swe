@@ -9,6 +9,8 @@ package masi_delmoro_swe;
  *
  * @author Alessio
  */
+
+//SENZA SCANNER
 public class Masi_delmoro_swe {
 
     /**

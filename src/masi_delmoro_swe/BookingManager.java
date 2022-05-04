@@ -260,7 +260,7 @@ public class BookingManager {
             fail();
         }
         Field field = null;
-        try{checkField(club, sport, date, hour);}
+        try{field = checkField(club, sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
             fail();
@@ -289,7 +289,7 @@ public class BookingManager {
     public void requestSpot(User user, int id){
         try{checkBlindBooking(id);}
         catch(WrongKeyException e) {
-            System.out.printf("Non puoi prenotare un posto in questa partita");
+            System.out.print("Non puoi prenotare un posto in questa partita");
             fail();
         }
         Booking booking = bookings.get(id);

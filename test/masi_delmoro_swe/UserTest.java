@@ -11,21 +11,36 @@ class UserTest {
     private BookingManager bm;
     private Club club;
     public Sport padel;
+    private User mark;
+    private User gigi;
+    private User pippo;
+    private User eli;
+    private User france;
 
     @BeforeEach
     void setUp() {
         BalanceMonitor monitor = new BalanceMonitor();
         this.bm = new BookingManager(monitor);
+
         this.padel = new Padel();
         this.club = new Club("Gracciano", 12, 8, 9, 23, 100);
         club.addField("Padel 1", padel);
         club.subscribe(bm);
+
+        Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
+        this.mark = marco.subscribe(bm, "marcorossi");
+        Person luigi = new Person("luigi", "bianchi", "luigibianchi@mail.it");
+        this.gigi = luigi.subscribe(bm, "gigi");
+        Person filippo = new Person("filippo", "pallini", "filippopallini@mail.com");
+        this.pippo = filippo.subscribe(bm, "pippo");
+        Person elisa = new Person("elisa", "landi", "elisalandi@mail.it");
+        this.eli = elisa.subscribe(bm, "eli");
+        Person francesca = new Person("francesca", "landi", "francescalandi@mail.it");
+        this.france = francesca.subscribe(bm, "france");
     }
 
     @Test
     void addFundsTest() {
-        Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
-        User mark = marco.subscribe(bm, "marcorossi");
         int expected = 100;
         mark.addFunds(expected);
         assertEquals(expected, mark.getBalance());
@@ -33,10 +48,6 @@ class UserTest {
 
     @Test
     void joinClubTest() {
-        Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
-        User mark = marco.subscribe(bm, "marcorossi");
-        Person luigi = new Person("luigi", "bianchi", "luigibianchi@mail.it");
-        User gigi = luigi.subscribe(bm, "gigi");
         mark.addFunds(90);
         mark.joinClub("Gracciano");
         assertFalse(club.isMember(mark));
@@ -50,28 +61,70 @@ class UserTest {
     }
 
     @Test
-    void bookFieldTest() {
-        Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
-        User mark = marco.subscribe(bm, "marcorossi");
-        Person luigi = new Person("luigi", "bianchi", "luigibianchi@mail.it");
-        User gigi = luigi.subscribe(bm, "gigi");
-        Person filippo = new Person("filippo", "pallini", "filippopallini@mail.com");
-        User pippo = filippo.subscribe(bm, "pippo");
-        Person elisa = new Person("elisa", "landi", "elisalandi@mail.it");
-        User eli = elisa.subscribe(bm, "eli");
+    void bookFieldTest() throws LowBalanceException {
 
         mark.addFunds(100);
         gigi.addFunds(100);
         pippo.addFunds(100);
         eli.addFunds(5);
 
-        //mark.bookField(padel, "Gracciano", "03/05/2022", 15);
+        mark.bookField(padel, "Gracciano", "03/05/2022", 15, "gigi", "eli", "pippo");
         Map<Integer, Booking> bookings = bm.getBookings();
         assertTrue(bookings.isEmpty());
 
         eli.addFunds(100);
-       // mark.bookField(padel, "Gracciano", "03/05/2022", 15);
+        mark.bookField(padel, "Gracciano", "03/05/2022", 15,"gigi","eli","pippo");
         bookings = bm.getBookings();
         assertEquals(1, bookings.size());
+    }
+    @Test
+    void deleteBookingTest() throws LowBalanceException {
+        mark.addFunds(100);
+        gigi.addFunds(100);
+        pippo.addFunds(100);
+        eli.addFunds(100);
+        mark.bookField(padel, "Gracciano", "03/05/2022", 15,"gigi","eli","pippo");
+        Map<Integer, Booking> bookings = bm.getBookings();
+        assertEquals(1, bookings.size());
+        mark.deleteBooking(1);
+        assertEquals(0, bookings.size());
+    }
+
+    @Test
+    void blindBookTest(){
+        mark.addFunds(100);
+        mark.blindBook(padel,"Gracciano","04/05/2022",15);
+        Map<Integer, Booking> bookings = bm.getBookings();
+        assertTrue(bookings.get(1) instanceof BlindBooking);
+    }
+
+    @Test
+    void bookSpotTest(){
+        mark.addFunds(100);
+        gigi.addFunds(100);
+        pippo.addFunds(100);
+        eli.addFunds(100);
+        france.addFunds(100);
+        mark.blindBook(padel,"Gracciano","04/05/2022",15);
+        Map<Integer, Booking> bookings = bm.getBookings();
+
+        gigi.bookSpot(1);
+        assertEquals(2,bookings.get(1).getPlayers().size());
+        pippo.bookSpot(1);
+        assertEquals(3,bookings.get(1).getPlayers().size());
+        eli.bookSpot(1);
+        assertEquals(4,bookings.get(1).getPlayers().size());
+        france.bookSpot(1);
+        assertEquals(4,bookings.get(1).getPlayers().size());
+    }
+
+    @Test
+    void addFavouriteClubTest(){
+
+    }
+
+    @Test
+    void addMatchResultTest(){
+
     }
 }

@@ -127,4 +127,10 @@ class UserTest {
     void addMatchResultTest(){
 
     }
+
+    @Test
+    void deleteAccountTest() {
+        mark.deleteAccount();
+        assertFalse(bm.getUsers().contains(mark));
+    }
 }

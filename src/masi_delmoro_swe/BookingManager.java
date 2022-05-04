@@ -46,6 +46,9 @@ public class BookingManager {
         return bookings;
     }
 
+    ArrayList<User> getUsers() {
+        return users;
+    }
     public void deleteUser(User user) throws PendingBookingException {
         try{getUserKeys(user);}
         catch(NoActiveBookingsException e) {
@@ -154,7 +157,7 @@ public class BookingManager {
     }
     
     public void releaseField(int id){
-        Booking booking = bookings.get(id);
+        Booking booking = bookings.remove(id);
         booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
     }
     
@@ -320,7 +323,6 @@ public class BookingManager {
 
         if(booking instanceof PrivateBooking) {
             releaseField(id);
-            bookings.remove(id);
         }
         else
             releaseSpot(user, id);

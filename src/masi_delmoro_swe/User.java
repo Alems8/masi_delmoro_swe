@@ -127,7 +127,10 @@ public class User implements Subject {
         monitor.update();
     }
     
-    public void deleteAccount() throws PendingBookingException {
-        bm.deleteUser(this);
+    public void deleteAccount() {
+        try{bm.deleteUser(this);}
+        catch(PendingBookingException e) {
+            System.out.println("Hai delle prenotazioni in sospeso");
+        }
     }
 }

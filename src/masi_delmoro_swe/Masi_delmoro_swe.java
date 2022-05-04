@@ -79,7 +79,7 @@ public class Masi_delmoro_swe {
         
         matti.addFunds(250);
         france.addFunds(500);
-        ale.addFunds(100);
+        ale.addFunds(20);
         eli.addFunds(25);
         cami.addFunds(500);
         marcoRos.addFunds(100);

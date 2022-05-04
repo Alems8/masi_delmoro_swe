@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 /**
  *
@@ -29,6 +31,7 @@ public class BookingManager {
     public BookingManager(BalanceMonitor monitor) {
         this.monitor = monitor;
     }
+
     public User addUser(Person person, String username) throws WrongNameException {
         try{checkUser(username);}
         catch (WrongNameException e) {
@@ -127,10 +130,10 @@ public class BookingManager {
 
     public void addUserFavouriteClub(User user, String clb) {
         Club club = null;
-        try {
-            club = checkClub(clb);
-        } catch (WrongNameException e) {
+        try {club = checkClub(clb);}
+        catch (WrongNameException e) {
             System.out.println("Il club non esiste o non è registrato al servizio");
+            fail();
         }
         user.favouriteClubs.add(club);
     }
@@ -164,6 +167,7 @@ public class BookingManager {
         try{club = checkClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non è iscritto al servizio");
+            fail();
         }
         if(club.isMember(user)) throw new NullPointerException();{
             System.out.println("Sei già iscritto al club");
@@ -171,6 +175,7 @@ public class BookingManager {
         try{payJoinClub(user, club);}
         catch (LowBalanceException ex) {
             System.out.println("Non hai abbastanza credito per associarti al club");
+            fail();
         }
         club.addMember(user);
 
@@ -189,29 +194,32 @@ public class BookingManager {
         try{club = checkClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non esiste o non è registrato al servizio");
+            fail();
         }
 
         Field field = null;
         try{field = checkField(club, sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
+            fail();
         }
 
         int size = field.sport.numPlayers;
         ArrayList<User> players = new ArrayList<>();
-        System.out.println("Inserisci i nomi utente degli altri giocatori");
         for(int i=0; i<size; i++){
             User u = null;
             try {u = checkUser(users.get(i));}
             catch(WrongNameException e) {
                 field.timeTable.get(date).add(hour);
                 System.out.println("L'utente inserito non esiste");
+                fail();
             }
 
             try{pay(u, club);}
             catch(LowBalanceException e){
                 field.timeTable.get(date).add(hour);
                 System.out.println("L'utente non ha credito sufficiente");
+                fail();
             }
             players.add(u);
         }
@@ -235,8 +243,8 @@ public class BookingManager {
     public void displayUserBookings(User user) {
         ArrayList<Integer> keys = new ArrayList<>();
         try{keys = getUserKeys(user);}
-        catch(NoActiveBookingsException e){
-            System.out.printf("Non hai nessuna prenotazione");
+        catch(NoActiveBookingsException e) {
+            System.out.println("Non hai nessuna prenotazione");
         }
         for(int k : keys){
             System.out.println(k+bookings.get(k).toString());
@@ -248,12 +256,14 @@ public class BookingManager {
         Club club = null;
         try {club = checkClub(clb);}
         catch (WrongNameException e) {
-            System.out.printf("Il club inserito non è iscritto al servizio");
+            System.out.println("Il club inserito non è iscritto al servizio");
+            fail();
         }
         Field field = null;
         try{checkField(club, sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
+            fail();
         }
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
@@ -280,6 +290,7 @@ public class BookingManager {
         try{checkBlindBooking(id);}
         catch(WrongKeyException e) {
             System.out.printf("Non puoi prenotare un posto in questa partita");
+            fail();
         }
         Booking booking = bookings.get(id);
         ((BlindBooking) booking).addPlayer(user);
@@ -303,6 +314,7 @@ public class BookingManager {
         try {booking = checkBooking(user, id);}
         catch(WrongKeyException e) {
             System.out.println("Non hai diritti su questa prenotazione");
+            fail();
         }
 
         if(booking instanceof PrivateBooking) {

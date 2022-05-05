@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class BookingManager {
     private ArrayList<User> users = new ArrayList<>();
-    private ArrayList<Club> clubs = new ArrayList<>();
+    private ArrayList<UserClub> clubs = new ArrayList<>();
     private Map<Integer, Booking> bookings = new HashMap();
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private BalanceMonitor monitor;
@@ -68,7 +68,8 @@ public class BookingManager {
         throw new PendingBookingException(); //TEST ME
     }
     
-    public void addClub(Club club) {
+    public void addClub(Club clb, int memberPrice, int joinClubPrice) {
+        UserClub club = new UserClub(clb, this, memberPrice, joinClubPrice);
         clubs.add(club);
     }
     

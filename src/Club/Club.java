@@ -19,46 +19,28 @@ public class Club {
     public String name;
     public ArrayList<Field> fields = new ArrayList<>();
     public int price;
-    public int memberPrice;
-    public int joinClubPrice;
-    private ArrayList<User> members = new ArrayList<>();
     int opening;
     int closure;
-    public ArrayList<Integer> times = new ArrayList<>(); //MODIFICATO
+    public ArrayList<Integer> times = new ArrayList<>();
 
-    public Club(String name, int price, int memberPrice,int opening, int closure, int joinClubPrice) { //MODIFICATO
+    public Club(String name, int price,int opening, int closure) {
         this.name = name;
         this.price = price;
         this.opening = opening;
-        this.joinClubPrice = joinClubPrice;
         this.closure = closure;
-        this.memberPrice = memberPrice;
         int fakeClosure = closure;
         if(closure < opening)
             fakeClosure = closure + 24;
-        for(int i=opening; i<fakeClosure; i++){ //FIX ME
+        for(int i=opening; i<fakeClosure; i++){
             if(i>=24)
                 times.add(i-24);
             else
                 times.add(i);
         }
     }
-    
-    
-    public boolean isMember(User user) {
-        for (User member : members) {
-            if(member == user)
-                return true;
-        }
-        return false;
-    }
-    
-    public void addMember(User user){
-        members.add(user);
-    }
-   
-    public void subscribe(BookingManager bm) {
-        bm.addClub(this);
+
+    public void subscribe(BookingManager bm, int memberPrice, int joinClubPrice) {
+        bm.addClub(this, memberPrice, joinClubPrice);
     }
     
     public void addField(String name, Sport sport) {

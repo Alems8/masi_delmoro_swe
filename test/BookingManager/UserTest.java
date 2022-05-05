@@ -142,14 +142,14 @@ class UserTest {
         mark.bookField(padel, "Gracciano", "06/05/2022", 12, "eli", "pippo", "gigi");
         mark.viewBookings();
         mark.addMatchResult("mark", "eli", 1);
-        assertEquals(1, mark.record[1]);
-        assertEquals(0, mark.record[0]);
-        assertEquals(1, eli.record[1]);
-        assertEquals(0, eli.record[0]);
-        assertEquals(1, gigi.record[0]);
-        assertEquals(0, gigi.record[1]);
-        assertEquals(1, pippo.record[0]);
-        assertEquals(0, pippo.record[1]);
+        assertEquals(1, mark.record.get(padel)[1]);
+        assertEquals(0, mark.record.get(padel)[0]);
+        assertEquals(1, eli.record.get(padel)[1]);
+        assertEquals(0, eli.record.get(padel)[0]);
+        assertEquals(1, gigi.record.get(padel)[0]);
+        assertEquals(0, gigi.record.get(padel)[1]);
+        assertEquals(1, pippo.record.get(padel)[0]);
+        assertEquals(0, pippo.record.get(padel)[1]);
     }
 
     @Test

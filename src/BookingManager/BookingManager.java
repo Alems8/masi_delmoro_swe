@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -150,27 +151,32 @@ public class BookingManager {
         user.getFavouriteClubs().add(club);
     }
     
-    public void addResult(ArrayList<String> winners, int id){ //FIX ME
+    public void addResult(ArrayList<String> winners, int id) throws WrongNameException {
         Booking booking = bookings.remove(id);
         ArrayList<User> players = booking.getPlayers();
-        for(User p : players) {
-            for (String w : winners) {
-                try {checkUser(w);}
-                catch (WrongNameException e) {
-                    System.out.println("Nome utente non valido");
+        Sport sport = booking.getField().sport;
+        if(sport.numPlayers / 2 != winners.size())
+            throw new WrongNameException();
+        for(String w : winners) {
+            if(!players.contains(checkUser(w)))
+                throw new WrongNameException();
+        }
+        for (User u : players){
+            if(u.record.containsKey(sport))
+                u.record.get(sport)[0]++;
+            else {
+                int[] result = new int[2];
+                u.record.put(sport, result);
+                u.record.get(sport)[0]++;
+            }
+            for(String w : winners){
+                if(w.equals(u.username)){
+                    u.record.get(sport)[1]++;
+                    u.record.get(sport)[0]--;
                 }
             }
         }
-        /*
-        ArrayList<User> players = booking.getPlayers();
-        for (User user : players){
-            if(user.username.equals(username1))
-                user.record[1]++;
-            else if(user.username.equals(username2))
-                user.record[1]++;
-            else
-                user.record[0]++;
-         */
+
         
     }
     
@@ -180,8 +186,12 @@ public class BookingManager {
     }
     
     public void displayUserRecord(User user){
-        System.out.println("Il tuo storico è: " + user.record[1] + " vittorie - "
-                            + user.record[0] + " sconfitte");
+
+        System.out.println("Il tuo storico è: ");
+        for(Sport k : user.record.keySet()){
+            System.out.println(k.name + ": " + user.record.get(k)[1] + " vittorie - " + user.record.get(k)[0] +
+                    " sconfitte");
+        }
     }
     
     public void requestJoinClub(User user, String clb){

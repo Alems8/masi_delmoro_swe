@@ -13,6 +13,8 @@ import Sport.Sport;
 import Person.Person;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -24,7 +26,7 @@ public class User implements Subject {
     private BookingManager bm;
     private int balance = 0;
     private ArrayList<Club> favouriteClubs = new ArrayList<>();
-    public int[] record = new int[2];
+    public Map<Sport, int[]> record = new HashMap();
     private BalanceMonitor monitor;
     //private Map<Integer,Booking> bookings = new HashMap();
 
@@ -34,8 +36,8 @@ public class User implements Subject {
         this.bm = bm;
         this.monitor = monitor;
         subscribe();
-        this.record[0] = 0;
-        this.record[1] = 0;
+        //this.record[0] = 0;
+        //this.record[1] = 0;
     }
 
     public int getBalance() {
@@ -117,7 +119,10 @@ public class User implements Subject {
         ArrayList<String> winners = new ArrayList<>();
         winners.add(winner1);
         winners.add(winner2);
-        bm.addResult(winners, key);
+        try{bm.addResult(winners, key);}
+        catch(WrongNameException e) {
+            System.out.println("I nomi inseriti non sono corretti");
+        }
     }
 
     public void addMatchResult(String winner1, String winner2, String winner3, String winner4, String winner5, int key){
@@ -127,7 +132,10 @@ public class User implements Subject {
         winners.add(winner3);
         winners.add(winner4);
         winners.add(winner5);
-        bm.addResult(winners, key);
+        try{bm.addResult(winners, key);}
+        catch(WrongNameException e) {
+            System.out.println("I nomi inseriti non sono corretti");
+        }
     }
     public void viewRecord(){
         bm.displayUserRecord(this);

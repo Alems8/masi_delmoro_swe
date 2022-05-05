@@ -96,7 +96,8 @@ public class Masi_delmoro_swe {
         
         matti.bookField(padel, "Firenze Padel", "26/03/2022", 16,"cami","eli","ale");
         cami.viewBookings();
-        cami.deleteBooking(1);
-        cami.viewBookings();
+        cami.addMatchResult("eli", "ale", 1);
+        cami.viewRecord();
+        ale.viewRecord();
     }
 }

@@ -28,7 +28,7 @@ class UserTest {
         club.subscribe(bm);
 
         Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
-        this.mark = marco.subscribe(bm, "marcorossi");
+        this.mark = marco.subscribe(bm, "mark");
         Person luigi = new Person("luigi", "bianchi", "luigibianchi@mail.it");
         this.gigi = luigi.subscribe(bm, "gigi");
         Person filippo = new Person("filippo", "pallini", "filippopallini@mail.com");
@@ -120,12 +120,27 @@ class UserTest {
 
     @Test
     void addFavouriteClubTest(){
-
+        mark.addFavouriteClub("Gracciano");
+        assertEquals(mark.favouriteClubs.get(0), club);
     }
 
     @Test
-    void addMatchResultTest(){
-
+    void addMatchResultTest() throws LowBalanceException {
+        mark.addFunds(100);
+        pippo.addFunds(100);
+        eli.addFunds(100);
+        gigi.addFunds(100);
+        mark.bookField(padel, "Gracciano", "06/05/2022", 12, "eli", "pippo", "gigi");
+        mark.viewBookings();
+        mark.addMatchResult("mark", "eli", 1);
+        assertEquals(1, mark.record[1]);
+        assertEquals(0, mark.record[0]);
+        assertEquals(1, eli.record[1]);
+        assertEquals(0, eli.record[0]);
+        assertEquals(1, gigi.record[0]);
+        assertEquals(0, gigi.record[1]);
+        assertEquals(1, pippo.record[0]);
+        assertEquals(0, pippo.record[1]);
     }
 
     @Test

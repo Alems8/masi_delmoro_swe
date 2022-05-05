@@ -150,8 +150,18 @@ public class BookingManager {
         user.getFavouriteClubs().add(club);
     }
     
-    public void addResult(String username1, String username2, int id){ //FIX ME
+    public void addResult(ArrayList<String> winners, int id){ //FIX ME
         Booking booking = bookings.remove(id);
+        ArrayList<User> players = booking.getPlayers();
+        for(User p : players) {
+            for (String w : winners) {
+                try {checkUser(w);}
+                catch (WrongNameException e) {
+                    System.out.println("Nome utente non valido");
+                }
+            }
+        }
+        /*
         ArrayList<User> players = booking.getPlayers();
         for (User user : players){
             if(user.username.equals(username1))
@@ -160,7 +170,7 @@ public class BookingManager {
                 user.record[1]++;
             else
                 user.record[0]++;
-        }
+         */
         
     }
     

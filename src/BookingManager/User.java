@@ -114,9 +114,21 @@ public class User implements Subject {
     }
     
     public void addMatchResult(String winner1, String winner2, int key){
-        bm.addResult(winner1, winner2, key);
+        ArrayList<String> winners = new ArrayList<>();
+        winners.add(winner1);
+        winners.add(winner2);
+        bm.addResult(winners, key);
     }
-    
+
+    public void addMatchResult(String winner1, String winner2, String winner3, String winner4, String winner5, int key){
+        ArrayList<String> winners = new ArrayList<>();
+        winners.add(winner1);
+        winners.add(winner2);
+        winners.add(winner3);
+        winners.add(winner4);
+        winners.add(winner5);
+        bm.addResult(winners, key);
+    }
     public void viewRecord(){
         bm.displayUserRecord(this);
     }

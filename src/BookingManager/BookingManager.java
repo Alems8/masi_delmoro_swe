@@ -3,10 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package BookingManager;
 
 
-import javax.swing.*;
+import BalanceMonitor.BalanceMonitor;
+import Booking.Booking;
+import Booking.PrivateBooking;
+import Booking.BlindBooking;
+import Club.Club;
+import Club.Field;
+import Person.Person;
+import Sport.Sport;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -70,7 +78,7 @@ public class BookingManager {
         }
         throw new WrongNameException();
     }
-    private void pay(User user, Club club) throws LowBalanceException{
+    private void pay(User user, Club club) throws LowBalanceException {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
@@ -139,7 +147,7 @@ public class BookingManager {
             System.out.println("Il club non esiste o non è registrato al servizio");
             return;
         }
-        user.favouriteClubs.add(club);
+        user.getFavouriteClubs().add(club);
     }
     
     public void addResult(String username1, String username2, int id){ //FIX ME

@@ -1,5 +1,14 @@
-package masi_delmoro_swe;
+package BookingManager;
 
+import BalanceMonitor.BalanceMonitor;
+import Booking.Booking;
+
+import Club.Club;
+import Booking.BlindBooking;
+import Sport.Sport;
+import Sport.Padel;
+
+import Person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -121,7 +130,7 @@ class UserTest {
     @Test
     void addFavouriteClubTest(){
         mark.addFavouriteClub("Gracciano");
-        assertEquals(mark.favouriteClubs.get(0), club);
+        assertEquals(mark.getFavouriteClubs().get(0), club);
     }
 
     @Test

@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package Person;
+
+import BookingManager.BookingManager;
+import BookingManager.User;
+import BookingManager.WrongNameException;
 
 /**
  *

@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package Booking;
+
+import Club.Club;
+import Club.Field;
+import BookingManager.User;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *

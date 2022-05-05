@@ -1,10 +1,15 @@
-package masi_delmoro_swe;
+package Club;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClubTest {
+
+    @BeforeEach
+    void setUp() {
+    }
 
     @Test
     void isMember() {

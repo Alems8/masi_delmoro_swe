@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package Sport;
 
 /**
  *
  * @author thomas
  */
-public class Soccer extends Sport {
-    
-    public Soccer(){
-        this.name = "soccer";
-        this.numPlayers = 10;
-    }
+public class Sport {
+    public String name;
+    public int numPlayers;
 }

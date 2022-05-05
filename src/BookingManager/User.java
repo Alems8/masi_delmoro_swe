@@ -3,11 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package BookingManager;
+
+
+import BalanceMonitor.BalanceMonitor;
+import BalanceMonitor.Subject;
+import Club.Club;
+import Sport.Sport;
+import Person.Person;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -18,9 +23,9 @@ public class User implements Subject {
     private Person person;
     private BookingManager bm;
     private int balance = 0;
-    ArrayList<Club> favouriteClubs = new ArrayList<>();
+    private ArrayList<Club> favouriteClubs = new ArrayList<>();
     public int[] record = new int[2];
-    BalanceMonitor monitor;
+    private BalanceMonitor monitor;
     //private Map<Integer,Booking> bookings = new HashMap();
 
     public User(String username, Person person, BalanceMonitor monitor, BookingManager bm) {
@@ -34,11 +39,15 @@ public class User implements Subject {
     }
 
     public int getBalance() {
-        return balance;
+        return this.balance;
     }
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public ArrayList<Club> getFavouriteClubs() {
+        return this.favouriteClubs;
     }
     
     public void joinClub(String club) {

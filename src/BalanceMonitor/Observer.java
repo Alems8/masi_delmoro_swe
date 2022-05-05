@@ -3,13 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package BalanceMonitor;
+
+import BookingManager.User;
 
 /**
  *
  * @author thomas
  */
-public class Sport {
-    String name;
-    int numPlayers;
+public interface Observer {
+    
+    void attach(User u);
+    void detach(User u);
+    void update();
+    
 }

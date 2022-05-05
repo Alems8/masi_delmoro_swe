@@ -1,4 +1,4 @@
-package masi_delmoro_swe;
+package BookingManager;
 
 public class NoFreeFieldException extends Exception {
 

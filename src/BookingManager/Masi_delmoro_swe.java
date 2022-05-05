@@ -3,7 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package masi_delmoro_swe;
+package BookingManager;
+
+import BalanceMonitor.BalanceMonitor;
+import BookingManager.BookingManager;
+import Club.Club;
+import Person.Person;
+import Sport.Sport;
+import Sport.Padel;
+import Sport.Soccer;
 
 /**
  *

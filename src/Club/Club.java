@@ -7,7 +7,7 @@ package Club;
 
 import BookingManager.BookingManager;
 import Sport.Sport;
-import BookingManager.User;
+import BookingManager.UserClub;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class Club {
     int closure;
     public ArrayList<Integer> times = new ArrayList<>();
 
-    public Club(String name, int price,int opening, int closure) {
+    public Club(String name, int price, int opening, int closure) {
         this.name = name;
         this.price = price;
         this.opening = opening;
@@ -39,8 +39,8 @@ public class Club {
         }
     }
 
-    public void subscribe(BookingManager bm, int memberPrice, int joinClubPrice) {
-        bm.addClub(this, memberPrice, joinClubPrice);
+    public UserClub subscribe(BookingManager bm, int memberPrice, int joinClubPrice) {
+        return bm.addClub(this, memberPrice, joinClubPrice);
     }
     
     public void addField(String name, Sport sport) {

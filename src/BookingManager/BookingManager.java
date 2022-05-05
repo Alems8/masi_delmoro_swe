@@ -68,19 +68,20 @@ public class BookingManager {
         throw new PendingBookingException(); //TEST ME
     }
     
-    public void addClub(Club clb, int memberPrice, int joinClubPrice) {
+    public UserClub addClub(Club clb, int memberPrice, int joinClubPrice) {
         UserClub club = new UserClub(clb, this, memberPrice, joinClubPrice);
         clubs.add(club);
+        return club;
     }
     
-    private Club checkClub(String clb) throws WrongNameException {
-        for(Club c : clubs) {
-            if(c.name.equals(clb))
+    private UserClub checkClub(String clb) throws WrongNameException {
+        for(UserClub c : clubs) {
+            if(c.getClub().name.equals(clb))
                     return c;
         }
         throw new WrongNameException();
     }
-    private void pay(User user, Club club) throws LowBalanceException {
+    private void pay(User user, UserClub club) throws LowBalanceException {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
@@ -90,7 +91,7 @@ public class BookingManager {
             user.setBalance(user.getBalance() - price);
     }
     
-    private void refund(User user, Club club){
+    private void refund(User user, UserClub club){
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
@@ -110,9 +111,10 @@ public class BookingManager {
         user.setBalance(user.getBalance() + money);
     }
     
-    private Field checkField(Club club, Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
+    private Field checkField(UserClub clb, Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
         int i = 0;
         boolean booked = false;
+        Club club = clb.getClub();
         Field field = null;
         while( !booked && i < club.fields.size() ){
             field = club.fields.get(i++);
@@ -143,7 +145,7 @@ public class BookingManager {
     }
 
     public void addUserFavouriteClub(User user, String clb) {
-        Club club = null;
+        UserClub club = null;
         try {club = checkClub(clb);}
         catch (WrongNameException e) {
             System.out.println("Il club non esiste o non è registrato al servizio");
@@ -196,7 +198,7 @@ public class BookingManager {
     }
     
     public void requestJoinClub(User user, String clb){
-        Club club = null;
+        UserClub club = null;
         try{club = checkClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non è iscritto al servizio");
@@ -214,7 +216,7 @@ public class BookingManager {
 
     }
     
-    public void payJoinClub(User user, Club club) throws LowBalanceException {
+    public void payJoinClub(User user, UserClub club) throws LowBalanceException {
         if(user.getBalance() < club.joinClubPrice){
             throw new LowBalanceException();
         }
@@ -223,7 +225,7 @@ public class BookingManager {
     
     public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {
         LocalDate date = LocalDate.parse(day, dtf);
-        Club club = null;
+        UserClub club = null;
         try{club = checkClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non esiste o non è registrato al servizio");
@@ -256,7 +258,7 @@ public class BookingManager {
             }
             players.add(u);
         }
-        Booking booking = new PrivateBooking(club, field, date, hour, players);
+        Booking booking = new PrivateBooking(club.getClub(), field, date, hour, players);
         bookings.put(key++, booking);
     }
 
@@ -286,7 +288,7 @@ public class BookingManager {
 
     public void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) {
         LocalDate date = LocalDate.parse(day, dtf);
-        Club club = null;
+        UserClub club = null;
         try {club = checkClub(clb);}
         catch (WrongNameException e) {
             System.out.println("Il club inserito non è iscritto al servizio");
@@ -300,7 +302,7 @@ public class BookingManager {
         }
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
-        Booking booking = new BlindBooking(club, field, date, hour, players);
+        Booking booking = new BlindBooking(club.getClub(), field, date, hour, players);
         bookings.put(key++, booking);
     }
     

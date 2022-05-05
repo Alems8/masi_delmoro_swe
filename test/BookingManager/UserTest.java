@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
     private BookingManager bm;
-    private Club club;
+    private UserClub club;
     public Sport padel;
     private User mark;
     private User gigi;
@@ -32,9 +32,9 @@ class UserTest {
         this.bm = new BookingManager(monitor);
 
         this.padel = new Padel();
-        this.club = new Club("Gracciano", 12, 8, 9, 23, 100);
+        Club club = new Club("Gracciano", 12, 8, 23);
         club.addField("Padel 1", padel);
-        club.subscribe(bm);
+        this.club = club.subscribe(bm, 8, 100);
 
         Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
         this.mark = marco.subscribe(bm, "mark");

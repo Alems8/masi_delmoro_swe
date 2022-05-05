@@ -5,6 +5,7 @@
  */
 package Booking;
 
+import BookingManager.UserClub;
 import Club.Club;
 import Club.Field;
 import BookingManager.User;

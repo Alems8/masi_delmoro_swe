@@ -25,7 +25,7 @@ public class User implements Subject {
     private Person person;
     private BookingManager bm;
     private int balance = 0;
-    private ArrayList<Club> favouriteClubs = new ArrayList<>();
+    private ArrayList<UserClub> favouriteClubs = new ArrayList<>();
     public Map<Sport, int[]> record = new HashMap();
     private BalanceMonitor monitor;
     //private Map<Integer,Booking> bookings = new HashMap();
@@ -48,7 +48,7 @@ public class User implements Subject {
         this.balance = balance;
     }
 
-    public ArrayList<Club> getFavouriteClubs() {
+    public ArrayList<UserClub> getFavouriteClubs() {
         return this.favouriteClubs;
     }
     

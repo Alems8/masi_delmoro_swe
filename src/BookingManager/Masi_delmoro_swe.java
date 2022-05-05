@@ -31,11 +31,11 @@ public class Masi_delmoro_swe {
         BalanceMonitor monitor = new BalanceMonitor();
         
         BookingManager bm = new BookingManager(monitor);
-        Club clb1 = new Club("LaFiorita", 15, 12,9,19,100);
-        Club clb2 = new Club("Gracciano", 30, 25,10,23,100);
-        Club clb3 = new Club("UPP", 10, 7,9,1,120);
-        Club clb4 = new Club("Certaldo", 20, 16,8,20,150);
-        Club clb5 = new Club("Firenze Padel", 18, 15,9,18,90);
+        Club clb1 = new Club("LaFiorita", 15, 9,19);
+        Club clb2 = new Club("Gracciano", 30, 10,23);
+        Club clb3 = new Club("UPP", 10, 7,22);
+        Club clb4 = new Club("Certaldo", 20, 8,20);
+        Club clb5 = new Club("Firenze Padel", 18, 9,18);
         
         clb1.addField("Soccer 1", soccer);
         clb1.addField("Padel 2", padel);
@@ -53,11 +53,11 @@ public class Masi_delmoro_swe {
         clb5.addField("Padel 2", padel);
         clb5.addField("Padel 3", padel);
         
-        clb1.subscribe(bm);
-        clb2.subscribe(bm);
-        clb3.subscribe(bm);
-        clb4.subscribe(bm);
-        clb5.subscribe(bm);
+        clb1.subscribe(bm, 10, 100);
+        clb2.subscribe(bm, 20, 200);
+        clb3.subscribe(bm, 8, 120);
+        clb4.subscribe(bm, 15, 150);
+        clb5.subscribe(bm, 15, 90);
         
         Person mattia = new Person("Mattia","Rossi","matt.rossi@gmail.com");
         Person francesco = new Person("Francesco","Rossi","fra.rossi@gmail.com");

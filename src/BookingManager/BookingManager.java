@@ -309,7 +309,7 @@ public class BookingManager {
     public void displayBlindBookings(){
         for(int k : bookings.keySet()){
             Booking booking = bookings.get(k);
-            if(booking.getPlayers().size() < booking.getField().sport.numPlayers)
+            if(booking instanceof BlindBooking && !((BlindBooking) booking).isFull())
                 System.out.println(k+booking.toString());
         }
     }

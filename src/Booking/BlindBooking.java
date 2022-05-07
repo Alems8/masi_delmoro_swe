@@ -5,6 +5,7 @@
  */
 package Booking;
 
+import BookingManager.WrongKeyException;
 import Club.Club;
 import Club.Field;
 import BookingManager.User;
@@ -17,24 +18,32 @@ import java.util.ArrayList;
  * @author thomas
  */
 public class BlindBooking extends Booking {
-    
+
+    private boolean full = false;
+
     public BlindBooking(Club club, Field field, LocalDate date, int hour, ArrayList<User> players) {
         super(club, field, date, hour, players);
     }
-    
-    public boolean addPlayer(User user){
-        if(players.size() < this.field.sport.numPlayers){
+
+    public boolean isFull() {
+        return full;
+    }
+
+    public void setFull(boolean full) {
+        this.full = full;
+    }
+
+    public void addPlayer(User user){
+        if(!isFull()){
             players.add(user);
-            return true;
+            if(players.size() == field.sport.numPlayers)
+                setFull(true);
         }
         System.out.println("Non ci sono più posti disponibili");
-        return false;
     }
     
-    public boolean removePlayer(User user){
-        if(players.isEmpty())
-            return false;
+    public void removePlayer(User user){
         players.remove(user);
-        return true;
+        setFull(false);
     }
 }

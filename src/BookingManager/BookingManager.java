@@ -51,13 +51,10 @@ public class BookingManager {
         throw new WrongNameException();  //FIX ME
     }
 
-    Map<Integer, Booking> getBookings() {
-        return bookings;
-    }
-
     ArrayList<User> getUsers() {
         return users;
     }
+
     public void deleteUser(User user) throws PendingBookingException {
         try{getUserKeys(user);}
         catch(NoActiveBookingsException e) {
@@ -67,7 +64,30 @@ public class BookingManager {
         }
         throw new PendingBookingException(); //TEST ME
     }
-    
+
+    private void pay(User user, UserClub club) throws LowBalanceException {
+        int price = club.price;
+        if(club.isMember(user))
+            price = club.memberPrice;
+
+        if(user.getBalance() < price) throw new LowBalanceException();
+        else
+            user.setBalance(user.getBalance() - price);
+    }
+
+    private void refund(User user, UserClub club){
+        int price = club.price;
+        if(club.isMember(user))
+            price = club.memberPrice;
+        rechargeAccount(user, price);
+    }
+
+    Map<Integer, Booking> getBookings() {
+        return bookings;
+    }
+
+
+
     public UserClub addClub(Club clb, int memberPrice, int joinClubPrice) {
         UserClub club = new UserClub(clb, this, memberPrice, joinClubPrice);
         clubs.add(club);
@@ -81,22 +101,9 @@ public class BookingManager {
         }
         throw new WrongNameException();
     }
-    private void pay(User user, UserClub club) throws LowBalanceException {
-        int price = club.price;
-        if(club.isMember(user))
-            price = club.memberPrice;
-        
-        if(user.getBalance() < price) throw new LowBalanceException();
-        else
-            user.setBalance(user.getBalance() - price);
-    }
-    
-    private void refund(User user, UserClub club){
-        int price = club.price;
-        if(club.isMember(user))
-            price = club.memberPrice;
-        rechargeAccount(user, price);
-    }
+
+
+
     
     private User checkUser(String usernm) throws WrongNameException {
         for(User u : users){

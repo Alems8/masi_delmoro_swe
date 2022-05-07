@@ -64,6 +64,7 @@ class UserTest {
         mark.addFunds(10);
         gigi.addFunds(150);
         mark.joinClub("Gracciano");
+        mark.joinClub("Gracciano");
         gigi.joinClub("Gracciano");
         assertTrue(club.isMember(mark));
         assertTrue(club.isMember(gigi));
@@ -78,12 +79,12 @@ class UserTest {
         eli.addFunds(5);
 
         mark.bookField(padel, "Gracciano", "03/05/2022", 15, "gigi", "eli", "pippo");
-        Map<Integer, Booking> bookings = bm.getBookings();
+        Map<Integer, Booking> bookings = bm.bd.getBookings();
         assertTrue(bookings.isEmpty());
 
         eli.addFunds(100);
         mark.bookField(padel, "Gracciano", "03/05/2022", 15,"gigi","eli","pippo");
-        bookings = bm.getBookings();
+        bookings = bm.bd.getBookings();
         assertEquals(1, bookings.size());
     }
     @Test
@@ -93,7 +94,7 @@ class UserTest {
         pippo.addFunds(100);
         eli.addFunds(100);
         mark.bookField(padel, "Gracciano", "03/05/2022", 15,"gigi","eli","pippo");
-        Map<Integer, Booking> bookings = bm.getBookings();
+        Map<Integer, Booking> bookings = bm.bd.getBookings();
         assertEquals(1, bookings.size());
         mark.deleteBooking(1);
         assertEquals(0, bookings.size());
@@ -103,7 +104,7 @@ class UserTest {
     void blindBookTest(){
         mark.addFunds(100);
         mark.blindBook(padel,"Gracciano","04/05/2022",15);
-        Map<Integer, Booking> bookings = bm.getBookings();
+        Map<Integer, Booking> bookings = bm.bd.getBookings();
         assertTrue(bookings.get(1) instanceof BlindBooking);
     }
 
@@ -115,7 +116,7 @@ class UserTest {
         eli.addFunds(100);
         france.addFunds(100);
         mark.blindBook(padel,"Gracciano","04/05/2022",15);
-        Map<Integer, Booking> bookings = bm.getBookings();
+        Map<Integer, Booking> bookings = bm.bd.getBookings();
 
         gigi.bookSpot(1);
         assertEquals(2,bookings.get(1).getPlayers().size());
@@ -155,6 +156,6 @@ class UserTest {
     @Test
     void deleteAccountTest() {
         mark.deleteAccount();
-        assertFalse(bm.getUsers().contains(mark));
+        assertFalse(bm.bd.getUsers().contains(mark));
     }
 }

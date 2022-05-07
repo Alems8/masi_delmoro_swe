@@ -1,18 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BalanceMonitor;
 
-/**
- *
- * @author thomas
- */
-public interface Subject {
-    
-    void subscribe();
-    void unsubscribe();
-    void notifyChanges();
-    
+import java.util.ArrayList;
+
+public abstract class Subject {
+
+    private ArrayList<Observer> observers = new ArrayList<>();
+
+    public void addObserver(Observer o){
+        observers.add(o);
+    }
+
+    public void notifyObservers(Object obj){
+        for(Observer o : observers)
+            o.update(obj, this);
+    }
 }

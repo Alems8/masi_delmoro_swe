@@ -8,7 +8,6 @@ package BookingManager;
 
 import BalanceMonitor.BalanceMonitor;
 import BalanceMonitor.Subject;
-import Club.Club;
 import Sport.Sport;
 import Person.Person;
 
@@ -20,22 +19,20 @@ import java.util.Map;
  *
  * @author Alessio
  */
-public class User implements Subject {
+public class User extends Subject {
     public String username;
     private Person person;
     private BookingManager bm;
     private int balance = 0;
     private ArrayList<UserClub> favouriteClubs = new ArrayList<>();
     public Map<Sport, int[]> record = new HashMap();
-    private BalanceMonitor monitor;
     //private Map<Integer,Booking> bookings = new HashMap();
 
-    public User(String username, Person person, BalanceMonitor monitor, BookingManager bm) {
+    public User(String username, Person person, BookingManager bm, BalanceMonitor balanceMonitor) {
         this.username = username;
         this.person = person;
         this.bm = bm;
-        this.monitor = monitor;
-        subscribe();
+        addObserver(balanceMonitor);
         //this.record[0] = 0;
         //this.record[1] = 0;
     }
@@ -46,6 +43,7 @@ public class User implements Subject {
 
     public void setBalance(int balance) {
         this.balance = balance;
+        notifyObservers(this.balance);
     }
 
     public ArrayList<UserClub> getFavouriteClubs() {
@@ -64,7 +62,6 @@ public class User implements Subject {
         players.add(player3);
         players.add(player4);
         bm.requestBooking(sport, clb, date, hour, players);
-        notifyChanges();
     }
 
     public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3,
@@ -82,7 +79,6 @@ public class User implements Subject {
         players.add(player9);
         players.add(player10);
         bm.requestBooking(sport, clb, date, hour, players);
-        notifyChanges();
     }
     
     public void addFunds(int money){
@@ -99,7 +95,6 @@ public class User implements Subject {
     
     public void blindBook(Sport sport, String clb, String date, int hour){
         bm.requestBlindBooking(sport, clb, date, hour, this);
-        notifyChanges();
     }
     
     public void viewBlindBookings(){
@@ -108,7 +103,6 @@ public class User implements Subject {
     
     public void bookSpot(int key){
         bm.requestSpot(this, key);
-        notifyChanges();
     }
     
     public void addFavouriteClub(String club){
@@ -139,21 +133,6 @@ public class User implements Subject {
     }
     public void viewRecord(){
         bm.displayUserRecord(this);
-    }
-
-    @Override
-    public void subscribe() {
-        monitor.attach(this);
-    }
-
-    @Override
-    public void unsubscribe() {
-        monitor.detach(this);
-    }
-
-    @Override
-    public void notifyChanges() {
-        monitor.update();
     }
     
     public void deleteAccount() {

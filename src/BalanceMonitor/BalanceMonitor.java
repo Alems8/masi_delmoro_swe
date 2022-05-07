@@ -14,27 +14,11 @@ import java.util.ArrayList;
  * @author thomas
  */
 public class BalanceMonitor implements Observer {
-    Subject subject;
-
-    private ArrayList<User> users = new ArrayList<>();
-    
-    @Override
-    public void attach(User u) {
-        users.add(u);
-    }
 
     @Override
-    public void detach(User u) {
-        users.remove(u);
-    }
-
-    @Override
-    public void update() {
-        for(User u : users) {
-            if(u.getBalance() < 10) {
-                System.out.println(u.username + " il tuo credito è quasi esaurito");
-            }
-        }
+    public void update(Object userBalance, Subject user) {
+        if((int) userBalance < 10)
+            System.out.println(((User)user).username + ": il tuo credito si sta esaurendo");
     }
     
 }

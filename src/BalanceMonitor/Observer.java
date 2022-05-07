@@ -12,9 +12,7 @@ import BookingManager.User;
  * @author thomas
  */
 public interface Observer {
-    
-    void attach(User u);
-    void detach(User u);
-    void update();
+
+    void update(Object obj, Subject s);
     
 }

@@ -44,7 +44,7 @@ public class BookingManager {
     public User addUser(Person person, String username) throws WrongNameException {
         try{checkUser(username);}
         catch (WrongNameException e) {
-            User user = new User(username, person, monitor, this);    //TEST ME
+            User user = new User(username, person, this, monitor);    //TEST ME
             users.add(user);
             return user;
         }

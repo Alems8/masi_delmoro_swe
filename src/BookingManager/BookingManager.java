@@ -29,10 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @author Alessio
  */
-public class BookingManager {
-    private ArrayList<User> users = new ArrayList<>();
-    private ArrayList<UserClub> clubs = new ArrayList<>();
-    private Map<Integer, Booking> bookings = new HashMap();
+public class BookingManager extends AbstractBookingManager {
     private BalanceMonitor monitor;
     private int key = 1;
     
@@ -50,8 +47,13 @@ public class BookingManager {
         throw new WrongNameException();  //FIX ME
     }
 
-    ArrayList<User> getUsers() {
-        return users;
+    private User getUser(String usernm) {
+        for(User u : bd.users){
+            if(u.username.equals(usernm)){
+                return u;
+            }
+        }
+        return null;
     }
 
     public void deleteUser(User user) throws PendingBookingException {
@@ -293,5 +295,15 @@ public class BookingManager {
         ((BlindBooking)booking).removePlayer(user);
         if(booking.getPlayers().isEmpty())
             releaseField(id);
+    }
+
+    @Override
+    protected void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users){
+    }
+
+    protected void createBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
+        Club club = clb.getClub();
+        Booking booking = new Booking(club, field, date, hour, players);
+        bd.addBooking(booking);
     }
 }

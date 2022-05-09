@@ -8,4 +8,8 @@ public class BookingDatabase {
     ArrayList<User> users = new ArrayList<>();
     ArrayList<UserClub> clubs = new ArrayList<>();
     ArrayList<Booking> bookings = new ArrayList<>();
+
+    void addBooking(Booking booking){
+        this.bookings.add(booking);
+    }
 }

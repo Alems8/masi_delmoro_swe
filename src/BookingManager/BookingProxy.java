@@ -12,6 +12,11 @@ import java.util.ArrayList;
 public class BookingProxy extends AbstractBookingManager{
 
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private BookingManager bm;
+
+    public BookingProxy(BookingManager bm){
+        this.bm = bm;
+    }
 
     public User checkUser(String usernm) throws WrongNameException {
         for(User u : bd.users){
@@ -95,7 +100,7 @@ public class BookingProxy extends AbstractBookingManager{
                 return;
             }
 
-            try{pay(u, club);}
+            try{checkBalance(u, club);}
             catch(LowBalanceException e){
                 field.timeTable.get(date).add(hour);
                 System.out.println("L'utente non ha credito sufficiente");
@@ -103,7 +108,6 @@ public class BookingProxy extends AbstractBookingManager{
             }
             players.add(u);
         }
-        Booking booking = new PrivateBooking(club.getClub(), field, date, hour, players);
-        bookings.put(key++, booking);
+        bm.createBooking(sport, club, field, date, hour, players);
     }
 }

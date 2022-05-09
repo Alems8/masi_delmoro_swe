@@ -4,8 +4,10 @@ import Sport.Sport;
 
 import java.util.ArrayList;
 
-public abstract class AbstractBookingManager {
+public class AbstractBookingManager {
     protected BookingDatabase bd;
 
-    protected abstract void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users);
+    public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users){
+
+    }
 }

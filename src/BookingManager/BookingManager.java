@@ -66,8 +66,11 @@ public class BookingManager extends AbstractBookingManager {
         throw new PendingBookingException(); //TEST ME
     }
 
-    private void pay(User user, UserClub club) throws LowBalanceException {
-
+    private void pay(User user, UserClub club) {
+        int price = club.price;
+        if(club.isMember(user))
+            price = club.memberPrice;
+        user.setBalance(user.getBalance() - price);
     }
 
     private void holdField(UserClub clb, Sport sport, LocalDate date, int hour){
@@ -297,11 +300,10 @@ public class BookingManager extends AbstractBookingManager {
             releaseField(id);
     }
 
-    @Override
-    protected void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users){
-    }
-
     protected void createBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
+        holdField(clb, sport, date, hour);
+        for(User u : players)
+            pay(u, clb);
         Club club = clb.getClub();
         Booking booking = new Booking(club, field, date, hour, players);
         bd.addBooking(booking);

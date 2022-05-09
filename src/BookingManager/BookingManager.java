@@ -31,10 +31,11 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class BookingManager extends AbstractBookingManager {
     private BalanceMonitor monitor;
-    private int key = 1;
+    private BookingDatabase bd;
     
     public BookingManager(BalanceMonitor monitor) {
         this.monitor = monitor;
+        this.bd = new BookingDatabase();
     }
 
     public User addUser(Person person, String username) throws WrongNameException {
@@ -73,24 +74,8 @@ public class BookingManager extends AbstractBookingManager {
         user.setBalance(user.getBalance() - price);
     }
 
-    private void holdField(UserClub clb, Sport sport, LocalDate date, int hour){
-        int i = 0;
-        boolean booked = false;
-        Club club = clb.getClub();
-        Field field = null;
-        while(!booked && i < club.fields.size()){
-            field = club.fields.get(i++);
-
-            //Controllare se la richiesta è fuori orario
-            if(field.sport.equals(sport)){
-                ArrayList<Integer> times = field.timeTable.get(date);
-                int k = times.indexOf(hour);
-                if(k != -1){
-                    times.remove(k);
-                    booked = true;
-                }
-            }
-        }
+    private void holdField(Field field, LocalDate date, int hour){
+        field.timeTable.get(date).remove(hour);
     }
 
     private void refund(User user, UserClub club){
@@ -157,7 +142,7 @@ public class BookingManager extends AbstractBookingManager {
     }
     
     public void releaseField(int id){
-        Booking booking = bookings.remove(id);
+        Booking booking = bd.bookings.remove(id);
         booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
     }
     
@@ -171,21 +156,6 @@ public class BookingManager extends AbstractBookingManager {
     }
     
     public void requestJoinClub(User user, String clb){
-        UserClub club = null;
-        try{club = checkClub(clb);}
-        catch (WrongNameException e){
-            System.out.println("Il club non è iscritto al servizio");
-            return;
-        }
-        if(club.isMember(user)) throw new NullPointerException();{
-            System.out.println("Sei già iscritto al club");
-        }
-        try{payJoinClub(user, club);}
-        catch (LowBalanceException ex) {
-            System.out.println("Non hai abbastanza credito per associarti al club");
-            return;
-        }
-        club.addMember(user);
 
     }
     
@@ -255,9 +225,10 @@ public class BookingManager extends AbstractBookingManager {
         }
     }
 
-    public void requestSpot(User user, int id){
-        try{checkBlindBooking(id);}
-        catch(WrongKeyException e) {
+    public void requestSpot(User user, int id) {
+        try {
+            checkBlindBooking(id);
+        } catch (WrongKeyException e) {
             System.out.print("Non puoi prenotare un posto in questa partita");
             return;
         }
@@ -265,43 +236,17 @@ public class BookingManager extends AbstractBookingManager {
         ((BlindBooking) booking).addPlayer(user);
     }
     
-    public Booking checkBooking(User user, int id) throws WrongKeyException{
-        Booking booking = null;
-        for(int k : bookings.keySet()){
-            if(k == id){
-                booking = bookings.get(k);
-                if(!booking.containsUser(user)){
-                    throw new WrongKeyException();
-                }
-            }
-        }
-        return booking;
-    }
-    
-    public void deleteUserBooking(User user, int id) {
-        Booking booking = null;
-        try {booking = checkBooking(user, id);}
-        catch(WrongKeyException e) {
-            System.out.println("Non hai diritti su questa prenotazione");
-            return;
-        }
 
-        if(booking instanceof PrivateBooking) {
-            releaseField(id);
-        }
-        else
-            releaseSpot(user, id);
-    }
     
-    private void releaseSpot(User user, int id){
-        Booking booking = bookings.get(id);
+    void releaseSpot(User user, int id){
+        Booking booking = bd.bookings.get(id);
         ((BlindBooking)booking).removePlayer(user);
         if(booking.getPlayers().isEmpty())
             releaseField(id);
     }
 
     protected void createBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
-        holdField(clb, sport, date, hour);
+        holdField(field, date, hour);
         for(User u : players)
             pay(u, clb);
         Club club = clb.getClub();

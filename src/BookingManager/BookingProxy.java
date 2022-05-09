@@ -1,6 +1,7 @@
 package BookingManager;
 
 import Booking.Booking;
+import Booking.PrivateBooking;
 import Club.Club;
 import Club.Field;
 import Sport.Sport;
@@ -73,7 +74,7 @@ public class BookingProxy extends AbstractBookingManager{
     }
 
     @Override
-    protected void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {
+    void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {
         LocalDate date = LocalDate.parse(day, dtf);
         UserClub club = null;
         try{club = checkClub(clb);}
@@ -89,25 +90,70 @@ public class BookingProxy extends AbstractBookingManager{
             return;
         }
 
-        int size = field.sport.numPlayers;
+        int size = sport.numPlayers;
         ArrayList<User> players = new ArrayList<>();
         for(int i=0; i<size; i++){
             User u = null;
             try {u = checkUser(users.get(i));}
             catch(WrongNameException e) {
-                field.timeTable.get(date).add(hour);
                 System.out.println("L'utente inserito non esiste");
                 return;
             }
 
             try{checkBalance(u, club);}
             catch(LowBalanceException e){
-                field.timeTable.get(date).add(hour);
                 System.out.println("L'utente non ha credito sufficiente");
                 return;
             }
             players.add(u);
         }
         bm.createBooking(sport, club, field, date, hour, players);
+    }
+
+    private Booking checkBooking(User user, int id) throws WrongKeyException{
+        Booking booking = null;
+        for(int k : bd.bookings.keySet()){
+            if(k == id){
+                booking = bd.bookings.get(k);
+                if(!booking.containsUser(user)){
+                    throw new WrongKeyException();
+                }
+            }
+        }
+        return booking;
+    }
+
+    void deleteUserBooking(User user, int id) {
+        Booking booking = null;
+        try {booking = checkBooking(user, id);}
+        catch(WrongKeyException e) {
+            System.out.println("Non hai diritti su questa prenotazione");
+            return;
+        }
+
+        if(booking instanceof PrivateBooking) {
+            bm.releaseField(id);
+        }
+        else
+            bm.releaseSpot(user, id);
+    }
+
+    void requestJoinClub(User user, String clb){
+        UserClub club = null;
+        try{club = checkClub(clb);}
+        catch (WrongNameException e){
+            System.out.println("Il club non è iscritto al servizio");
+            return;
+        }
+        try{club.isMember(user)}
+        catch(NoMemberException e){
+            try{bm.payJoinClub(user, club);}
+            catch (LowBalanceException ex) {
+                System.out.println("Non hai abbastanza credito per associarti al club");
+                return;
+            }
+        }
+
+        club.addMember(user);
     }
 }

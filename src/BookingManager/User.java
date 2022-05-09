@@ -22,7 +22,7 @@ import java.util.Map;
 public class User extends Subject {
     public String username;
     private Person person;
-    private BookingManager bm;
+    private AbstractBookingManager bm;
     private int balance = 0;
     private ArrayList<UserClub> favouriteClubs = new ArrayList<>();
     public Map<Sport, int[]> record = new HashMap();
@@ -33,8 +33,6 @@ public class User extends Subject {
         this.person = person;
         this.bm = bm;
         addObserver(balanceMonitor);
-        //this.record[0] = 0;
-        //this.record[1] = 0;
     }
 
     public int getBalance() {
@@ -51,7 +49,6 @@ public class User extends Subject {
     }
     
     public void joinClub(String club) {
-        //Pagamento costo associazione
         bm.requestJoinClub(this, club);
     }
     

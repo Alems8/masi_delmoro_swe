@@ -28,12 +28,12 @@ public class UserClub {
         members.add(user);
     }
 
-    public void isMember(User user) {
+    public boolean isMember(User user){
         for (User member : members) {
             if(member == user)
-                return;
+                return true;
         }
-        throw new NoMemberException();
+        return false;
     }
 
 }

@@ -14,4 +14,10 @@ public class AbstractBookingManager {
 
     void requestJoinClub(User user, String clb){}
 
+    void topUpUserBalance(User user, int money){}
+
+    void displayUserBookings(User user){}
+
+    void requestBlindBooking(Sport sport, String clb, String day, int hour, User user){}
+
 }

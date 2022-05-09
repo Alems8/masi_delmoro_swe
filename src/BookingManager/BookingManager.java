@@ -78,6 +78,10 @@ public class BookingManager extends AbstractBookingManager {
         field.timeTable.get(date).remove(hour);
     }
 
+    void topUpUserBalance(User user, int money){
+        user.setBalance(user.getBalance() + money);
+    }
+
     private void refund(User user, UserClub club){
         int price = club.price;
         if(club.isMember(user))
@@ -89,7 +93,10 @@ public class BookingManager extends AbstractBookingManager {
         return bookings;
     }
 
-
+    void displayBookings(ArrayList<Integer> keys){
+        for(int k : keys)
+            System.out.println(k+bd.bookings.get(k).toString());
+    }
 
     public UserClub addClub(Club clb, int memberPrice, int joinClubPrice) {
         UserClub club = new UserClub(clb, this, memberPrice, joinClubPrice);
@@ -97,6 +104,9 @@ public class BookingManager extends AbstractBookingManager {
         return club;
     }
 
+    void addClubMember(User user, UserClub club){
+        club.addMember(user);
+    }
     
     public void rechargeAccount(User user, int money){
         user.setBalance(user.getBalance() + money);
@@ -154,10 +164,7 @@ public class BookingManager extends AbstractBookingManager {
                     " sconfitte");
         }
     }
-    
-    public void requestJoinClub(User user, String clb){
 
-    }
     
     public void payJoinClub(User user, UserClub club) throws LowBalanceException {
         if(user.getBalance() < club.joinClubPrice){
@@ -166,48 +173,14 @@ public class BookingManager extends AbstractBookingManager {
         user.setBalance(user.getBalance() - club.joinClubPrice);
     }
 
-    private ArrayList<Integer> getUserKeys(User user) throws NoActiveBookingsException {
-        ArrayList<Integer> userKeys = new ArrayList<>();
-        for(int k : bookings.keySet()){
-            Booking booking = bookings.get(k);
-            if(booking.containsUser(user)){
-                userKeys.add(k);
-            }
-        }
-        if(userKeys.isEmpty())
-            throw new NoActiveBookingsException();
-        return userKeys;
-    }
+
 
     public void displayUserBookings(User user) {
-        ArrayList<Integer> keys = new ArrayList<>();
-        try{keys = getUserKeys(user);}
-        catch(NoActiveBookingsException e) {
-            System.out.println("Non hai nessuna prenotazione");
-        }
-        for(int k : keys){
-            System.out.println(k+bookings.get(k).toString());
-        }
+
     }
 
     public void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) {
-        LocalDate date = LocalDate.parse(day, dtf);
-        UserClub club = null;
-        try {club = checkClub(clb);}
-        catch (WrongNameException e) {
-            System.out.println("Il club inserito non è iscritto al servizio");
-            return;
-        }
-        Field field = null;
-        try{field = checkField(club, sport, date, hour);}
-        catch(NoFreeFieldException e) {
-            System.out.println("Nessun campo disponibile");
-            return;
-        }
-        ArrayList<User> players = new ArrayList<>();
-        players.add(user);
-        Booking booking = new BlindBooking(club.getClub(), field, date, hour, players);
-        bookings.put(key++, booking);
+
     }
     
     public void displayBlindBookings(){
@@ -245,12 +218,20 @@ public class BookingManager extends AbstractBookingManager {
             releaseField(id);
     }
 
-    protected void createBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
+    void createBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
         holdField(field, date, hour);
         for(User u : players)
             pay(u, clb);
-        Club club = clb.getClub();
-        Booking booking = new Booking(club, field, date, hour, players);
+        Booking booking = new Booking(clb.getClub(), field, date, hour, players);
+        bd.addBooking(booking);
+    }
+
+    void createBlindBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, User user){
+        holdField(field, date, hour);
+        pay(user, clb);
+        ArrayList<User> players = new ArrayList<>();
+        players.add(user);
+        Booking booking = new BlindBooking(clb.getClub(), field, date, hour, players);
         bd.addBooking(booking);
     }
 }

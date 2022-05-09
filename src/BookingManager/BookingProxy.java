@@ -2,6 +2,7 @@ package BookingManager;
 
 import Booking.Booking;
 import Booking.PrivateBooking;
+import Booking.BlindBooking;
 import Club.Club;
 import Club.Field;
 import Sport.Sport;
@@ -138,6 +139,11 @@ public class BookingProxy extends AbstractBookingManager{
             bm.releaseSpot(user, id);
     }
 
+    private void checkJoinClubBalance(User user, UserClub club) throws LowBalanceException {
+        if(user.getBalance() < club.joinClubPrice)
+            throw new LowBalanceException();
+    }
+
     void requestJoinClub(User user, String clb){
         UserClub club = null;
         try{club = checkClub(clb);}
@@ -145,15 +151,61 @@ public class BookingProxy extends AbstractBookingManager{
             System.out.println("Il club non è iscritto al servizio");
             return;
         }
-        try{club.isMember(user)}
-        catch(NoMemberException e){
-            try{bm.payJoinClub(user, club);}
+        if(!club.isMember(user)) {
+            try{checkJoinClubBalance(user, club);}
             catch (LowBalanceException ex) {
                 System.out.println("Non hai abbastanza credito per associarti al club");
                 return;
             }
+            bm.addClubMember(user, club);
         }
+    }
 
-        club.addMember(user);
+    void topUpBalance(User user, int money){
+        bm.topUpUserBalance(user, money);
+    }
+
+    private ArrayList<Integer> getUserKeys(User user) throws NoActiveBookingsException {
+        ArrayList<Integer> userKeys = new ArrayList<>();
+        for(int k : bd.bookings.keySet()){
+            Booking booking = bd.bookings.get(k);
+            if(booking.containsUser(user)){
+                userKeys.add(k);
+            }
+        }
+        if(userKeys.isEmpty())
+            throw new NoActiveBookingsException();
+        return userKeys;
+    }
+
+    void displayUserBookings(User user){
+        ArrayList<Integer> keys = new ArrayList<>();
+        try{keys = getUserKeys(user);}
+        catch(NoActiveBookingsException e) {
+            System.out.println("Non hai nessuna prenotazione");
+        }
+        bm.displayBookings(keys);
+    }
+
+    @Override
+    void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) {
+        LocalDate date = LocalDate.parse(day, dtf);
+        UserClub club = null;
+        try {club = checkClub(clb);}
+        catch (WrongNameException e) {
+            System.out.println("Il club inserito non è iscritto al servizio");
+            return;
+        }
+        Field field = null;
+        try{field = checkField(club, sport, date, hour);}
+        catch(NoFreeFieldException e) {
+            System.out.println("Nessun campo disponibile");
+            return;
+        }
+        try{checkBalance(user, club);}
+        catch(LowBalanceException e){
+            System.out.println("Non hai abbastanza credito");
+        }
+        bm.createBlindBooking(sport, club, field, date, hour, user);
     }
 }

@@ -79,7 +79,7 @@ public class User extends Subject {
     }
     
     public void addFunds(int money){
-        bm.rechargeAccount(this, money);
+        bm.topUpUserBalance(this, money);
     }
     
     public void deleteBooking(int id){

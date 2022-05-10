@@ -38,33 +38,16 @@ public class BookingManager extends AbstractBookingManager {
         this.bd = new BookingDatabase();
     }
 
-    public User addUser(Person person, String username) throws WrongNameException {
-        try{checkUser(username);}
-        catch (WrongNameException e) {
-            User user = new User(username, person, this, monitor);    //TEST ME
-            users.add(user);
-            return user;
-        }
-        throw new WrongNameException();  //FIX ME
+    public User createUser(Person person, String username, BookingChecker bc){
+        User user = new User(username, person, bc, monitor);
+        bd.addUser(user);
+        return user;
     }
 
-    private User getUser(String usernm) {
-        for(User u : bd.users){
-            if(u.username.equals(usernm)){
-                return u;
-            }
-        }
-        return null;
-    }
 
-    public void deleteUser(User user) throws PendingBookingException {
-        try{getUserKeys(user);}
-        catch(NoActiveBookingsException e) {
-            users.remove(user);
-            System.out.println("Utente rimosso correttamente");
-            return;
-        }
-        throw new PendingBookingException(); //TEST ME
+    public void removeUser(User user){
+        bd.removeUser(user);
+        System.out.println("Utente rimosso correttamente");
     }
 
     private void pay(User user, UserClub club) {
@@ -89,18 +72,14 @@ public class BookingManager extends AbstractBookingManager {
         rechargeAccount(user, price);
     }
 
-    Map<Integer, Booking> getBookings() {
-        return bookings;
-    }
-
     void displayBookings(ArrayList<Integer> keys){
         for(int k : keys)
-            System.out.println(k+bd.bookings.get(k).toString());
+            System.out.println(k+bd.getBooking(k).toString());
     }
 
     public UserClub addClub(Club clb, int memberPrice, int joinClubPrice) {
         UserClub club = new UserClub(clb, this, memberPrice, joinClubPrice);
-        clubs.add(club);
+        bd.addClub(club);
         return club;
     }
 
@@ -116,17 +95,31 @@ public class BookingManager extends AbstractBookingManager {
         user.getFavouriteClubs().add(club);
     }
     
-    public void addResult(ArrayList<String> winners, int id) throws WrongNameException {
-
+    public void addResult(Sport sport, ArrayList<User> players, ArrayList<String> winners) {
+        for (User u : players){
+            if(u.record.containsKey(sport))
+                u.record.get(sport)[0]++;
+            else {
+                int[] result = new int[2];
+                u.record.put(sport, result);
+                u.record.get(sport)[0]++;
+            }
+            for(String w : winners){
+                if(w.equals(u.username)){
+                    u.record.get(sport)[1]++;
+                    u.record.get(sport)[0]--;
+                }
+            }
+        }
     }
     
     public void releaseField(int id){
-        Booking booking = bd.bookings.remove(id);
+        Booking booking = bd.getBooking(id);
+        bd.removeBooking(booking);
         booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
     }
     
     public void displayUserRecord(User user){
-
         System.out.println("Il tuo storico è: ");
         for(Sport k : user.record.keySet()){
             System.out.println(k.name + ": " + user.record.get(k)[1] + " vittorie - " + user.record.get(k)[0] +
@@ -144,29 +137,15 @@ public class BookingManager extends AbstractBookingManager {
 
 
 
-    public void displayUserBookings(User user) {
-
-    }
-
-    public void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) {
-
-    }
-    
-    public void displayBlindBookings(){
-
-    }
-
-
-
     public void addBookingPlayer(User user, int id) {
-        Booking booking = bd.bookings.get(id);
+        Booking booking = bd.getBooking(id);
         ((BlindBooking) booking).addPlayer(user);
     }
 
 
     
     void releaseSpot(User user, int id){
-        Booking booking = bd.bookings.get(id);
+        Booking booking = bd.getBooking(id);
         ((BlindBooking)booking).removePlayer(user);
         if(booking.getPlayers().isEmpty())
             releaseField(id);

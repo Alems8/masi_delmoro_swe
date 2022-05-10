@@ -5,7 +5,7 @@
  */
 package Person;
 
-import BookingManager.BookingManager;
+import BookingManager.AbstractBookingManager;
 import BookingManager.User;
 import BookingManager.WrongNameException;
 
@@ -24,7 +24,7 @@ public class Person {
         this.email = email;
     }
     
-    public User subscribe(BookingManager bm, String username) {
+    public User subscribe(AbstractBookingManager bm, String username) {
         User user = null;
         try{user = bm.addUser(this, username);}
         catch(WrongNameException e) {

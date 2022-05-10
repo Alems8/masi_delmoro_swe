@@ -5,6 +5,7 @@ import Booking.PrivateBooking;
 import Booking.BlindBooking;
 import Club.Club;
 import Club.Field;
+import Person.Person;
 import Sport.Sport;
 
 import java.lang.reflect.Array;
@@ -21,8 +22,17 @@ public class BookingChecker extends AbstractBookingManager{
         this.bm = bm;
     }
 
-    public User checkUser(String usernm) throws WrongNameException {
-        for(User u : bd.users){
+    public User addUser(Person person, String username) throws WrongNameException {
+        try{checkUser(username);}
+        catch (WrongNameException e) {
+            return bm.createUser(person, username, this);
+        }
+        throw new WrongNameException();
+    }
+
+    private User checkUser(String usernm) throws WrongNameException {
+        for(int i=0; i<bd.getUsersSize(); i++){
+            User u = bd.getUser(i);
             if(u.username.equals(usernm)){
                 return u;
             }
@@ -30,7 +40,7 @@ public class BookingChecker extends AbstractBookingManager{
         throw new WrongNameException();
     }
 
-    public void checkBalance(User user, UserClub club) throws LowBalanceException {
+    private void checkBalance(User user, UserClub club) throws LowBalanceException {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
@@ -40,7 +50,8 @@ public class BookingChecker extends AbstractBookingManager{
     }
 
     private UserClub checkClub(String clb) throws WrongNameException {
-        for(UserClub c : bd.clubs) {
+        for(int i=0; i<bd.getClubsSize(); i++) {
+            UserClub c = bd.getClub(i);
             if(c.getClub().name.equals(clb))
                 return c;
         }
@@ -49,28 +60,27 @@ public class BookingChecker extends AbstractBookingManager{
 
     private Field checkField(UserClub clb, Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
         int i = 0;
-        boolean booked = false;
+        boolean found = false;
         Club club = clb.getClub();
         Field field = null;
-        while(!booked && i < club.fields.size()){
+        while(!found && i < club.fields.size()){
             field = club.fields.get(i++);
 
-            //Controllare se la richiesta è fuori orario
             if(field.sport.equals(sport)){
                 if(!(field.timeTable.containsKey(date))){
                     ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
                     field.timeTable.put(date, updatedTimes);
-                    booked = true;
+                    found = true;
                 }
                 else {
                     ArrayList<Integer> times = field.timeTable.get(date);
                     if(times.contains(hour)){
-                        booked = true;
+                        found = true;
                     }
                 }
             }
         }
-        if(!booked)
+        if(!found)
             throw new NoFreeFieldException();
         return field;
     }
@@ -114,9 +124,9 @@ public class BookingChecker extends AbstractBookingManager{
 
     private Booking checkBooking(User user, int id) throws WrongKeyException{
         Booking booking = null;
-        for(int k : bd.bookings.keySet()){
+        for(int k : bd.getKeySet()){
             if(k == id){
-                booking = bd.bookings.get(k);
+                booking = bd.getBooking(k);
                 if(!booking.containsUser(user)){
                     throw new WrongKeyException();
                 }
@@ -168,8 +178,8 @@ public class BookingChecker extends AbstractBookingManager{
 
     private ArrayList<Integer> getUserKeys(User user) throws NoActiveBookingsException {
         ArrayList<Integer> userKeys = new ArrayList<>();
-        for(int k : bd.bookings.keySet()){
-            Booking booking = bd.bookings.get(k);
+        for(int k : bd.getKeySet()){
+            Booking booking = bd.getBooking(k);
             if(booking.containsUser(user)){
                 userKeys.add(k);
             }
@@ -212,8 +222,8 @@ public class BookingChecker extends AbstractBookingManager{
 
     void displayBlindBookings(){
         ArrayList<Integer> keys = new ArrayList<>();
-        for(int k : bd.bookings.keySet()){
-            Booking booking = bd.bookings.get(k);
+        for(int k : bd.getKeySet()){
+            Booking booking = bd.getBooking(k);
             if(booking instanceof BlindBooking && !((BlindBooking) booking).isFull())
                 keys.add(k);
         }
@@ -221,7 +231,7 @@ public class BookingChecker extends AbstractBookingManager{
     }
 
     private void checkBlindBooking(int id) throws WrongKeyException, NoFreeSpotException {
-        Booking booking = bd.bookings.get(id);
+        Booking booking = bd.getBooking(id);
         if(booking == null || booking instanceof PrivateBooking)
             throw new WrongKeyException();
         if(((BlindBooking)booking).isFull())
@@ -251,19 +261,25 @@ public class BookingChecker extends AbstractBookingManager{
         bm.addUserFavouriteClub(user, club);
     }
 
-    private checkNumPlayers()
+    private void checkNumPlayers(Sport sport, ArrayList<String> winners) throws WrongNameException {
+        if(sport.numPlayers / 2 != winners.size())
+            throw new WrongNameException();
+    }
 
     private void checkMatchPlayer(User user, ArrayList<User> players) throws WrongNameException {
         if(!players.contains(user))
             throw new WrongNameException();
     }
 
-    void addMatchResult(ArrayList<String> winners, int id) throws WrongNameException {
-        Booking booking = bd.bookings.get(id);
+    void addMatchResult(ArrayList<String> winners, int id) {
+        Booking booking = bd.getBooking(id);
         ArrayList<User> players = booking.getPlayers();
         Sport sport = booking.getField().sport;
-        if(sport.numPlayers / 2 != winners.size())
-            throw new WrongNameException();
+        try{checkNumPlayers(sport, winners);}
+        catch(WrongNameException e){
+            System.out.println("Il numero di utenti inseriti non è corretto");
+            return;
+        }
         for(String w : winners) {
             User u = null;
             try{u = checkUser(w);}
@@ -277,20 +293,19 @@ public class BookingChecker extends AbstractBookingManager{
                 return;
             }
         }
-        for (User u : players){
-            if(u.record.containsKey(sport))
-                u.record.get(sport)[0]++;
-            else {
-                int[] result = new int[2];
-                u.record.put(sport, result);
-                u.record.get(sport)[0]++;
-            }
-            for(String w : winners){
-                if(w.equals(u.username)){
-                    u.record.get(sport)[1]++;
-                    u.record.get(sport)[0]--;
-                }
-            }
+        bm.addResult(sport, players, winners);
+    }
+
+    void displayUserRecord(User user) {
+        bm.displayUserRecord(user);
+    }
+
+    void deleteUser(User user) throws PendingBookingException {
+        try{getUserKeys(user);}
+        catch(NoActiveBookingsException e) {
+            bm.removeUser(user);
+            return;
         }
+        throw new PendingBookingException(); //TEST ME
     }
 }

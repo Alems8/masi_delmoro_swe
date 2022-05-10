@@ -28,7 +28,7 @@ public class User extends Subject {
     public Map<Sport, int[]> record = new HashMap();
     //private Map<Integer,Booking> bookings = new HashMap();
 
-    public User(String username, Person person, BookingManager bm, BalanceMonitor balanceMonitor) {
+    public User(String username, Person person, AbstractBookingManager bm, BalanceMonitor balanceMonitor) {
         this.username = username;
         this.person = person;
         this.bm = bm;
@@ -110,10 +110,7 @@ public class User extends Subject {
         ArrayList<String> winners = new ArrayList<>();
         winners.add(winner1);
         winners.add(winner2);
-        try{bm.addResult(winners, key);}
-        catch(WrongNameException e) {
-            System.out.println("I nomi inseriti non sono corretti");
-        }
+        bm.addMatchResult(winners, key);
     }
 
     public void addMatchResult(String winner1, String winner2, String winner3, String winner4, String winner5, int key){
@@ -123,10 +120,7 @@ public class User extends Subject {
         winners.add(winner3);
         winners.add(winner4);
         winners.add(winner5);
-        try{bm.addResult(winners, key);}
-        catch(WrongNameException e) {
-            System.out.println("I nomi inseriti non sono corretti");
-        }
+        bm.addMatchResult(winners, key);
     }
     public void viewRecord(){
         bm.displayUserRecord(this);

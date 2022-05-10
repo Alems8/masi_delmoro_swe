@@ -29,6 +29,10 @@ public class BookingDatabase {
         return users.size();
     }
 
+    boolean containsUser(User user){
+        return users.contains(user);
+    }
+
 
     void addClub(UserClub club){
         clubs.add(club);

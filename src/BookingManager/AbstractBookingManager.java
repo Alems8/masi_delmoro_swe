@@ -1,17 +1,24 @@
 package BookingManager;
 
+import Club.Club;
 import Person.Person;
 import Sport.Sport;
 
 import java.util.ArrayList;
 
 public class AbstractBookingManager {
-    protected BookingDatabase bd;
+    BookingDatabase bd;
 
     public User addUser(Person person, String username) throws WrongNameException{
         if(bd.getUsersSize() == 0)
             return null;
         return bd.getUser(0);
+    }
+
+    public UserClub addClub(Club club, int memberPrice, int joinClubPrice){
+        if(bd.getClubsSize() == 0)
+            return null;
+        return bd.getClub(0);
     }
 
     void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users){}
@@ -20,7 +27,7 @@ public class AbstractBookingManager {
 
     void requestJoinClub(User user, String clb){}
 
-    void topUpUserBalance(User user, int money){}
+    void topUpBalance(User user, int money){}
 
     void displayUserBookings(User user){}
 

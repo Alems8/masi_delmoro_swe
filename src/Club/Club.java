@@ -5,7 +5,7 @@
  */
 package Club;
 
-import BookingManager.BookingManager;
+import BookingManager.AbstractBookingManager;
 import Sport.Sport;
 import BookingManager.UserClub;
 
@@ -39,7 +39,7 @@ public class Club {
         }
     }
 
-    public UserClub subscribe(BookingManager bm, int memberPrice, int joinClubPrice) {
+    public UserClub subscribe(AbstractBookingManager bm, int memberPrice, int joinClubPrice) {
         return bm.addClub(this, memberPrice, joinClubPrice);
     }
     

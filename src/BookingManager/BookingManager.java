@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class BookingManager extends AbstractBookingManager {
     private BalanceMonitor monitor;
-    private BookingDatabase bd;
     
     public BookingManager(BalanceMonitor monitor) {
         this.monitor = monitor;
@@ -78,7 +77,7 @@ public class BookingManager extends AbstractBookingManager {
     }
 
     public UserClub addClub(Club clb, int memberPrice, int joinClubPrice) {
-        UserClub club = new UserClub(clb, this, memberPrice, joinClubPrice);
+        UserClub club = new UserClub(clb, memberPrice, joinClubPrice);
         bd.addClub(club);
         return club;
     }

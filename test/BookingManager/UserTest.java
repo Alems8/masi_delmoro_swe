@@ -12,12 +12,11 @@ import Person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
-    private BookingManager bm;
+    private AbstractBookingManager bm;
     private UserClub club;
     public Sport padel;
     private User mark;
@@ -29,7 +28,8 @@ class UserTest {
     @BeforeEach
     void setUp() {
         BalanceMonitor monitor = new BalanceMonitor();
-        this.bm = new BookingManager(monitor);
+        BookingManager manager = new BookingManager(monitor);
+        this.bm = new BookingChecker(manager, manager.bd);
 
         this.padel = new Padel();
         Club club = new Club("Gracciano", 12, 8, 23);
@@ -78,13 +78,11 @@ class UserTest {
         eli.addFunds(5);
 
         mark.bookField(padel, "Gracciano", "03/05/2022", 15, "gigi", "eli", "pippo");
-        Map<Integer, Booking> bookings = bm.getBookings();
-        assertTrue(bookings.isEmpty());
+        assertEquals(0, bm.bd.getBookingsSize());
 
         eli.addFunds(100);
         mark.bookField(padel, "Gracciano", "03/05/2022", 15,"gigi","eli","pippo");
-        bookings = bm.getBookings();
-        assertEquals(1, bookings.size());
+        assertEquals(1, bm.bd.getBookingsSize());
     }
     @Test
     void deleteBookingTest() throws LowBalanceException {
@@ -93,18 +91,16 @@ class UserTest {
         pippo.addFunds(100);
         eli.addFunds(100);
         mark.bookField(padel, "Gracciano", "03/05/2022", 15,"gigi","eli","pippo");
-        Map<Integer, Booking> bookings = bm.getBookings();
-        assertEquals(1, bookings.size());
+        assertEquals(1, bm.bd.getBookingsSize());
         mark.deleteBooking(1);
-        assertEquals(0, bookings.size());
+        assertEquals(0, bm.bd.getBookingsSize());
     }
 
     @Test
     void blindBookTest(){
         mark.addFunds(100);
         mark.blindBook(padel,"Gracciano","04/05/2022",15);
-        Map<Integer, Booking> bookings = bm.getBookings();
-        assertTrue(bookings.get(1) instanceof BlindBooking);
+        assertTrue(bm.bd.getBooking(1) instanceof BlindBooking);
     }
 
     @Test
@@ -115,16 +111,15 @@ class UserTest {
         eli.addFunds(100);
         france.addFunds(100);
         mark.blindBook(padel,"Gracciano","04/05/2022",15);
-        Map<Integer, Booking> bookings = bm.getBookings();
 
         gigi.bookSpot(1);
-        assertEquals(2,bookings.get(1).getPlayers().size());
+        assertEquals(2,bm.bd.getBooking(1).getPlayers().size());
         pippo.bookSpot(1);
-        assertEquals(3,bookings.get(1).getPlayers().size());
+        assertEquals(3,bm.bd.getBooking(1).getPlayers().size());
         eli.bookSpot(1);
-        assertEquals(4,bookings.get(1).getPlayers().size());
+        assertEquals(4,bm.bd.getBooking(1).getPlayers().size());
         france.bookSpot(1);
-        assertEquals(4,bookings.get(1).getPlayers().size());
+        assertEquals(4,bm.bd.getBooking(1).getPlayers().size());
     }
 
     @Test
@@ -155,6 +150,6 @@ class UserTest {
     @Test
     void deleteAccountTest() {
         mark.deleteAccount();
-        assertFalse(bm.getUsers().contains(mark));
+        assertFalse(bm.bd.containsUser(mark));
     }
 }

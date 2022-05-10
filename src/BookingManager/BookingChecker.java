@@ -18,8 +18,9 @@ public class BookingChecker extends AbstractBookingManager{
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private BookingManager bm;
 
-    public BookingChecker(BookingManager bm){
+    public BookingChecker(BookingManager bm, BookingDatabase bd){
         this.bm = bm;
+        this.bd = bd;
     }
 
     public User addUser(Person person, String username) throws WrongNameException {
@@ -28,6 +29,10 @@ public class BookingChecker extends AbstractBookingManager{
             return bm.createUser(person, username, this);
         }
         throw new WrongNameException();
+    }
+
+    public UserClub addClub(Club club, int memberPrice, int joinClubPrice){
+        return bm.addClub(club, memberPrice, joinClubPrice);
     }
 
     private User checkUser(String usernm) throws WrongNameException {

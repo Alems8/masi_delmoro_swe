@@ -59,8 +59,8 @@ public class BookingDatabase {
         bookings.put(key++, booking);
     }
 
-    void removeBooking(Booking booking){
-        bookings.remove(booking);
+    void removeBooking(int id){
+        bookings.remove(id);
     }
 
     int getBookingsSize(){

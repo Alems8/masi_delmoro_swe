@@ -57,7 +57,9 @@ public class BookingManager extends AbstractBookingManager {
     }
 
     private void holdField(Field field, LocalDate date, int hour){
-        field.timeTable.get(date).remove(hour);
+        ArrayList<Integer> times = field.timeTable.get(date);
+        int k = times.indexOf(hour);
+        times.remove(k);
     }
 
     void topUpUserBalance(User user, int money){
@@ -114,7 +116,7 @@ public class BookingManager extends AbstractBookingManager {
     
     public void releaseField(int id){
         Booking booking = bd.getBooking(id);
-        bd.removeBooking(booking);
+        bd.removeBooking(id);
         booking.getField().timeTable.get(booking.getDate()).add(booking.getHour());
     }
     
@@ -154,7 +156,7 @@ public class BookingManager extends AbstractBookingManager {
         holdField(field, date, hour);
         for(User u : players)
             pay(u, clb);
-        Booking booking = new Booking(clb.getClub(), field, date, hour, players);
+        Booking booking = new PrivateBooking(clb.getClub(), field, date, hour, players);
         bd.addBooking(booking);
     }
 

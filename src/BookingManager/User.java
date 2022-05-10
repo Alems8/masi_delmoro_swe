@@ -103,7 +103,7 @@ public class User extends Subject {
     }
     
     public void addFavouriteClub(String club){
-        bm.addUserFavouriteClub(this, club);
+        bm.addFavouriteClub(this, club);
     }
     
     public void addMatchResult(String winner1, String winner2, int key){

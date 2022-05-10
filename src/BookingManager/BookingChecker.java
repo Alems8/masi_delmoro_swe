@@ -7,16 +7,17 @@ import Club.Club;
 import Club.Field;
 import Sport.Sport;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class BookingProxy extends AbstractBookingManager{
+public class BookingChecker extends AbstractBookingManager{
 
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private BookingManager bm;
 
-    public BookingProxy(BookingManager bm){
+    public BookingChecker(BookingManager bm){
         this.bm = bm;
     }
 
@@ -207,5 +208,89 @@ public class BookingProxy extends AbstractBookingManager{
             System.out.println("Non hai abbastanza credito");
         }
         bm.createBlindBooking(sport, club, field, date, hour, user);
+    }
+
+    void displayBlindBookings(){
+        ArrayList<Integer> keys = new ArrayList<>();
+        for(int k : bd.bookings.keySet()){
+            Booking booking = bd.bookings.get(k);
+            if(booking instanceof BlindBooking && !((BlindBooking) booking).isFull())
+                keys.add(k);
+        }
+        bm.displayBookings(keys);
+    }
+
+    private void checkBlindBooking(int id) throws WrongKeyException, NoFreeSpotException {
+        Booking booking = bd.bookings.get(id);
+        if(booking == null || booking instanceof PrivateBooking)
+            throw new WrongKeyException();
+        if(((BlindBooking)booking).isFull())
+            throw new NoFreeSpotException();
+    }
+
+    void requestSpot(User user, int id){
+        try {checkBlindBooking(id);}
+        catch (WrongKeyException e) {
+            System.out.print("La chiave inserita non è corretta");
+            return;
+        }
+        catch(NoFreeSpotException e) {
+            System.out.println("Nessun posto libero in questa partita");
+            return;
+        }
+        bm.addBookingPlayer(user, id);
+    }
+
+    void addFavouriteClub(User user, String clb){
+        UserClub club = null;
+        try {club = checkClub(clb);}
+        catch (WrongNameException e) {
+            System.out.println("Il club non esiste o non è registrato al servizio");
+            return;
+        }
+        bm.addUserFavouriteClub(user, club);
+    }
+
+    private checkNumPlayers()
+
+    private void checkMatchPlayer(User user, ArrayList<User> players) throws WrongNameException {
+        if(!players.contains(user))
+            throw new WrongNameException();
+    }
+
+    void addMatchResult(ArrayList<String> winners, int id) throws WrongNameException {
+        Booking booking = bd.bookings.get(id);
+        ArrayList<User> players = booking.getPlayers();
+        Sport sport = booking.getField().sport;
+        if(sport.numPlayers / 2 != winners.size())
+            throw new WrongNameException();
+        for(String w : winners) {
+            User u = null;
+            try{u = checkUser(w);}
+            catch(WrongNameException e) {
+                System.out.println("L'utente " + w + " non è registrato al servizio");
+                return;
+            }
+            try{checkMatchPlayer(u, players);}
+            catch(WrongNameException e){
+                System.out.println("L'utente " + u.username + " non ha giocato questa partita");
+                return;
+            }
+        }
+        for (User u : players){
+            if(u.record.containsKey(sport))
+                u.record.get(sport)[0]++;
+            else {
+                int[] result = new int[2];
+                u.record.put(sport, result);
+                u.record.get(sport)[0]++;
+            }
+            for(String w : winners){
+                if(w.equals(u.username)){
+                    u.record.get(sport)[1]++;
+                    u.record.get(sport)[0]--;
+                }
+            }
+        }
     }
 }

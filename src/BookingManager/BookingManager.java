@@ -112,43 +112,12 @@ public class BookingManager extends AbstractBookingManager {
         user.setBalance(user.getBalance() + money);
     }
 
-    public void addUserFavouriteClub(User user, String clb) {
-        UserClub club = null;
-        try {club = checkClub(clb);}
-        catch (WrongNameException e) {
-            System.out.println("Il club non esiste o non è registrato al servizio");
-            return;
-        }
+    public void addUserFavouriteClub(User user, UserClub club) {
         user.getFavouriteClubs().add(club);
     }
     
     public void addResult(ArrayList<String> winners, int id) throws WrongNameException {
-        Booking booking = bookings.remove(id);
-        ArrayList<User> players = booking.getPlayers();
-        Sport sport = booking.getField().sport;
-        if(sport.numPlayers / 2 != winners.size())
-            throw new WrongNameException();
-        for(String w : winners) {
-            if(!players.contains(checkUser(w)))
-                throw new WrongNameException();
-        }
-        for (User u : players){
-            if(u.record.containsKey(sport))
-                u.record.get(sport)[0]++;
-            else {
-                int[] result = new int[2];
-                u.record.put(sport, result);
-                u.record.get(sport)[0]++;
-            }
-            for(String w : winners){
-                if(w.equals(u.username)){
-                    u.record.get(sport)[1]++;
-                    u.record.get(sport)[0]--;
-                }
-            }
-        }
 
-        
     }
     
     public void releaseField(int id){
@@ -184,31 +153,16 @@ public class BookingManager extends AbstractBookingManager {
     }
     
     public void displayBlindBookings(){
-        for(int k : bookings.keySet()){
-            Booking booking = bookings.get(k);
-            if(booking instanceof BlindBooking && !((BlindBooking) booking).isFull())
-                System.out.println(k+booking.toString());
-        }
+
     }
 
-    private void checkBlindBooking(int id) throws WrongKeyException {
-        Booking booking = bookings.get(id);
-        if(booking == null || booking instanceof PrivateBooking) {
-            throw new WrongKeyException();
-        }
-    }
 
-    public void requestSpot(User user, int id) {
-        try {
-            checkBlindBooking(id);
-        } catch (WrongKeyException e) {
-            System.out.print("Non puoi prenotare un posto in questa partita");
-            return;
-        }
-        Booking booking = bookings.get(id);
+
+    public void addBookingPlayer(User user, int id) {
+        Booking booking = bd.bookings.get(id);
         ((BlindBooking) booking).addPlayer(user);
     }
-    
+
 
     
     void releaseSpot(User user, int id){

@@ -39,7 +39,8 @@ public class BlindBooking extends Booking {
             if(players.size() == field.sport.numPlayers)
                 setFull(true);
         }
-        System.out.println("Non ci sono più posti disponibili");
+        else
+            System.out.println("Non ci sono più posti disponibili");
     }
     
     public void removePlayer(User user){

@@ -20,4 +20,13 @@ public class AbstractBookingManager {
 
     void requestBlindBooking(Sport sport, String clb, String day, int hour, User user){}
 
+    void displayBlindBookings(){}
+
+    void requestSpot(User user, int id){}
+
+    void addFavouriteClub(User user, String clb){}
+
+    void addMatchResult(ArrayList<String> winners, int id) throws WrongNameException {}
+
+
 }

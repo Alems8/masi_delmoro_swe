@@ -35,7 +35,7 @@ public class BookingChecker extends AbstractBookingManager{
         return bm.addClub(club, memberPrice, joinClubPrice);
     }
 
-    private User checkUser(String usernm) throws WrongNameException {
+    User checkUser(String usernm) throws WrongNameException {
         for(int i=0; i<bd.getUsersSize(); i++){
             User u = bd.getUser(i);
             if(u.username.equals(usernm)){

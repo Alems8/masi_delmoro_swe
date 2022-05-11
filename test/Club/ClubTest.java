@@ -5,8 +5,9 @@ import BookingManager.BookingManager;
 import BookingManager.AbstractBookingManager;
 import BookingManager.BookingChecker;
 import BookingManager.User;
-import Person.Person;
 import Sport.Sport;
+import Sport.Padel;
+import Sport.Soccer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ClubTest {
     private Club clb1, clb2, clb3, clb4, clb5;
-    private Sport padel, soccer;
+    private Sport padel = new Padel();
+    private Sport soccer = new Soccer();
     private User mark, gigi, pippo;
     private AbstractBookingManager bm;
     private BookingManager manager;

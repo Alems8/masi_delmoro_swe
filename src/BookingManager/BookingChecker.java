@@ -311,6 +311,6 @@ public class BookingChecker extends AbstractBookingManager{
             bm.removeUser(user);
             return;
         }
-        throw new PendingBookingException(); //TEST ME
+        throw new PendingBookingException();
     }
 }

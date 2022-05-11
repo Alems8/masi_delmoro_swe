@@ -52,7 +52,7 @@ public class User extends Subject {
         bm.requestJoinClub(this, club);
     }
     
-    public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4) throws LowBalanceException {
+    public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4){
         ArrayList<String> players = new ArrayList<>();
         players.add(this.username);
         players.add(player2);

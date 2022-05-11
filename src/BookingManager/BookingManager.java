@@ -84,6 +84,10 @@ public class BookingManager extends AbstractBookingManager {
         return club;
     }
 
+    public int getClubsSize(){
+        return bd.getClubsSize();
+    }
+
     void addClubMember(User user, UserClub club){
         club.addMember(user);
     }

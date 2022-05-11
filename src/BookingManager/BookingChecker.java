@@ -18,9 +18,9 @@ public class BookingChecker extends AbstractBookingManager{
     private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private BookingManager bm;
 
-    public BookingChecker(BookingManager bm, BookingDatabase bd){
+    public BookingChecker(BookingManager bm){
         this.bm = bm;
-        this.bd = bd;
+        this.bd = bm.bd;
     }
 
     public User addUser(Person person, String username) throws WrongNameException {

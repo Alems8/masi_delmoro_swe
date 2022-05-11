@@ -29,7 +29,7 @@ class UserTest {
     void setUp() {
         BalanceMonitor monitor = new BalanceMonitor();
         BookingManager manager = new BookingManager(monitor);
-        this.bm = new BookingChecker(manager, manager.bd);
+        this.bm = new BookingChecker(manager);
 
         this.padel = new Padel();
         Club club = new Club("Gracciano", 12, 8, 23);

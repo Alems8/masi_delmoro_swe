@@ -53,13 +53,19 @@ class BookingCheckerTest {
     }
 
     @Test
-    void addUser() throws WrongNameException {
+    void addUser() throws WrongNameException, AlreadySubscribedException {
+        Person luigi = new Person("luigi", "bianchi", "luigibianchi@mail.it");
         bc.addUser(mattia, "matti");
         assertEquals(5,bm.bd.getUsersSize());
 
         WrongNameException thrown = assertThrows(
                 WrongNameException.class,
-                () -> bc.addUser(mattia, "matti")
+                () -> bc.addUser(luigi, "matti")
+        );
+
+        AlreadySubscribedException thrown2 = assertThrows(
+                AlreadySubscribedException.class,
+                () -> bc.addUser(mattia, "gigi")
         );
         assertTrue(thrown.getMessage().contains("Il nome inserito non è coretto"));
     }

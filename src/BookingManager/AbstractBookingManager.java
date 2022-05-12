@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AbstractBookingManager {
     BookingDatabase bd;
 
-    public User addUser(Person person, String username) throws WrongNameException{
+    public User addUser(Person person, String username) throws WrongNameException, AlreadySubscribedException {
         if(bd.getUsersSize() == 0)
             return null;
         return bd.getUser(0);

@@ -6,6 +6,7 @@
 package Person;
 
 import BookingManager.AbstractBookingManager;
+import BookingManager.AlreadySubscribedException;
 import BookingManager.User;
 import BookingManager.WrongNameException;
 
@@ -29,6 +30,9 @@ public class Person {
         try{user = bm.addUser(this, username);}
         catch(WrongNameException e) {
             System.out.println("Il nome utente non è disponibile");
+        }
+        catch(AlreadySubscribedException e) {
+            System.out.println("Sei già registrato al servizio");
         }
         return user;
     }

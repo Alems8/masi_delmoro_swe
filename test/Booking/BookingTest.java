@@ -5,25 +5,24 @@ import BookingManager.AbstractBookingManager;
 import BookingManager.BookingManager;
 import BookingManager.BookingChecker;
 import BookingManager.User;
-import BookingManager.UserClub;
 import Club.Club;
 import Person.Person;
 import Sport.Sport;
 import Sport.Padel;
-import Sport.Soccer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookingTest {
     private Sport padel = new Padel();
-    private Sport soccer = new Soccer();
     private Club clb1, clb2, clb3, clb4, clb5;
-    private UserClub userClub1, userClub2, userClub3, userClub4, userClub5;
     private User mark, gigi, pippo, eli, france;
     private BookingManager manager;
     private AbstractBookingManager bm;
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
     @BeforeEach
@@ -37,11 +36,13 @@ class BookingTest {
         this.clb4 = new Club("Certaldo", 20, 8,20);
         this.clb5 = new Club("Firenze Padel", 18, 9,18);
 
-        this.userClub1 = clb1.subscribe(bm, 10, 100);
-        this.userClub2 = clb2.subscribe(bm, 20, 200);
-        this.userClub3 = clb3.subscribe(bm, 7, 90);
-        this.userClub4 = clb4.subscribe(bm, 15, 100);
-        this.userClub5 = clb5.subscribe(bm, 12, 150);
+        clb1.subscribe(bm, 10, 100);
+        clb2.subscribe(bm, 20, 200);
+        clb3.subscribe(bm, 7, 90);
+        clb4.subscribe(bm, 15, 100);
+        clb5.subscribe(bm, 12, 150);
+
+        clb2.addField("Padel 1", padel);
 
         Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
         this.mark = marco.subscribe(bm, "mark");
@@ -54,32 +55,56 @@ class BookingTest {
         Person francesca = new Person("francesca", "landi", "francescalandi@mail.it");
         this.france = francesca.subscribe(bm, "france");
 
-        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
-
+        mark.addFunds(100);
+        gigi.addFunds(100);
+        pippo.addFunds(100);
+        eli.addFunds(100);
     }
 
     @Test
     void getClub() {
-
+        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
+        Booking booking = manager.getBooking(1);
+        assertEquals(clb2, booking.getClub());
     }
 
     @Test
     void getField() {
+        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
+        Booking booking = manager.getBooking(1);
+        assertEquals(clb2.fields.get(0), booking.getField());
     }
 
     @Test
     void getDate() {
+        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
+        Booking booking = manager.getBooking(1);
+        assertEquals("12/05/2022", booking.getDate().format(dtf));
     }
 
     @Test
     void getHour() {
+        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
+        Booking booking = manager.getBooking(1);
+        assertEquals(10, booking.getHour());
     }
 
     @Test
     void getPlayers() {
+        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
+        Booking booking = manager.getBooking(1);
+        assertEquals(mark, booking.getPlayers().get(0));
+        assertEquals(gigi, booking.getPlayers().get(1));
+        assertEquals(pippo, booking.getPlayers().get(2));
+        assertEquals(eli, booking.getPlayers().get(3));
     }
 
     @Test
     void containsUser() {
+        mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
+        Booking booking = manager.getBooking(1);
+        assertTrue(booking.containsUser(mark));
+        assertTrue(booking.containsUser(gigi));
+        assertFalse(booking.containsUser(france));
     }
 }

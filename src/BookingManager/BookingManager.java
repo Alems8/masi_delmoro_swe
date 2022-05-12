@@ -49,6 +49,10 @@ public class BookingManager extends AbstractBookingManager {
         System.out.println("Utente rimosso correttamente");
     }
 
+    public int getUsersSize() {
+        return bd.getUsersSize();
+    }
+
     private void pay(User user, UserClub club) {
         int price = club.price;
         if(club.isMember(user))
@@ -71,6 +75,10 @@ public class BookingManager extends AbstractBookingManager {
         if(club.isMember(user))
             price = club.memberPrice;
         rechargeAccount(user, price);
+    }
+
+    public Booking getBooking(int id) {
+        return bd.getBooking(id);
     }
 
     void displayBookings(ArrayList<Integer> keys){

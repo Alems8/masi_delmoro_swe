@@ -35,6 +35,10 @@ public class User extends Subject {
         addObserver(balanceMonitor);
     }
 
+    public Person getPerson() {
+        return this.person;
+    }
+
     public int getBalance() {
         return this.balance;
     }

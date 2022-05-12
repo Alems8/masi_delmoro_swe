@@ -23,7 +23,11 @@ public class BookingChecker extends AbstractBookingManager{
         this.bd = bm.bd;
     }
 
-    public User addUser(Person person, String username) throws WrongNameException {
+    public User addUser(Person person, String username) throws WrongNameException, AlreadySubscribedException {
+        try{checkPerson(person);}
+        catch(AlreadySubscribedException e){
+            throw new AlreadySubscribedException();
+        }
         try{checkUser(username);}
         catch (WrongNameException e) {
             return bm.createUser(person, username, this);
@@ -35,6 +39,13 @@ public class BookingChecker extends AbstractBookingManager{
         return bm.addClub(club, memberPrice, joinClubPrice);
     }
 
+    void checkPerson(Person person) throws AlreadySubscribedException{
+        for(int i=0; i<bd.getUsersSize(); i++){
+            User u = bd.getUser(i);
+            if(u.getPerson().equals(person))
+                throw new AlreadySubscribedException();
+        }
+    }
     User checkUser(String usernm) throws WrongNameException {
         for(int i=0; i<bd.getUsersSize(); i++){
             User u = bd.getUser(i);

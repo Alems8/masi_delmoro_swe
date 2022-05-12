@@ -148,6 +148,8 @@ public class BookingChecker extends AbstractBookingManager{
                 }
             }
         }
+        if(booking == null)
+            throw new WrongKeyException();
         return booking;
     }
 

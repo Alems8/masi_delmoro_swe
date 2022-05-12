@@ -37,7 +37,7 @@ public class BookingManager extends AbstractBookingManager {
         this.bd = new BookingDatabase();
     }
 
-    public User createUser(Person person, String username, BookingChecker bc){
+    public User createUser(Person person, String username, AbstractBookingManager bc){
         User user = new User(username, person, bc, monitor);
         bd.addUser(user);
         return user;

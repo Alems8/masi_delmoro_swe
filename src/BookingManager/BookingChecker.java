@@ -56,7 +56,7 @@ public class BookingChecker extends AbstractBookingManager{
         throw new WrongNameException();
     }
 
-    private void checkBalance(User user, UserClub club) throws LowBalanceException {
+    void checkBalance(User user, UserClub club) throws LowBalanceException {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
@@ -65,7 +65,7 @@ public class BookingChecker extends AbstractBookingManager{
             throw new LowBalanceException();
     }
 
-    private UserClub checkClub(String clb) throws WrongNameException {
+    UserClub checkClub(String clb) throws WrongNameException {
         for(int i=0; i<bd.getClubsSize(); i++) {
             UserClub c = bd.getClub(i);
             if(c.getClub().name.equals(clb))
@@ -74,7 +74,7 @@ public class BookingChecker extends AbstractBookingManager{
         throw new WrongNameException();
     }
 
-    private Field checkField(UserClub clb, Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
+    Field checkField(UserClub clb, Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
         int i = 0;
         boolean found = false;
         Club club = clb.getClub();
@@ -138,7 +138,7 @@ public class BookingChecker extends AbstractBookingManager{
         bm.createBooking(sport, club, field, date, hour, players);
     }
 
-    private Booking checkBooking(User user, int id) throws WrongKeyException{
+    Booking checkBooking(User user, int id) throws WrongKeyException{
         Booking booking = null;
         for(int k : bd.getKeySet()){
             if(k == id){
@@ -168,7 +168,7 @@ public class BookingChecker extends AbstractBookingManager{
             bm.releaseSpot(user, id);
     }
 
-    private void checkJoinClubBalance(User user, UserClub club) throws LowBalanceException {
+    void checkJoinClubBalance(User user, UserClub club) throws LowBalanceException {
         if(user.getBalance() < club.joinClubPrice)
             throw new LowBalanceException();
     }
@@ -194,7 +194,7 @@ public class BookingChecker extends AbstractBookingManager{
         bm.topUpUserBalance(user, money);
     }
 
-    private ArrayList<Integer> getUserKeys(User user) throws NoActiveBookingsException {
+    ArrayList<Integer> getUserKeys(User user) throws NoActiveBookingsException {
         ArrayList<Integer> userKeys = new ArrayList<>();
         for(int k : bd.getKeySet()){
             Booking booking = bd.getBooking(k);
@@ -248,7 +248,7 @@ public class BookingChecker extends AbstractBookingManager{
         bm.displayBookings(keys);
     }
 
-    private void checkBlindBooking(int id) throws WrongKeyException, NoFreeSpotException {
+    void checkBlindBooking(int id) throws WrongKeyException, NoFreeSpotException {
         Booking booking = bd.getBooking(id);
         if(booking == null || booking instanceof PrivateBooking)
             throw new WrongKeyException();
@@ -279,12 +279,12 @@ public class BookingChecker extends AbstractBookingManager{
         bm.addUserFavouriteClub(user, club);
     }
 
-    private void checkNumPlayers(Sport sport, ArrayList<String> winners) throws WrongNameException {
+    void checkNumPlayers(Sport sport, ArrayList<String> winners) throws WrongNameException {
         if(sport.numPlayers / 2 != winners.size())
             throw new WrongNameException();
     }
 
-    private void checkMatchPlayer(User user, ArrayList<User> players) throws WrongNameException {
+    void checkMatchPlayer(User user, ArrayList<User> players) throws WrongNameException {
         if(!players.contains(user))
             throw new WrongNameException();
     }

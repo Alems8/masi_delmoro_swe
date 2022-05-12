@@ -8,7 +8,6 @@ import Club.Field;
 import Person.Person;
 import Sport.Sport;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -135,7 +134,7 @@ public class BookingChecker extends AbstractBookingManager{
             }
             players.add(u);
         }
-        bm.createBooking(sport, club, field, date, hour, players);
+        bm.createBooking(club, field, date, hour, players);
     }
 
     Booking checkBooking(User user, int id) throws WrongKeyException{
@@ -160,12 +159,19 @@ public class BookingChecker extends AbstractBookingManager{
             System.out.println("Non hai diritti su questa prenotazione");
             return;
         }
-
+        //TODO NON SI DA I SOLDI
+        UserClub uc = null;
+        try {uc = checkClub(booking.getClub().name);}
+        catch (WrongNameException e){
+            System.out.println("Il club non esiste");
+        }
         if(booking instanceof PrivateBooking) {
             bm.releaseField(id);
+            for (User u : booking.getPlayers())
+                bm.refund(u, uc);
         }
         else
-            bm.releaseSpot(user, id);
+            bm.releaseSpot(user, id, uc);
     }
 
     void checkJoinClubBalance(User user, UserClub club) throws LowBalanceException {
@@ -235,7 +241,7 @@ public class BookingChecker extends AbstractBookingManager{
         catch(LowBalanceException e){
             System.out.println("Non hai abbastanza credito");
         }
-        bm.createBlindBooking(sport, club, field, date, hour, user);
+        bm.createBlindBooking(club, field, date, hour, user);
     }
 
     void displayBlindBookings(){
@@ -266,7 +272,13 @@ public class BookingChecker extends AbstractBookingManager{
             System.out.println("Nessun posto libero in questa partita");
             return;
         }
-        bm.addBookingPlayer(user, id);
+        //TODO CONTROLLARE QUESTO METODO
+        UserClub uc = null;
+        try{uc = checkClub(bm.getBooking(id).getClub().name);}
+        catch (WrongNameException e){
+            System.out.println("Il club non esiste");
+        }
+        bm.addBookingPlayer(user, id, uc);
     }
 
     void addFavouriteClub(User user, String clb){

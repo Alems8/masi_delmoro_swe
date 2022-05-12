@@ -17,12 +17,7 @@ import Sport.Sport;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -53,14 +48,14 @@ public class BookingManager extends AbstractBookingManager {
         return bd.getUsersSize();
     }
 
-    private void pay(User user, UserClub club) {
+    void pay(User user, UserClub club) {
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
         user.setBalance(user.getBalance() - price);
     }
 
-    private void holdField(Field field, LocalDate date, int hour){
+    void holdField(Field field, LocalDate date, int hour){
         ArrayList<Integer> times = field.timeTable.get(date);
         int k = times.indexOf(hour);
         times.remove(k);
@@ -70,7 +65,7 @@ public class BookingManager extends AbstractBookingManager {
         user.setBalance(user.getBalance() + money);
     }
 
-    private void refund(User user, UserClub club){
+    void refund(User user, UserClub club){
         int price = club.price;
         if(club.isMember(user))
             price = club.memberPrice;
@@ -110,13 +105,11 @@ public class BookingManager extends AbstractBookingManager {
     
     public void addResult(Sport sport, ArrayList<User> players, ArrayList<String> winners) {
         for (User u : players){
-            if(u.record.containsKey(sport))
-                u.record.get(sport)[0]++;
-            else {
+            if(!(u.record.containsKey(sport))) {
                 int[] result = new int[2];
                 u.record.put(sport, result);
-                u.record.get(sport)[0]++;
             }
+            u.record.get(sport)[0]++;
             for(String w : winners){
                 if(w.equals(u.username)){
                     u.record.get(sport)[1]++;
@@ -149,30 +142,30 @@ public class BookingManager extends AbstractBookingManager {
     }
 
 
-
-    public void addBookingPlayer(User user, int id) {
+    public void addBookingPlayer(User user, int id, UserClub uc) { //TODO NON PAGAVANO CONTROLLARE SE VA BENE
         Booking booking = bd.getBooking(id);
+        pay(user,uc);
         ((BlindBooking) booking).addPlayer(user);
     }
 
 
-    
-    void releaseSpot(User user, int id){
+    void releaseSpot(User user, int id, UserClub uc){
         Booking booking = bd.getBooking(id);
         ((BlindBooking)booking).removePlayer(user);
+        refund(user, uc);
         if(booking.getPlayers().isEmpty())
             releaseField(id);
     }
 
-    void createBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
-        holdField(field, date, hour);
-        for(User u : players)
+    void createBooking(UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
+        holdField(field, date, hour);//TODO I SOLDIIIIIII
+        for(User u : players) //TODO DIMMI SE TI PIACE COSI. CONTROLLA TUTTI I TODO
             pay(u, clb);
         Booking booking = new PrivateBooking(clb.getClub(), field, date, hour, players);
         bd.addBooking(booking);
     }
 
-    void createBlindBooking(Sport sport, UserClub clb, Field field, LocalDate date, int hour, User user){
+    void createBlindBooking(UserClub clb, Field field, LocalDate date, int hour, User user){
         holdField(field, date, hour);
         pay(user, clb);
         ArrayList<User> players = new ArrayList<>();

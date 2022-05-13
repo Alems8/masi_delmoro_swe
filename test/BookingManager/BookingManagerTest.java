@@ -151,11 +151,11 @@ class BookingManagerTest {
         bm.topUpUserBalance(pippo,100);
         bm.topUpUserBalance(eli,100);
 
-        bm.createBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
+        bm.createBooking(userClub, gracciano.fields.get(0), LocalDate.parse("14/05/2022",
                         DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,players);
         bm.releaseField(1);
 
-        assertTrue(gracciano.fields.get(0).timeTable.get(LocalDate.parse("13/05/2022",
+        assertTrue(gracciano.fields.get(0).timeTable.get(LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") )).contains(15));
     }
 
@@ -175,7 +175,7 @@ class BookingManagerTest {
     void addBookingPlayer() {
         bm.topUpUserBalance(mark,100);
         bm.topUpUserBalance(eli,100);
-        bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
+        bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,mark);
         bm.addBookingPlayer(eli, 1);
         assertEquals(2,bm.bd.getBooking(1).getPlayers().size());
@@ -185,7 +185,7 @@ class BookingManagerTest {
     void releaseSpot() {
         bm.topUpUserBalance(mark,100);
         bm.topUpUserBalance(eli,100);
-        bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
+        bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,mark);
         bm.addBookingPlayer(eli,1);
         assertEquals(85,mark.getBalance());
@@ -211,7 +211,7 @@ class BookingManagerTest {
         bm.topUpUserBalance(pippo,100);
         bm.topUpUserBalance(eli,100);
 
-        bm.createBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
+        bm.createBooking(userClub, gracciano.fields.get(0), LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,players);
 
         assertEquals(85,mark.getBalance());
@@ -226,7 +226,7 @@ class BookingManagerTest {
     void createBlindBooking() {
         bm.topUpUserBalance(mark,100);
 
-        bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
+        bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,mark);
 
         assertEquals(85,mark.getBalance());
@@ -245,10 +245,10 @@ class BookingManagerTest {
 
     @Test
     void holdField(){
-        bm.holdField(gracciano.fields.get(0), LocalDate.parse("13/05/2022",
+        bm.holdField(gracciano.fields.get(0), LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15);
 
-        assertFalse(gracciano.fields.get(0).timeTable.get(LocalDate.parse("13/05/2022",
+        assertFalse(gracciano.fields.get(0).timeTable.get(LocalDate.parse("14/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy"))).contains(15));
     }
 
@@ -258,4 +258,13 @@ class BookingManagerTest {
         assertEquals(15, mark.getBalance());
     }
 
+    @Test
+    void getUser() {
+        assertEquals(mark, bm.getUser(0));
+    }
+
+    @Test
+    void getClub() {
+        assertEquals(userClub, bm.getClub(0));
+    }
 }

@@ -6,7 +6,7 @@ import Observer.Subject;
 import Person.Person;
 
 public class MembersMonitor implements Observer {
-    private BookingManager bm;
+    private final BookingManager bm;
 
     MembersMonitor(BookingManager bm) {
         this.bm = bm;

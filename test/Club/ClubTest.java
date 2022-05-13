@@ -19,7 +19,7 @@ class ClubTest {
     private final Sport soccer = new Soccer();
     private AbstractBookingManager bm;
     private BookingManager manager;
-    private Person mattia;
+    private Person mattia, marco;
 
 
     @BeforeEach
@@ -34,6 +34,7 @@ class ClubTest {
         this.clb5 = new Club("Firenze Padel", 8, 19,8);
 
         this.mattia = new Person("mattia", "verdi", "mattiaverdi@mail.it");
+        this.marco = new Person("marco", "rossi", "marcorossi@mail.it");
 
     }
     @Test
@@ -59,12 +60,30 @@ class ClubTest {
     @Test
     void addMember() {
         clb1.addMember(mattia);
-        clb1.isMember(mattia);
+        assertTrue(clb1.isMember(mattia));
+    }
+
+    @Test
+    void getMember() {
+        clb1.addMember(mattia);
+        clb1.addMember(marco);
+        assertEquals(mattia, clb1.getMember(0));
+        assertEquals(marco, clb1.getMember(1));
+    }
+
+    @Test
+    void getMembersSize() {
+        assertEquals(0, clb1.getMembersSize());
+        clb1.addMember(mattia);
+        clb1.addMember(marco);
+        assertEquals(2, clb1.getMembersSize());
     }
 
     @Test
     void isMember() {
         clb1.addMember(mattia);
-        clb1.isMember(mattia);
+        assertTrue(clb1.isMember(mattia));
     }
+
+
 }

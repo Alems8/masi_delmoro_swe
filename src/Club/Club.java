@@ -6,6 +6,7 @@
 package Club;
 
 import BookingManager.AbstractBookingManager;
+import Observer.Subject;
 import Person.Person;
 import Sport.Sport;
 import BookingManager.UserClub;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  *
  * @author Alessio
  */
-public class Club {
+public class Club extends Subject {
     public String name;
     public ArrayList<Field> fields = new ArrayList<>();
     int opening;
@@ -51,6 +52,15 @@ public class Club {
 
     public void addMember(Person person){
         members.add(person);
+        notifyObservers(members);
+    }
+
+    public Person getMember(int id){
+        return members.get(id);
+    }
+
+    public int getMembersSize(){
+        return members.size();
     }
 
     public boolean isMember(Person person){

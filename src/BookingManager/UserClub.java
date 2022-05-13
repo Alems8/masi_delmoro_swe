@@ -1,6 +1,7 @@
 package BookingManager;
 
 import Club.Club;
+import Person.Person;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,14 @@ public class UserClub {
 
     public Club getClub() {
         return club;
+    }
+
+    public User getMember(int id){
+        return members.get(id);
+    }
+
+    public int getMembersSize(){
+        return members.size();
     }
 
     public void addMember(User user){

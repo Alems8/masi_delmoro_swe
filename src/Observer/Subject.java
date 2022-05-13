@@ -1,7 +1,5 @@
 package Observer;
 
-import Observer.Observer;
-
 import java.util.ArrayList;
 
 public abstract class Subject {

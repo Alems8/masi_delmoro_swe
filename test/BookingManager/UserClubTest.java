@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserClubTest {
     private Club clb1, clb2, clb3, clb4, clb5;
     private UserClub userClub1, userClub2, userClub3, userClub4, userClub5;
-    private User mark;
+    private User mark, gigi;
 
     @BeforeEach
     void setUp() {
@@ -31,6 +31,8 @@ class UserClubTest {
 
         Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
         this.mark = marco.subscribe(bm, "mark");
+        Person luigi = new Person("luigi", "bianchi", "luigibianchi@mail.it");
+        this.gigi = luigi.subscribe(bm, "gigi");
 
     }
 
@@ -61,5 +63,23 @@ class UserClubTest {
         assertTrue(userClub1.isMember(mark));
     }
 
+    @Test
+    void getMember() {
+        mark.addFunds(200);
+        mark.joinClub("Gracciano");
+        gigi.addFunds(200);
+        gigi.joinClub("Gracciano");
+        assertEquals(mark, userClub2.getMember(0));
+        assertEquals(gigi, userClub2.getMember(1));
+    }
 
+    @Test
+    void getMembersSize() {
+        assertEquals(0, userClub2.getMembersSize());
+        mark.addFunds(200);
+        mark.joinClub("Gracciano");
+        gigi.addFunds(200);
+        gigi.joinClub("Gracciano");
+        assertEquals(2, userClub2.getMembersSize());
+    }
 }

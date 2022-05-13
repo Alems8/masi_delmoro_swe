@@ -13,6 +13,7 @@ import Club.Club;
 import Club.Field;
 import Person.Person;
 import Sport.Sport;
+import Observer.Observer;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -45,6 +46,10 @@ public class BookingManager extends AbstractBookingManager {
 
     public int getUsersSize() {
         return bd.getUsersSize();
+    }
+
+    public User getUser(int id){
+        return bd.getUser(id);
     }
 
     void pay(User user, Club club, Field field) {
@@ -81,12 +86,18 @@ public class BookingManager extends AbstractBookingManager {
 
     public UserClub addClub(Club clb, int joinClubPrice) {
         UserClub club = new UserClub(clb, joinClubPrice);
+        Observer monitor = new MembersMonitor(this);
+        clb.addObserver(monitor);
         bd.addClub(club);
         return club;
     }
 
     public int getClubsSize(){
         return bd.getClubsSize();
+    }
+
+    public UserClub getClub(int id){
+        return bd.getClub(id);
     }
 
     void addClubMember(User user, UserClub club){

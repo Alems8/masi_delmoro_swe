@@ -53,11 +53,11 @@ public class Masi_delmoro_swe {
         clb5.addField("Padel 2", padel,12);
         clb5.addField("Padel 3", padel,15);
         
-        clb1.subscribe(bm,100);
-        clb2.subscribe(bm, 200);
-        clb3.subscribe(bm, 120);
-        clb4.subscribe(bm, 150);
-        clb5.subscribe(bm, 90);
+        UserClub userClub1 = clb1.subscribe(bm,100);
+        UserClub userClub2 = clb2.subscribe(bm, 200);
+        UserClub userClub3 = clb3.subscribe(bm, 120);
+        UserClub userClub4 = clb4.subscribe(bm, 150);
+        UserClub userClub5 = clb5.subscribe(bm, 90);
         
         Person mattia = new Person("Mattia","Rossi","matt.rossi@gmail.com");
         Person francesco = new Person("Francesco","Rossi","fra.rossi@gmail.com");
@@ -99,5 +99,8 @@ public class Masi_delmoro_swe {
         cami.addMatchResult("eli", "ale", 1);
         cami.viewRecord();
         ale.viewRecord();
+
+        clb1.addMember(federica);
+        System.out.println(userClub1.getMember(0).username);
     }
 }

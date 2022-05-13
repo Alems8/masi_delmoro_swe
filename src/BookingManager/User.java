@@ -6,8 +6,7 @@
 package BookingManager;
 
 
-import BalanceMonitor.BalanceMonitor;
-import BalanceMonitor.Subject;
+import Observer.Subject;
 import Sport.Sport;
 import Person.Person;
 

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BalanceMonitor;
+package BookingManager;
 
-import BookingManager.User;
-
+import Observer.Observer;
+import Observer.Subject;
 
 /**
  *

@@ -1,6 +1,6 @@
 package Person;
 
-import BalanceMonitor.BalanceMonitor;
+import BookingManager.BalanceMonitor;
 import BookingManager.BookingManager;
 import BookingManager.AbstractBookingManager;
 import BookingManager.BookingChecker;

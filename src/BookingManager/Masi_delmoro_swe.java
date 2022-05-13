@@ -5,13 +5,13 @@
  */
 package BookingManager;
 
-import BalanceMonitor.BalanceMonitor;
-import BookingManager.BookingManager;
 import Club.Club;
 import Person.Person;
 import Sport.Sport;
 import Sport.Padel;
 import Sport.Soccer;
+
+import java.awt.print.Book;
 
 /**
  *
@@ -29,9 +29,9 @@ public class Masi_delmoro_swe {
         Sport soccer = new Soccer();
         Sport padel = new Padel();
         BalanceMonitor monitor = new BalanceMonitor();
-        
-        BookingManager bm = new BookingManager(monitor);
-        Club clb1 = new Club("LaFiorita", 15, 9,5);
+        BookingManager manager = new BookingManager(monitor);
+        AbstractBookingManager bm = new BookingChecker(manager);
+        Club clb1 = new Club("LaFiorita", 9, 23,5);
         Club clb2 = new Club("Gracciano", 30, 10,5);
         Club clb3 = new Club("UPP", 10, 7,5);
         Club clb4 = new Club("Certaldo", 20, 8,5);
@@ -88,13 +88,13 @@ public class Masi_delmoro_swe {
         matti.addFunds(250);
         france.addFunds(500);
         ale.addFunds(20);
-        eli.addFunds(25);
+        eli.addFunds(24);
         cami.addFunds(500);
         marcoRos.addFunds(100);
         lore.addFunds(600);
         matte.addFunds(100);
         
-        matti.bookField(padel, "Firenze Padel", "26/03/2022", 16,"cami","eli","ale");
+        matti.bookField(padel, "LaFiorita", "26/03/2022", 16,"cami","eli","ale");
         cami.viewBookings();
         cami.addMatchResult("eli", "ale", 1);
         cami.viewRecord();

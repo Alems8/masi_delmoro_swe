@@ -1,6 +1,6 @@
 package Booking;
 
-import BalanceMonitor.BalanceMonitor;
+import BookingManager.BalanceMonitor;
 import BookingManager.AbstractBookingManager;
 import BookingManager.BookingManager;
 import BookingManager.BookingChecker;

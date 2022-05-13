@@ -1,4 +1,6 @@
-package BalanceMonitor;
+package Observer;
+
+import Observer.Observer;
 
 import java.util.ArrayList;
 

@@ -15,7 +15,7 @@ public class AbstractBookingManager {
         return bd.getUser(0);
     }
 
-    public UserClub addClub(Club club, int memberPrice, int joinClubPrice){
+    public UserClub addClub(Club club, int joinClubPrice){
         if(bd.getClubsSize() == 0)
             return null;
         return bd.getClub(0);

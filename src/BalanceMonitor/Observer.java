@@ -5,7 +5,6 @@
  */
 package BalanceMonitor;
 
-import BookingManager.User;
 
 /**
  *

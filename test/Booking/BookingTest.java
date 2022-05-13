@@ -17,32 +17,25 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookingTest {
-    private Sport padel = new Padel();
-    private Club clb1, clb2, clb3, clb4, clb5;
+    private final Sport padel = new Padel();
+    private Club  clb2;
     private User mark, gigi, pippo, eli, france;
     private BookingManager manager;
-    private AbstractBookingManager bm;
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
     @BeforeEach
     void setUp() {
         BalanceMonitor monitor = new BalanceMonitor();
         this.manager = new BookingManager(monitor);
-        this.bm = new BookingChecker(manager);
-        this.clb1 = new Club("LaFiorita", 15, 9,19);
-        this.clb2 = new Club("Gracciano", 30, 10,23);
-        this.clb3 = new Club("UPP", 10, 7,22);
-        this.clb4 = new Club("Certaldo", 20, 8,20);
-        this.clb5 = new Club("Firenze Padel", 18, 9,18);
+        AbstractBookingManager bm = new BookingChecker(manager);
 
-        clb1.subscribe(bm, 10, 100);
-        clb2.subscribe(bm, 20, 200);
-        clb3.subscribe(bm, 7, 90);
-        clb4.subscribe(bm, 15, 100);
-        clb5.subscribe(bm, 12, 150);
+        this.clb2 = new Club("Gracciano", 10, 18,3);
 
-        clb2.addField("Padel 1", padel);
+        clb2.subscribe(bm, 200);
+
+        clb2.addField("Padel 1", padel,15);
 
         Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
         this.mark = marco.subscribe(bm, "mark");

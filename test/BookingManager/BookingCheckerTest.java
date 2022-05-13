@@ -51,9 +51,9 @@ class BookingCheckerTest {
         this.soccer = new Soccer();
         this.padel = new Padel();
 
-        this.club = new Club("Firenze Padel", 18, 9,18);
-        club.addField("Padel 2", padel);
-        this.userClub = club.subscribe(bc, 15,100 );
+        this.club = new Club("Firenze Padel", 9, 18,3);
+        club.addField("Padel 2", padel,15);
+        this.userClub = club.subscribe(bc, 100 );
     }
 
     @Test
@@ -77,8 +77,8 @@ class BookingCheckerTest {
 
     @Test
     void addClub() {
-        Club clb = new Club("Gracciano", 15, 9,18);
-        bc.addClub(clb, 15, 100);
+        Club clb = new Club("Gracciano", 9, 16,8);
+        bc.addClub(clb, 100);
         assertEquals(2,bm.bd.getClubsSize());
     }
 
@@ -138,7 +138,7 @@ class BookingCheckerTest {
     @Test
     void requestBlindBooking() {
         mark.addFunds(100);
-        bc.requestBlindBooking(padel,"Firenze Padel", "11/05/2022",14, mark);
+        bc.requestBlindBooking(padel,"Firenze Padel", "12/05/2022",14, mark);
         assertEquals(1, bm.bd.getBookingsSize());
         assertTrue(bm.bd.getBooking(1) instanceof BlindBooking);
 
@@ -233,11 +233,11 @@ class BookingCheckerTest {
     void checkBalance() throws LowBalanceException {
         LowBalanceException thrown = assertThrows(
                 LowBalanceException.class,
-                () -> ((BookingChecker)bc).checkBalance(mark, userClub)
+                () -> ((BookingChecker)bc).checkBalance(mark,userClub, club.fields.get(0))
         );
         assertTrue(thrown.getMessage().contains("Non hai abbastanza fondi per una prenotazione"));
         bc.topUpBalance(mark,100);
-        ((BookingChecker)bc).checkBalance(mark, userClub);
+        ((BookingChecker)bc).checkBalance(mark, userClub, club.fields.get(0));
     }
 
     @Test
@@ -295,7 +295,7 @@ class BookingCheckerTest {
     }
 
     @Test
-    void checkJoinClubBalance() throws  LowBalanceException{
+    void checkJoinClubBalance(){
         LowBalanceException thrown = assertThrows(
                 LowBalanceException.class,
                 () -> ((BookingChecker)bc).checkJoinClubBalance(mark, userClub)

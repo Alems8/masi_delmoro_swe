@@ -6,6 +6,7 @@
 package Club;
 
 import BookingManager.AbstractBookingManager;
+import Person.Person;
 import Sport.Sport;
 import BookingManager.UserClub;
 
@@ -18,14 +19,15 @@ import java.util.ArrayList;
 public class Club {
     public String name;
     public ArrayList<Field> fields = new ArrayList<>();
-    public int price;
     int opening;
     int closure;
+    public int memberDiscount;
     public ArrayList<Integer> times = new ArrayList<>();
+    private final ArrayList<Person> members = new ArrayList<>();
 
-    public Club(String name, int price, int opening, int closure) {
+    public Club(String name, int opening, int closure, int memberDiscount) {
         this.name = name;
-        this.price = price;
+        this.memberDiscount = memberDiscount;
         this.opening = opening;
         this.closure = closure;
         int fakeClosure = closure;
@@ -39,11 +41,20 @@ public class Club {
         }
     }
 
-    public UserClub subscribe(AbstractBookingManager bm, int memberPrice, int joinClubPrice) {
-        return bm.addClub(this, memberPrice, joinClubPrice);
+    public UserClub subscribe(AbstractBookingManager bm,  int joinClubPrice) {
+        return bm.addClub(this, joinClubPrice);
     }
     
-    public void addField(String name, Sport sport) {
-        fields.add(new Field(name, sport, new ArrayList<>(times)));
+    public void addField(String name, Sport sport, int price) {
+        fields.add(new Field(name, sport, new ArrayList<>(times), price));
     }
+
+    public void addMember(Person person){
+        members.add(person);
+    }
+
+    public boolean isMember(Person person){
+        return members.contains(person);
+    }
+
 }

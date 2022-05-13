@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class BookingChecker extends AbstractBookingManager{
 
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private BookingManager bm;
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final BookingManager bm;
 
     public BookingChecker(BookingManager bm){
         this.bm = bm;
@@ -34,8 +34,8 @@ public class BookingChecker extends AbstractBookingManager{
         throw new WrongNameException();
     }
 
-    public UserClub addClub(Club club, int memberPrice, int joinClubPrice){
-        return bm.addClub(club, memberPrice, joinClubPrice);
+    public UserClub addClub(Club club, int joinClubPrice){
+        return bm.addClub(club, joinClubPrice);
     }
 
     void checkPerson(Person person) throws AlreadySubscribedException{
@@ -55,10 +55,10 @@ public class BookingChecker extends AbstractBookingManager{
         throw new WrongNameException();
     }
 
-    void checkBalance(User user, UserClub club) throws LowBalanceException {
-        int price = club.price;
+    void checkBalance(User user, UserClub club, Field field) throws LowBalanceException {
+        int price = field.price;
         if(club.isMember(user))
-            price = club.memberPrice;
+            price = price - price*(club.getClub().memberDiscount)/100;
 
         if(user.getBalance() < price)
             throw new LowBalanceException();
@@ -85,13 +85,11 @@ public class BookingChecker extends AbstractBookingManager{
                 if(!(field.timeTable.containsKey(date))){
                     ArrayList<Integer> updatedTimes = new ArrayList<>(club.times);
                     field.timeTable.put(date, updatedTimes);
-                    found = true;
                 }
-                else {
-                    ArrayList<Integer> times = field.timeTable.get(date);
-                    if(times.contains(hour)){
-                        found = true;
-                    }
+
+                ArrayList<Integer> times = field.timeTable.get(date);
+                if(times.contains(hour)){
+                    found = true;
                 }
             }
         }
@@ -103,14 +101,14 @@ public class BookingChecker extends AbstractBookingManager{
     @Override
     void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {
         LocalDate date = LocalDate.parse(day, dtf);
-        UserClub club = null;
+        UserClub club;
         try{club = checkClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non esiste o non è registrato al servizio");
             return;
         }
 
-        Field field = null;
+        Field field;
         try{field = checkField(club, sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
@@ -120,14 +118,14 @@ public class BookingChecker extends AbstractBookingManager{
         int size = sport.numPlayers;
         ArrayList<User> players = new ArrayList<>();
         for(int i=0; i<size; i++){
-            User u = null;
+            User u;
             try {u = checkUser(users.get(i));}
             catch(WrongNameException e) {
                 System.out.println("L'utente inserito non esiste");
                 return;
             }
 
-            try{checkBalance(u, club);}
+            try{checkBalance(u, club, field);}
             catch(LowBalanceException e){
                 System.out.println("L'utente non ha credito sufficiente");
                 return;
@@ -153,25 +151,21 @@ public class BookingChecker extends AbstractBookingManager{
     }
 
     void deleteUserBooking(User user, int id) {
-        Booking booking = null;
+        Booking booking;
         try {booking = checkBooking(user, id);}
         catch(WrongKeyException e) {
             System.out.println("Non hai diritti su questa prenotazione");
             return;
         }
         //TODO NON SI DA I SOLDI
-        UserClub uc = null;
-        try {uc = checkClub(booking.getClub().name);}
-        catch (WrongNameException e){
-            System.out.println("Il club non esiste");
-        }
+
         if(booking instanceof PrivateBooking) {
             bm.releaseField(id);
             for (User u : booking.getPlayers())
-                bm.refund(u, uc);
+                bm.refund(u, booking.getClub(), booking.getField());
         }
         else
-            bm.releaseSpot(user, id, uc);
+            bm.releaseSpot(user, id);
     }
 
     void checkJoinClubBalance(User user, UserClub club) throws LowBalanceException {
@@ -180,7 +174,7 @@ public class BookingChecker extends AbstractBookingManager{
     }
 
     void requestJoinClub(User user, String clb){
-        UserClub club = null;
+        UserClub club;
         try{club = checkClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non è iscritto al servizio");
@@ -225,19 +219,19 @@ public class BookingChecker extends AbstractBookingManager{
     @Override
     void requestBlindBooking(Sport sport, String clb, String day, int hour, User user) {
         LocalDate date = LocalDate.parse(day, dtf);
-        UserClub club = null;
+        UserClub club;
         try {club = checkClub(clb);}
         catch (WrongNameException e) {
             System.out.println("Il club inserito non è iscritto al servizio");
             return;
         }
-        Field field = null;
+        Field field;
         try{field = checkField(club, sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
             return;
         }
-        try{checkBalance(user, club);}
+        try{checkBalance(user, club, field);}
         catch(LowBalanceException e){
             System.out.println("Non hai abbastanza credito");
         }
@@ -273,16 +267,11 @@ public class BookingChecker extends AbstractBookingManager{
             return;
         }
         //TODO CONTROLLARE QUESTO METODO
-        UserClub uc = null;
-        try{uc = checkClub(bm.getBooking(id).getClub().name);}
-        catch (WrongNameException e){
-            System.out.println("Il club non esiste");
-        }
-        bm.addBookingPlayer(user, id, uc);
+        bm.addBookingPlayer(user, id);
     }
 
     void addFavouriteClub(User user, String clb){
-        UserClub club = null;
+        UserClub club;
         try {club = checkClub(clb);}
         catch (WrongNameException e) {
             System.out.println("Il club non esiste o non è registrato al servizio");
@@ -311,7 +300,7 @@ public class BookingChecker extends AbstractBookingManager{
             return;
         }
         for(String w : winners) {
-            User u = null;
+            User u;
             try{u = checkUser(w);}
             catch(WrongNameException e) {
                 System.out.println("L'utente " + w + " non è registrato al servizio");

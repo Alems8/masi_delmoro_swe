@@ -31,33 +31,33 @@ public class Masi_delmoro_swe {
         BalanceMonitor monitor = new BalanceMonitor();
         
         BookingManager bm = new BookingManager(monitor);
-        Club clb1 = new Club("LaFiorita", 15, 9,19);
-        Club clb2 = new Club("Gracciano", 30, 10,23);
-        Club clb3 = new Club("UPP", 10, 7,22);
-        Club clb4 = new Club("Certaldo", 20, 8,20);
-        Club clb5 = new Club("Firenze Padel", 18, 9,18);
+        Club clb1 = new Club("LaFiorita", 15, 9,5);
+        Club clb2 = new Club("Gracciano", 30, 10,5);
+        Club clb3 = new Club("UPP", 10, 7,5);
+        Club clb4 = new Club("Certaldo", 20, 8,5);
+        Club clb5 = new Club("Firenze Padel", 18, 9,8);
         
-        clb1.addField("Soccer 1", soccer);
-        clb1.addField("Padel 2", padel);
-        clb1.addField("Padel 3", padel);
-        clb2.addField("Soccer 1", soccer);
-        clb2.addField("Padel 2", padel);
-        clb3.addField("Soccer 1", soccer);
-        clb4.addField("Soccer 1", soccer);
-        clb4.addField("Soccer 2", soccer);
-        clb4.addField("Padel 3", padel);
-        clb4.addField("Padel 4", padel);
-        clb4.addField("Padel 5", padel);
-        clb4.addField("Padel 6", padel);
-        clb5.addField("Padel 1", padel);
-        clb5.addField("Padel 2", padel);
-        clb5.addField("Padel 3", padel);
+        clb1.addField("Soccer 1", soccer,8);
+        clb1.addField("Padel 2", padel,15);
+        clb1.addField("Padel 3", padel,15);
+        clb2.addField("Soccer 1", soccer,8);
+        clb2.addField("Padel 2", padel,15);
+        clb3.addField("Soccer 1", soccer,8);
+        clb4.addField("Soccer 1", soccer,8);
+        clb4.addField("Soccer 2", soccer,8);
+        clb4.addField("Padel 3", padel,8);
+        clb4.addField("Padel 4", padel,12);
+        clb4.addField("Padel 5", padel,12);
+        clb4.addField("Padel 6", padel,12);
+        clb5.addField("Padel 1", padel,12);
+        clb5.addField("Padel 2", padel,12);
+        clb5.addField("Padel 3", padel,15);
         
-        clb1.subscribe(bm, 10, 100);
-        clb2.subscribe(bm, 20, 200);
-        clb3.subscribe(bm, 8, 120);
-        clb4.subscribe(bm, 15, 150);
-        clb5.subscribe(bm, 15, 90);
+        clb1.subscribe(bm,100);
+        clb2.subscribe(bm, 200);
+        clb3.subscribe(bm, 120);
+        clb4.subscribe(bm, 150);
+        clb5.subscribe(bm, 90);
         
         Person mattia = new Person("Mattia","Rossi","matt.rossi@gmail.com");
         Person francesco = new Person("Francesco","Rossi","fra.rossi@gmail.com");

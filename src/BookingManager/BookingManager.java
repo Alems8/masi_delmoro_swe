@@ -25,7 +25,7 @@ import java.time.LocalDate;
  * @author Alessio
  */
 public class BookingManager extends AbstractBookingManager {
-    private BalanceMonitor monitor;
+    private final BalanceMonitor monitor;
     
     public BookingManager(BalanceMonitor monitor) {
         this.monitor = monitor;
@@ -48,27 +48,26 @@ public class BookingManager extends AbstractBookingManager {
         return bd.getUsersSize();
     }
 
-    void pay(User user, UserClub club) {
-        int price = club.price;
-        if(club.isMember(user))
-            price = club.memberPrice;
+    void pay(User user, Club club, Field field) {
+        int price = field.price;
+        if(club.isMember(user.getPerson()))
+            price = price - price*club.memberDiscount/100;
         user.setBalance(user.getBalance() - price);
     }
 
     void holdField(Field field, LocalDate date, int hour){
         ArrayList<Integer> times = field.timeTable.get(date);
-        int k = times.indexOf(hour);
-        times.remove(k);
+        times.remove((Integer) hour);
     }
 
     void topUpUserBalance(User user, int money){
         user.setBalance(user.getBalance() + money);
     }
 
-    void refund(User user, UserClub club){
-        int price = club.price;
-        if(club.isMember(user))
-            price = club.memberPrice;
+    void refund(User user, Club club, Field field){
+        int price = field.price;
+        if(club.isMember(user.getPerson()))
+            price = price - price*club.memberDiscount/100;
         rechargeAccount(user, price);
     }
 
@@ -81,8 +80,8 @@ public class BookingManager extends AbstractBookingManager {
             System.out.println(k+bd.getBooking(k).toString());
     }
 
-    public UserClub addClub(Club clb, int memberPrice, int joinClubPrice) {
-        UserClub club = new UserClub(clb, memberPrice, joinClubPrice);
+    public UserClub addClub(Club clb, int joinClubPrice) {
+        UserClub club = new UserClub(clb, joinClubPrice);
         bd.addClub(club);
         return club;
     }
@@ -142,17 +141,17 @@ public class BookingManager extends AbstractBookingManager {
     }
 
 
-    public void addBookingPlayer(User user, int id, UserClub uc) { //TODO NON PAGAVANO CONTROLLARE SE VA BENE
+    public void addBookingPlayer(User user, int id) { //TODO NON PAGAVANO CONTROLLARE SE VA BENE
         Booking booking = bd.getBooking(id);
-        pay(user,uc);
+        pay(user,booking.getClub(), booking.getField());
         ((BlindBooking) booking).addPlayer(user);
     }
 
 
-    void releaseSpot(User user, int id, UserClub uc){
+    void releaseSpot(User user, int id){
         Booking booking = bd.getBooking(id);
         ((BlindBooking)booking).removePlayer(user);
-        refund(user, uc);
+        refund(user, booking.getClub(), booking.getField());
         if(booking.getPlayers().isEmpty())
             releaseField(id);
     }
@@ -160,14 +159,14 @@ public class BookingManager extends AbstractBookingManager {
     void createBooking(UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
         holdField(field, date, hour);//TODO I SOLDIIIIIII
         for(User u : players) //TODO DIMMI SE TI PIACE COSI. CONTROLLA TUTTI I TODO
-            pay(u, clb);
+            pay(u, clb.getClub(), field);
         Booking booking = new PrivateBooking(clb.getClub(), field, date, hour, players);
         bd.addBooking(booking);
     }
 
     void createBlindBooking(UserClub clb, Field field, LocalDate date, int hour, User user){
         holdField(field, date, hour);
-        pay(user, clb);
+        pay(user, clb.getClub(), field);
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
         Booking booking = new BlindBooking(clb.getClub(), field, date, hour, players);

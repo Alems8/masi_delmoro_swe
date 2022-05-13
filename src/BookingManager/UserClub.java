@@ -5,17 +5,13 @@ import Club.Club;
 import java.util.ArrayList;
 
 public class UserClub {
-    private Club club;
-    private ArrayList<User> members = new ArrayList<>();
-    public int price;
-    public int memberPrice;
+    private final Club club;
+    private final ArrayList<User> members = new ArrayList<>();
     public int joinClubPrice;
 
-    public UserClub(Club club, int memberPrice, int joinClubPrice) {
+    public UserClub(Club club, int joinClubPrice) {
         this.club = club;
-        this.price = club.price;
         this.joinClubPrice = joinClubPrice;
-        this.memberPrice = memberPrice;
     }
 
     public Club getClub() {
@@ -24,6 +20,7 @@ public class UserClub {
 
     public void addMember(User user){
         members.add(user);
+        club.addMember(user.getPerson());
     }
 
     public boolean isMember(User user){

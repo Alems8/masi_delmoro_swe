@@ -4,7 +4,7 @@ import BalanceMonitor.BalanceMonitor;
 import BookingManager.BookingManager;
 import BookingManager.AbstractBookingManager;
 import BookingManager.BookingChecker;
-import BookingManager.User;
+import Person.Person;
 import Sport.Sport;
 import Sport.Padel;
 import Sport.Soccer;
@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ClubTest {
     private Club clb1, clb2, clb3, clb4, clb5;
-    private Sport padel = new Padel();
-    private Sport soccer = new Soccer();
-    private User mark, gigi, pippo;
+    private final Sport padel = new Padel();
+    private final Sport soccer = new Soccer();
     private AbstractBookingManager bm;
     private BookingManager manager;
+    private Person mattia;
 
 
     @BeforeEach
@@ -27,30 +27,44 @@ class ClubTest {
         BalanceMonitor monitor = new BalanceMonitor();
         this.manager = new BookingManager(monitor);
         this.bm = new BookingChecker(manager);
-        this.clb1 = new Club("LaFiorita", 15, 9,19);
-        this.clb2 = new Club("Gracciano", 30, 10,23);
-        this.clb3 = new Club("UPP", 10, 7,22);
-        this.clb4 = new Club("Certaldo", 20, 8,20);
-        this.clb5 = new Club("Firenze Padel", 18, 9,18);
+        this.clb1 = new Club("LaFiorita", 5, 19,3);
+        this.clb2 = new Club("Gracciano", 3, 10,3);
+        this.clb3 = new Club("UPP", 10, 17,2);
+        this.clb4 = new Club("Certaldo", 2, 18,2);
+        this.clb5 = new Club("Firenze Padel", 8, 19,8);
+
+        this.mattia = new Person("mattia", "verdi", "mattiaverdi@mail.it");
 
     }
     @Test
     void subscribe() {
-        clb1.subscribe(bm, 10, 100);
-        clb2.subscribe(bm, 20, 200);
-        clb3.subscribe(bm, 7, 90);
-        clb4.subscribe(bm, 15, 100);
-        clb5.subscribe(bm, 12, 150);
+        clb1.subscribe(bm, 100);
+        clb2.subscribe(bm, 200);
+        clb3.subscribe(bm,90);
+        clb4.subscribe(bm,100);
+        clb5.subscribe(bm,150);
         assertEquals(5, manager.getClubsSize());
     }
 
     @Test
     void addField() {
-        clb1.addField("Padel 1", padel);
-        clb1.addField("Soccer 1", soccer);
-        clb2.addField("Padel 1", padel);
-        clb2.addField("Padel 2", padel);
+        clb1.addField("Padel 1", padel,12);
+        clb1.addField("Soccer 1", soccer,5);
+        clb2.addField("Padel 1", padel,15);
+        clb2.addField("Padel 2", padel,12);
         assertEquals(2, clb1.fields.size());
         assertEquals(2, clb1.fields.size());
+    }
+
+    @Test
+    void addMember() {
+        clb1.addMember(mattia);
+        clb1.isMember(mattia);
+    }
+
+    @Test
+    void isMember() {
+        clb1.addMember(mattia);
+        clb1.isMember(mattia);
     }
 }

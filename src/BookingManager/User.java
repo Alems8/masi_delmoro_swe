@@ -21,12 +21,11 @@ import java.util.Map;
  */
 public class User extends Subject {
     public String username;
-    private Person person;
-    private AbstractBookingManager bm;
+    private final Person person;
+    private final AbstractBookingManager bm;
     private int balance = 0;
-    private ArrayList<UserClub> favouriteClubs = new ArrayList<>();
+    private final ArrayList<UserClub> favouriteClubs = new ArrayList<>();
     public Map<Sport, int[]> record = new HashMap();
-    //private Map<Integer,Booking> bookings = new HashMap();
 
     public User(String username, Person person, AbstractBookingManager bm, BalanceMonitor balanceMonitor) {
         this.username = username;
@@ -68,7 +67,7 @@ public class User extends Subject {
     public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3,
                              String player4, String player5, String player6, String player7, String player8,
                              String player9, String player10) {
-        ArrayList<String> players = new ArrayList<String>();
+        ArrayList<String> players = new ArrayList<>();
         players.add(this.username);
         players.add(player2);
         players.add(player3);

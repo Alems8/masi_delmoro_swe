@@ -1,7 +1,6 @@
 package BookingManager;
 
 import BalanceMonitor.BalanceMonitor;
-import Booking.Booking;
 import Booking.BlindBooking;
 import Club.Club;
 import Person.Person;
@@ -44,9 +43,9 @@ class BookingManagerTest {
         Person elisa = new Person("elisa", "landi", "elisalandi@mail.it");
         this.eli = elisa.subscribe(bc, "eli");
 
-        this.gracciano = new Club("Gracciano", 15,9,18);
-        gracciano.addField("Padel 1", padel);
-        this.userClub = gracciano.subscribe(bc, 12, 100);
+        this.gracciano = new Club("Gracciano", 9,18,5);
+        gracciano.addField("Padel 1", padel,15);
+        this.userClub = gracciano.subscribe(bc, 100);
     }
 
     @Test
@@ -88,8 +87,8 @@ class BookingManagerTest {
 
     @Test
     void addClub() {
-        Club club = new Club("Firenze",15,9,18);
-        UserClub uc = bm.addClub(club,12,100);
+        Club club = new Club("Firenze",9,16,8);
+        UserClub uc = bm.addClub(club,100);
         assertEquals(bm.bd.getClub(1), uc);
     }
 
@@ -179,7 +178,7 @@ class BookingManagerTest {
         bm.topUpUserBalance(eli,100);
         bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,mark);
-        bm.addBookingPlayer(eli, 1, userClub);
+        bm.addBookingPlayer(eli, 1);
         assertEquals(2,bm.bd.getBooking(1).getPlayers().size());
     }
 
@@ -189,14 +188,14 @@ class BookingManagerTest {
         bm.topUpUserBalance(eli,100);
         bm.createBlindBooking(userClub, gracciano.fields.get(0), LocalDate.parse("13/05/2022",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy") ),15,mark);
-        bm.addBookingPlayer(eli,1,userClub);
+        bm.addBookingPlayer(eli,1);
         assertEquals(85,mark.getBalance());
 
-        bm.releaseSpot(mark, 1, userClub);
+        bm.releaseSpot(mark, 1);
         assertFalse(bm.bd.getBooking(1).containsUser(mark));
         assertEquals(100, mark.getBalance());
 
-        bm.releaseSpot(eli,1, userClub);
+        bm.releaseSpot(eli,1);
         assertEquals(0, bm.bd.getBookingsSize());
     }
 
@@ -240,7 +239,7 @@ class BookingManagerTest {
     @Test
     void pay(){
         bm.topUpUserBalance(mark, 100);
-        bm.pay(mark, userClub);
+        bm.pay(mark, gracciano, gracciano.fields.get(0));
 
         assertEquals(85,mark.getBalance());
     }
@@ -256,7 +255,7 @@ class BookingManagerTest {
 
     @Test
     void refund(){
-        bm.refund(mark,userClub);
+        bm.refund(mark, gracciano, gracciano.fields.get(0));
         assertEquals(15, mark.getBalance());
     }
 

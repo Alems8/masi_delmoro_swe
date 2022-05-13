@@ -1,7 +1,6 @@
 package BookingManager;
 
 import BalanceMonitor.BalanceMonitor;
-import Booking.Booking;
 
 import Club.Club;
 import Booking.BlindBooking;
@@ -32,9 +31,9 @@ class UserTest {
         this.bm = new BookingChecker(manager);
 
         this.padel = new Padel();
-        Club club = new Club("Gracciano", 12, 8, 23);
-        club.addField("Padel 1", padel);
-        this.club = club.subscribe(bm, 8, 100);
+        Club club = new Club("Gracciano", 2, 18, 3);
+        club.addField("Padel 1", padel,15);
+        this.club = club.subscribe(bm, 100);
 
         Person marco = new Person("marco", "rossi", "marcorossi@mail.it");
         this.mark = marco.subscribe(bm, "mark");
@@ -70,7 +69,7 @@ class UserTest {
     }
 
     @Test
-    void bookFieldTest() throws LowBalanceException {
+    void bookFieldTest()  {
 
         mark.addFunds(100);
         gigi.addFunds(100);
@@ -85,7 +84,7 @@ class UserTest {
         assertEquals(1, bm.bd.getBookingsSize());
     }
     @Test
-    void deleteBookingTest() throws LowBalanceException {
+    void deleteBookingTest()  {
         mark.addFunds(100);
         gigi.addFunds(100);
         pippo.addFunds(100);
@@ -129,7 +128,7 @@ class UserTest {
     }
 
     @Test
-    void addMatchResultTest() throws LowBalanceException {
+    void addMatchResultTest()  {
         mark.addFunds(100);
         pippo.addFunds(100);
         eli.addFunds(100);

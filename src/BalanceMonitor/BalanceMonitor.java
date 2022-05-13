@@ -7,7 +7,6 @@ package BalanceMonitor;
 
 import BookingManager.User;
 
-import java.util.ArrayList;
 
 /**
  *

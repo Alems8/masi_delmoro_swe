@@ -20,11 +20,13 @@ public class Field {
     public String name;
     public Sport sport;
     public Map<LocalDate, ArrayList<Integer>> timeTable = new HashMap<>();
+    public int price;
     
     
-    public Field(String name, Sport sport, ArrayList hours) { //MODIFICATO
+    public Field(String name, Sport sport, ArrayList<Integer> hours, int price) {
         this.name = name;
         this.sport = sport;
+        this.price = price;
         
         LocalDate day = LocalDate.now();
         

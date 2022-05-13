@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class BookingDatabase {
-    private ArrayList<User> users = new ArrayList<>();
-    private ArrayList<UserClub> clubs = new ArrayList<>();
-    private Map<Integer, Booking> bookings = new HashMap<>();
+    private final ArrayList<User> users = new ArrayList<>();
+    private final ArrayList<UserClub> clubs = new ArrayList<>();
+    private final Map<Integer, Booking> bookings = new HashMap<>();
     private int key = 1;
 
     User getUser(int id){

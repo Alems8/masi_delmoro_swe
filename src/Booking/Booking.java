@@ -5,7 +5,6 @@
  */
 package Booking;
 
-import BookingManager.UserClub;
 import Club.Club;
 import Club.Field;
 import BookingManager.User;
@@ -24,7 +23,7 @@ public class Booking {
     protected LocalDate date;
     protected int hour;
     protected ArrayList<User> players;
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Booking(Club club, Field field, LocalDate date, int hour, ArrayList<User> players) {
         this.club = club;
@@ -61,7 +60,6 @@ public class Booking {
     @Override
     public String toString() {
         return ")" + this.club.name + " - " + this.field.name + " - " + this.date.format(dtf) + "  " 
-                +this.hour /*+ " - " +"giocatori: " + " - " + (for (User p:players){
-                                                                    p.username})*/ ;
+                +this.hour ;
     }
 }

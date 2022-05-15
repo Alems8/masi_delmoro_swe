@@ -151,7 +151,7 @@ public class BookingManager extends AbstractBookingManager {
     }
 
 
-    public void addBookingPlayer(User user, int id) { //TODO NON PAGAVANO CONTROLLARE SE VA BENE
+    public void addBookingPlayer(User user, int id) {
         Booking booking = bd.getBooking(id);
         pay(user,booking.getClub(), booking.getField());
         ((BlindBooking) booking).addPlayer(user);
@@ -167,8 +167,8 @@ public class BookingManager extends AbstractBookingManager {
     }
 
     void createBooking(UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
-        holdField(field, date, hour);//TODO I SOLDIIIIIII
-        for(User u : players) //TODO DIMMI SE TI PIACE COSI. CONTROLLA TUTTI I TODO
+        holdField(field, date, hour);
+        for(User u : players)
             pay(u, clb.getClub(), field);
         Booking booking = new PrivateBooking(clb.getClub(), field, date, hour, players);
         bd.addBooking(booking);

@@ -157,7 +157,6 @@ public class BookingChecker extends AbstractBookingManager{
             System.out.println("Non hai diritti su questa prenotazione");
             return;
         }
-        //TODO NON SI DA I SOLDI
 
         if(booking instanceof PrivateBooking) {
             bm.releaseField(id);
@@ -266,7 +265,6 @@ public class BookingChecker extends AbstractBookingManager{
             System.out.println("Nessun posto libero in questa partita");
             return;
         }
-        //TODO CONTROLLARE QUESTO METODO
         bm.addBookingPlayer(user, id);
     }
 

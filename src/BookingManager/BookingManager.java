@@ -101,6 +101,7 @@ public class BookingManager extends AbstractBookingManager {
     }
 
     void addClubMember(User user, UserClub club){
+        payJoinClub(user, club);
         club.addMember(user);
     }
     
@@ -143,10 +144,7 @@ public class BookingManager extends AbstractBookingManager {
     }
 
     
-    public void payJoinClub(User user, UserClub club) throws LowBalanceException {
-        if(user.getBalance() < club.joinClubPrice){
-            throw new LowBalanceException();
-        }
+    public void payJoinClub(User user, UserClub club) {
         user.setBalance(user.getBalance() - club.joinClubPrice);
     }
 

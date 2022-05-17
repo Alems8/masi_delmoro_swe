@@ -160,13 +160,7 @@ class BookingManagerTest {
     }
 
     @Test
-    void payJoinClub() throws LowBalanceException {
-        LowBalanceException thrown = assertThrows(
-                LowBalanceException.class,
-                () -> bm.payJoinClub(mark,userClub)
-        );
-        assertTrue(thrown.getMessage().contains("Non hai abbastanza fondi per una prenotazione"));
-
+    void payJoinClub() {
         bm.topUpUserBalance(mark,200);
         bm.payJoinClub(mark,userClub);
     }

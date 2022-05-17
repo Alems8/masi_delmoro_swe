@@ -233,6 +233,7 @@ public class BookingChecker extends AbstractBookingManager{
         try{checkBalance(user, club, field);}
         catch(LowBalanceException e){
             System.out.println("Non hai abbastanza credito");
+            return;
         }
         bm.createBlindBooking(club, field, date, hour, user);
     }
@@ -263,6 +264,11 @@ public class BookingChecker extends AbstractBookingManager{
         }
         catch(NoFreeSpotException e) {
             System.out.println("Nessun posto libero in questa partita");
+            return;
+        }
+        try{checkBalance(user,bd.getBooking(id).getClub(), bd.getBooking(id).getField());}
+        catch(LowBalanceException e){
+            System.out.println("Non hai abbastanza credito");
             return;
         }
         bm.addBookingPlayer(user, id);

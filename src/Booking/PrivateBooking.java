@@ -5,6 +5,7 @@
  */
 package Booking;
 
+import BookingManager.UserClub;
 import Club.Club;
 import Club.Field;
 import BookingManager.User;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  */
 public class PrivateBooking extends Booking {
 
-    public PrivateBooking(Club club, Field field, LocalDate date, Integer hour, ArrayList<User> players) {
+    public PrivateBooking(UserClub club, Field field, LocalDate date, Integer hour, ArrayList<User> players) {
         super(club, field, date, hour, players);
     }
 }

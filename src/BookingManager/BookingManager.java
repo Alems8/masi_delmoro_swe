@@ -52,10 +52,10 @@ public class BookingManager extends AbstractBookingManager {
         return bd.getUser(id);
     }
 
-    void pay(User user, Club club, Field field) {
+    void pay(User user, UserClub club, Field field) {
         int price = field.price;
-        if(club.isMember(user.getPerson()))
-            price = price - price*club.memberDiscount/100;
+        if(club.isMember(user))
+            price = price - price*club.getClub().memberDiscount/100;
         user.setBalance(user.getBalance() - price);
     }
 
@@ -68,10 +68,10 @@ public class BookingManager extends AbstractBookingManager {
         user.setBalance(user.getBalance() + money);
     }
 
-    void refund(User user, Club club, Field field){
+    void refund(User user, UserClub club, Field field){
         int price = field.price;
-        if(club.isMember(user.getPerson()))
-            price = price - price*club.memberDiscount/100;
+        if(club.isMember(user))
+            price = price - price*club.getClub().memberDiscount/100;
         rechargeAccount(user, price);
     }
 
@@ -169,17 +169,17 @@ public class BookingManager extends AbstractBookingManager {
     void createBooking(UserClub clb, Field field, LocalDate date, int hour, ArrayList<User> players){
         holdField(field, date, hour);
         for(User u : players)
-            pay(u, clb.getClub(), field);
-        Booking booking = new PrivateBooking(clb.getClub(), field, date, hour, players);
+            pay(u, clb, field);
+        Booking booking = new PrivateBooking(clb, field, date, hour, players);
         bd.addBooking(booking);
     }
 
     void createBlindBooking(UserClub clb, Field field, LocalDate date, int hour, User user){
         holdField(field, date, hour);
-        pay(user, clb.getClub(), field);
+        pay(user, clb, field);
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
-        Booking booking = new BlindBooking(clb.getClub(), field, date, hour, players);
+        Booking booking = new BlindBooking(clb, field, date, hour, players);
         bd.addBooking(booking);
     }
 }

@@ -6,6 +6,7 @@ import BookingManager.BookingManager;
 import BookingManager.BookingChecker;
 import BookingManager.User;
 import Club.Club;
+import BookingManager.UserClub;
 import Person.Person;
 import Sport.Sport;
 import Sport.Padel;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookingTest {
     private final Sport padel = new Padel();
     private Club  clb2;
+    private UserClub uc2;
     private User mark, gigi, pippo, eli, france;
     private BookingManager manager;
 
@@ -33,7 +35,7 @@ class BookingTest {
 
         this.clb2 = new Club("Gracciano", 10, 18,3);
 
-        clb2.subscribe(bm, 200);
+        this.uc2 = clb2.subscribe(bm, 200);
 
         clb2.addField("Padel 1", padel,15);
 
@@ -58,7 +60,7 @@ class BookingTest {
     void getClub() {
         mark.bookField(padel, "Gracciano", "12/05/2022", 10, "gigi", "pippo", "eli");
         Booking booking = manager.getBooking(1);
-        assertEquals(clb2, booking.getClub());
+        assertEquals(uc2, booking.getClub());
     }
 
     @Test

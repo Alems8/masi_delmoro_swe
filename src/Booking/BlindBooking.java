@@ -5,6 +5,7 @@
  */
 package Booking;
 
+import BookingManager.UserClub;
 import Club.Club;
 import Club.Field;
 import BookingManager.User;
@@ -20,7 +21,7 @@ public class BlindBooking extends Booking {
 
     private boolean full = false;
 
-    public BlindBooking(Club club, Field field, LocalDate date, int hour, ArrayList<User> players) {
+    public BlindBooking(UserClub club, Field field, LocalDate date, int hour, ArrayList<User> players) {
         super(club, field, date, hour, players);
     }
 

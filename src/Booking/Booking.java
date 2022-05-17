@@ -5,6 +5,7 @@
  */
 package Booking;
 
+import BookingManager.UserClub;
 import Club.Club;
 import Club.Field;
 import BookingManager.User;
@@ -18,14 +19,14 @@ import java.util.ArrayList;
  * @author aleal
  */
 public class Booking {
-    protected Club club;
+    protected UserClub club;
     protected Field field;
     protected LocalDate date;
     protected int hour;
     protected ArrayList<User> players;
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public Booking(Club club, Field field, LocalDate date, int hour, ArrayList<User> players) {
+    public Booking(UserClub club, Field field, LocalDate date, int hour, ArrayList<User> players) {
         this.club = club;
         this.field = field;
         this.date = date;
@@ -33,7 +34,7 @@ public class Booking {
         this.players = players;
     }
 
-    public Club getClub() {
+    public UserClub getClub() {
         return club;
     }
 
@@ -59,7 +60,7 @@ public class Booking {
    
     @Override
     public String toString() {
-        return ")" + this.club.name + " - " + this.field.name + " - " + this.date.format(dtf) + "  " 
+        return ")" + this.club.getClub().name + " - " + this.field.name + " - " + this.date.format(dtf) + "  "
                 +this.hour ;
     }
 }

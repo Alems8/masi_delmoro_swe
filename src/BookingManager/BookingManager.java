@@ -160,8 +160,8 @@ public class BookingManager extends AbstractBookingManager {
 
     void releaseSpot(User user, int id){
         Booking booking = bd.getBooking(id);
-        ((BlindBooking)booking).removePlayer(user);
         refund(user, booking.getClub(), booking.getField());
+        bd.removeBookingPlayer(user,id);
         if(booking.getPlayers().isEmpty())
             releaseField(id);
     }

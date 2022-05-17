@@ -1,7 +1,7 @@
 package BookingManager;
 
 import Booking.Booking;
-
+import Booking.BlindBooking;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -65,5 +65,10 @@ public class BookingDatabase {
 
     int getBookingsSize(){
         return bookings.size();
+    }
+
+    void removeBookingPlayer(User user, int id) {
+        Booking booking = getBooking(id);
+        ((BlindBooking)booking).removePlayer(user);
     }
 }

@@ -1,10 +1,9 @@
 package Club;
 
-import BookingManager.BalanceMonitor;
-import BookingManager.BookingManager;
-import BookingManager.AbstractBookingManager;
-import BookingManager.BookingChecker;
-import Person.Person;
+import BusinessLogic.BalanceMonitor;
+import BusinessLogic.BookingManager;
+import BusinessLogic.BookingChecker;
+import User.Person;
 import Sport.Sport;
 import Sport.Padel;
 import Sport.Soccer;

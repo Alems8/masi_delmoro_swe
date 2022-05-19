@@ -1,21 +1,18 @@
 package Booking;
 
-import BookingManager.BalanceMonitor;
-import BookingManager.AbstractBookingManager;
-import BookingManager.BookingManager;
-import BookingManager.BookingChecker;
-import BookingManager.User;
+import BusinessLogic.BalanceMonitor;
+import BusinessLogic.BookingManager;
+import BusinessLogic.BookingChecker;
+import User.User;
 import Club.Club;
-import BookingManager.UserClub;
-import Person.Person;
+import Club.UserClub;
+import User.Person;
 import Sport.Sport;
 import Sport.Padel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.format.DateTimeFormatter;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BookingTest {
     private final Sport padel = new Padel();

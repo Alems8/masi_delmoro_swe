@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DomainLogic/DomainLogic.iml" filepath="$PROJECT_DIR$/DomainLogic/DomainLogic.iml" />
       <module fileurl="file://$PROJECT_DIR$/masi_delmoro_swe.iml" filepath="$PROJECT_DIR$/masi_delmoro_swe.iml" />
     </modules>
   </component>

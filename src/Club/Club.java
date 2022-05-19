@@ -5,11 +5,10 @@
  */
 package Club;
 
-import BookingManager.AbstractBookingManager;
-import Observer.Subject;
-import Person.Person;
+import BusinessLogic.BookingChecker;
+import ObserverUtil.Subject;
+import User.Person;
 import Sport.Sport;
-import BookingManager.UserClub;
 
 import java.util.ArrayList;
 
@@ -42,7 +41,7 @@ public class Club extends Subject {
         }
     }
 
-    public UserClub subscribe(AbstractBookingManager bm,  int joinClubPrice) {
+    public UserClub subscribe(BookingChecker bm, int joinClubPrice) {
         return bm.addClub(this, joinClubPrice);
     }
     

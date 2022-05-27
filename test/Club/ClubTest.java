@@ -5,8 +5,6 @@ import BusinessLogic.BookingManager;
 import BusinessLogic.BookingChecker;
 import User.Person;
 import Sport.Sport;
-import Sport.Padel;
-import Sport.Soccer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

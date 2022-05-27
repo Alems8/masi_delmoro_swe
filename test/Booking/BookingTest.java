@@ -8,7 +8,6 @@ import Club.Club;
 import Club.UserClub;
 import User.Person;
 import Sport.Sport;
-import Sport.Padel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

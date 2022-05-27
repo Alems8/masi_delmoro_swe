@@ -9,7 +9,15 @@ package Sport;
  *
  * @author thomas
  */
-public class Sport {
-    public String name;
-    public int numPlayers;
+public enum Sport {
+    PADEL("padel",4), SOCCER("soccer",10);
+
+    public final String name;
+    public final int numPlayers;
+
+    private Sport(String name, int numPlayers){
+        this.name = name;
+        this.numPlayers = numPlayers;
+    }
+
 }

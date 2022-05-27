@@ -2,7 +2,6 @@ package BusinessLogic;
 
 import Club.Club;
 import Sport.Sport;
-import Sport.Padel;
 
 import User.Person;
 import org.junit.jupiter.api.BeforeEach;

@@ -3,8 +3,6 @@ package BusinessLogic;
 import Club.Club;
 import Club.Field;
 import User.Person;
-import Sport.Padel;
-import Sport.Soccer;
 import Sport.Sport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

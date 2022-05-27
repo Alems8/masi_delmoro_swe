@@ -10,8 +10,8 @@ import Club.UserClub;
 import User.Person;
 import User.User;
 import Sport.Sport;
-import Sport.Padel;
-import Sport.Soccer;
+
+
 
 /**
  *
@@ -26,8 +26,6 @@ public class Masi_delmoro_swe {
      */
     public static void main(String[] args) throws LowBalanceException {
         // TODO code application logic here
-        Sport soccer = new Soccer();
-        Sport padel = new Padel();
         BookingManager manager = BookingManager.getInstance();
         BookingChecker bm = new BookingChecker(manager);
         Club clb1 = new Club("LaFiorita", 9, 23,5);
@@ -36,21 +34,21 @@ public class Masi_delmoro_swe {
         Club clb4 = new Club("Certaldo", 20, 8,5);
         Club clb5 = new Club("Firenze Padel", 18, 9,8);
         
-        clb1.addField("Soccer 1", soccer,8);
-        clb1.addField("Padel 2", padel,15);
-        clb1.addField("Padel 3", padel,15);
-        clb2.addField("Soccer 1", soccer,8);
-        clb2.addField("Padel 2", padel,15);
-        clb3.addField("Soccer 1", soccer,8);
-        clb4.addField("Soccer 1", soccer,8);
-        clb4.addField("Soccer 2", soccer,8);
-        clb4.addField("Padel 3", padel,8);
-        clb4.addField("Padel 4", padel,12);
-        clb4.addField("Padel 5", padel,12);
-        clb4.addField("Padel 6", padel,12);
-        clb5.addField("Padel 1", padel,12);
-        clb5.addField("Padel 2", padel,12);
-        clb5.addField("Padel 3", padel,15);
+        clb1.addField("Soccer 1", Sport.SOCCER,8);
+        clb1.addField("Padel 2", Sport.PADEL,15);
+        clb1.addField("Padel 3", Sport.PADEL,15);
+        clb2.addField("Soccer 1", Sport.SOCCER,8);
+        clb2.addField("Padel 2", Sport.PADEL,15);
+        clb3.addField("Soccer 1", Sport.SOCCER,8);
+        clb4.addField("Soccer 1", Sport.SOCCER,8);
+        clb4.addField("Soccer 2", Sport.SOCCER,8);
+        clb4.addField("Padel 3", Sport.PADEL,8);
+        clb4.addField("Padel 4", Sport.PADEL,12);
+        clb4.addField("Padel 5", Sport.PADEL,12);
+        clb4.addField("Padel 6", Sport.PADEL,12);
+        clb5.addField("Padel 1", Sport.PADEL,12);
+        clb5.addField("Padel 2", Sport.PADEL,12);
+        clb5.addField("Padel 3", Sport.PADEL,15);
         
         UserClub userClub1 = clb1.subscribe(bm,100);
         UserClub userClub2 = clb2.subscribe(bm, 200);
@@ -93,7 +91,7 @@ public class Masi_delmoro_swe {
         lore.addFunds(600);
         matte.addFunds(100);
         
-        matti.bookField(padel, "LaFiorita", "26/03/2022", 16,"cami","eli","ale");
+        matti.bookField(Sport.PADEL, "LaFiorita", "26/03/2022", 16,"cami","eli","ale");
         cami.viewBookings();
         cami.addMatchResult("eli", "ale", 1);
         cami.viewRecord();

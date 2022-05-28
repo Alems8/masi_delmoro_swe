@@ -97,8 +97,8 @@ public class User extends Subject {
         bm.requestBlindBooking(sport, clb, date, hour, this);
     }
     
-    public void viewBlindBookings(){
-        bm.displayBlindBookings();
+    public void viewBlindBookings(Sport sport){
+        bm.displayBlindBookings(sport);
     }
     
     public void bookSpot(int key){

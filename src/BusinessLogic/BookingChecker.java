@@ -235,11 +235,11 @@ public class BookingChecker {
         bm.createBlindBooking(club, field, date, hour, user);
     }
 
-    public void displayBlindBookings(){
+    public void displayBlindBookings(Sport sport){
         ArrayList<Integer> keys = new ArrayList<>();
         for(int k : bd.getKeySet()){
             Booking booking = bd.getBooking(k);
-            if(booking instanceof BlindBooking && !((BlindBooking) booking).isFull())
+            if(booking instanceof BlindBooking && booking.getField().sport.equals(sport) && !((BlindBooking) booking).isFull())
                 keys.add(k);
         }
         bm.displayBookings(keys);

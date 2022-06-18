@@ -18,14 +18,13 @@ import Sport.Sport;
  * @author Alessio
  */
 
-//SENZA SCANNER
+
 public class Masi_delmoro_swe {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws LowBalanceException {
-        // TODO code application logic here
         BookingManager manager = BookingManager.getInstance();
         BookingChecker bm = new BookingChecker(manager);
         Club clb1 = new Club("LaFiorita", 9, 23,5);

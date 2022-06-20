@@ -36,13 +36,13 @@ public class BookingManager {
         return instance;
     }
 
-    public User createUser(Person person, String username, BookingChecker bc){
-        User user = new User(username, person, bc);
-        Observer monitor = BalanceMonitor.getInstance();
-        user.addObserver(monitor);
-        bd.addUser(user);
-        return user;
-    }
+//    public User createUser(Person person, String username, BookingChecker bc){
+//        User user = new User(username, person, bc);
+//        Observer monitor = BalanceMonitor.getInstance();
+//        user.addObserver(monitor);
+//        bd.addUser(user);
+//        return user;
+//    }
 
     public void removeUser(User user){
         bd.removeUser(user);
@@ -91,7 +91,7 @@ public class BookingManager {
 
     public UserClub addClub(Club clb, int joinClubPrice) {
         UserClub club = new UserClub(clb, joinClubPrice);
-        Observer monitor = MembersMonitor.getInstance(this);
+        Observer monitor = MembersMonitor.getInstance();
         clb.addObserver(monitor);
         bd.addClub(club);
         return club;
@@ -182,7 +182,7 @@ public class BookingManager {
         pay(user, clb, field);
         ArrayList<User> players = new ArrayList<>();
         players.add(user);
-        Booking booking = new BlindBooking(clb, field, date, hour, players);
+        Booking booking = new BlindBooking(clb, field, date, hour, user);
         bd.addBooking(booking);
     }
 }

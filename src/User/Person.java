@@ -6,6 +6,7 @@
 package User;
 
 import BusinessLogic.AlreadySubscribedException;
+import BusinessLogic.RequestManager;
 import BusinessLogic.WrongNameException;
 import BusinessLogic.BookingChecker;
 
@@ -24,9 +25,9 @@ public class Person {
         this.email = email;
     }
     
-    public User subscribe(BookingChecker bm, String username) {
+    public User subscribe(RequestManager rm, String username) {
         User user = null;
-        try{user = bm.addUser(this, username);}
+        try{user = rm.addUser(this, username);}
         catch(WrongNameException e) {
             System.out.println("Il nome utente non è disponibile");
         }

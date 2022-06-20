@@ -1,7 +1,7 @@
 package DAO;
 
+import BusinessLogic.WrongNameException;
 import Club.UserClub;
-
 import java.util.ArrayList;
 
 public class FakeClubDao implements ClubDao{
@@ -31,5 +31,13 @@ public class FakeClubDao implements ClubDao{
 
     public int getClubsSize(){
         return clubs.size();
+    }
+
+    public UserClub getClubByName(String clb){
+        for(UserClub club : clubs){
+            if (club.getClub().name.equals(clb))
+                return club;
+        }
+        return null;
     }
 }

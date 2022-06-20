@@ -9,4 +9,7 @@ public interface ClubDao {
     public UserClub getClub(int id);
 
     public int getClubsSize();
+
+    public UserClub getClubByName(String clb);
+
 }

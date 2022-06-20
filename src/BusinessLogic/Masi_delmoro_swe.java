@@ -7,10 +7,13 @@ package BusinessLogic;
 
 import Club.Club;
 import Club.UserClub;
+import DAO.BookingDao;
+import DAO.DaoFactory;
 import User.Person;
 import User.User;
 import Sport.Sport;
 
+import java.util.Objects;
 
 
 /**
@@ -24,9 +27,15 @@ public class Masi_delmoro_swe {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws LowBalanceException {
+    public static void main(String[] args){
         BookingManager manager = BookingManager.getInstance();
         BookingChecker bm = new BookingChecker(manager);
+        BookingDao bookingDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getBookingDao();
+        Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getClubDao();
+        Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
+        RequestManager rm = new RequestManager();
+
+
         Club clb1 = new Club("LaFiorita", 9, 23,5);
         Club clb2 = new Club("Gracciano", 30, 10,5);
         Club clb3 = new Club("UPP", 10, 7,5);
@@ -49,11 +58,11 @@ public class Masi_delmoro_swe {
         clb5.addField("Padel 2", Sport.PADEL,12);
         clb5.addField("Padel 3", Sport.PADEL,15);
         
-        UserClub userClub1 = clb1.subscribe(bm,100);
-        UserClub userClub2 = clb2.subscribe(bm, 200);
-        UserClub userClub3 = clb3.subscribe(bm, 120);
-        UserClub userClub4 = clb4.subscribe(bm, 150);
-        UserClub userClub5 = clb5.subscribe(bm, 90);
+        UserClub userClub1 = clb1.subscribe(rm,100);
+        UserClub userClub2 = clb2.subscribe(rm, 200);
+        UserClub userClub3 = clb3.subscribe(rm, 120);
+        UserClub userClub4 = clb4.subscribe(rm, 150);
+        UserClub userClub5 = clb5.subscribe(rm, 90);
         
         Person mattia = new Person("Mattia","Rossi","matt.rossi@gmail.com");
         Person francesco = new Person("Francesco","Rossi","fra.rossi@gmail.com");
@@ -68,18 +77,18 @@ public class Masi_delmoro_swe {
         Person camilla = new Person("Camilla","Verdi","cami.verdi@gmail.com");
         Person matteo = new Person("Matteo","Bianchi","matte.bianchi@gmail.com");
         
-        User matti = mattia.subscribe(bm, "matti");
-        User france = francesco.subscribe(bm, "france");
-        User ludo = ludovico.subscribe(bm, "ludo");
-        User martaRos = marta.subscribe(bm, "martaRos");
-        User ale = alessia.subscribe(bm, "ale");
-        User fede = federica.subscribe(bm, "fede");
-        User marcoRos = marco.subscribe(bm, "marcoRos");
-        User lore = lorenzo.subscribe(bm, "lore");
-        User eli = elisabetta.subscribe(bm, "eli");
-        User marti = martina.subscribe(bm, "marti");
-        User cami = camilla.subscribe(bm, "cami");
-        User matte = matteo.subscribe(bm, "matte");
+        User matti = mattia.subscribe(rm, "matti");
+        User france = francesco.subscribe(rm, "france");
+        User ludo = ludovico.subscribe(rm, "ludo");
+        User martaRos = marta.subscribe(rm, "martaRos");
+        User ale = alessia.subscribe(rm, "ale");
+        User fede = federica.subscribe(rm, "fede");
+        User marcoRos = marco.subscribe(rm, "marcoRos");
+        User lore = lorenzo.subscribe(rm, "lore");
+        User eli = elisabetta.subscribe(rm, "eli");
+        User marti = martina.subscribe(rm, "marti");
+        User cami = camilla.subscribe(rm, "cami");
+        User matte = matteo.subscribe(rm, "matte");
         
         matti.addFunds(250);
         france.addFunds(500);
@@ -89,14 +98,24 @@ public class Masi_delmoro_swe {
         marcoRos.addFunds(100);
         lore.addFunds(600);
         matte.addFunds(100);
+        ludo.addFunds(500);
+        marti.addFunds(100);
         
-        matti.bookField(Sport.PADEL, "LaFiorita", "26/03/2022", 16,"cami","eli","ale");
-        cami.viewBookings();
-        cami.addMatchResult("eli", "ale", 1);
-        cami.viewRecord();
-        ale.viewRecord();
-
-        clb1.addMember(federica);
-        System.out.println(userClub1.getMember(0).username);
+        matti.bookField(Sport.SOCCER, "LaFiorita", "26/03/2022", 16,new String[]{"france", "cami", "marti", "ale", "eli", "marcoRos", "lore", "matte", "ludo"});
+        System.out.println(matti.getBalance());
+        System.out.println(france.getBalance());
+        System.out.println(lore.getBalance());
+        System.out.println(cami.getBalance());
+        System.out.println(bookingDao.getBookingsSize());
+        matti.blindBook(Sport.PADEL, "LaFiorita", "26/03/2022", 16);
+        System.out.println(matti.getBalance());
+        System.out.println(bookingDao.getBookingsSize());
+//        cami.viewBookings();
+//        cami.addMatchResult("eli", "ale", 1);
+//        cami.viewRecord();
+//        ale.viewRecord();
+//
+//        clb1.addMember(federica);
+//        System.out.println(userClub1.getMember(0).username);
     }
 }

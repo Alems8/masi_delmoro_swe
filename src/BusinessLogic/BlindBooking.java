@@ -11,6 +11,8 @@ import User.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -20,8 +22,8 @@ public class BlindBooking extends Booking {
 
     private boolean full = false;
 
-    public BlindBooking(UserClub club, Field field, LocalDate date, int hour, ArrayList<User> players) {
-        super(club, field, date, hour, players);
+    public BlindBooking(UserClub club, Field field, LocalDate date, int hour, User user) {
+        super(club, field, date, hour, new ArrayList<>(){{add(user);}} );
     }
 
     public boolean isFull() {

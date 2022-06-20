@@ -6,6 +6,7 @@
 package Club;
 
 import BusinessLogic.BookingChecker;
+import BusinessLogic.RequestManager;
 import ObserverUtil.Subject;
 import User.Person;
 import Sport.Sport;
@@ -41,8 +42,8 @@ public class Club extends Subject {
         }
     }
 
-    public UserClub subscribe(BookingChecker bm, int joinClubPrice) {
-        return bm.addClub(this, joinClubPrice);
+    public UserClub subscribe(RequestManager rm, int joinClubPrice) {
+        return rm.addClub(this, joinClubPrice);
     }
     
     public void addField(String name, Sport sport, int price) {

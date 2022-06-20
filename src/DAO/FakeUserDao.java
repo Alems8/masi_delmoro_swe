@@ -1,6 +1,8 @@
 package DAO;
 
+import BusinessLogic.WrongNameException;
 import User.User;
+import User.Person;
 
 import java.util.ArrayList;
 
@@ -20,7 +22,7 @@ public class FakeUserDao implements UserDao{
     }
 
     @Override
-    public User getUser(int id){
+    public User getUserById(int id){
         return users.get(id);
     }
 
@@ -43,4 +45,25 @@ public class FakeUserDao implements UserDao{
     public boolean containsUser(User user){
         return users.contains(user);
     }
+
+    @Override
+    public User getUserByUsername(String usernm) {
+        for (User u : users) {
+            if (u.username.equals(usernm)) {
+                return u;
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public User getUserByPerson(Person person){
+        for (User u : users){
+            if (u.getPerson().equals(person))
+                return u;
+        }
+        return null;
+    }
+
 }

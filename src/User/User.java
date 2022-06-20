@@ -8,11 +8,13 @@ package User;
 
 import BusinessLogic.BookingChecker;
 import BusinessLogic.PendingBookingException;
+import BusinessLogic.RequestManager;
 import Club.UserClub;
 import ObserverUtil.Subject;
 import Sport.Sport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,15 +25,16 @@ import java.util.Map;
 public class User extends Subject {
     public String username;
     private final Person person;
-    private final BookingChecker bm;
+    private final RequestManager rm;
     private int balance = 0;
     private final ArrayList<UserClub> favouriteClubs = new ArrayList<>();
     public Map<Sport, int[]> record = new HashMap();
+    BookingChecker bm;
 
-    public User(String username, Person person, BookingChecker bm) {
+    public User(String username, Person person, RequestManager rm) {
         this.username = username;
         this.person = person;
-        this.bm = bm;
+        this.rm = rm;
     }
 
     public Person getPerson() {
@@ -55,34 +58,15 @@ public class User extends Subject {
         bm.requestJoinClub(this, club);
     }
     
-    public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3, String player4){
-        ArrayList<String> players = new ArrayList<>();
+    public void bookField(Sport sport, String clb, String date, int hour, String [] users){
+        ArrayList<String> players = new ArrayList<>(Arrays.asList(users));
         players.add(this.username);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
-        bm.requestBooking(sport, clb, date, hour, players);
+        rm.requestBooking(sport, clb, date, hour, players);
     }
 
-    public void bookField(Sport sport, String clb, String date, int hour, String player2, String player3,
-                             String player4, String player5, String player6, String player7, String player8,
-                             String player9, String player10) {
-        ArrayList<String> players = new ArrayList<>();
-        players.add(this.username);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
-        players.add(player5);
-        players.add(player6);
-        players.add(player7);
-        players.add(player8);
-        players.add(player9);
-        players.add(player10);
-        bm.requestBooking(sport, clb, date, hour, players);
-    }
     
     public void addFunds(int money){
-        bm.topUpBalance(this, money);
+        rm.topUpBalance(this, money);
     }
     
     public void deleteBooking(int id){
@@ -94,7 +78,7 @@ public class User extends Subject {
     }
     
     public void blindBook(Sport sport, String clb, String date, int hour){
-        bm.requestBlindBooking(sport, clb, date, hour, this);
+        rm.requestBlindBooking(sport, clb, date, hour, this);
     }
     
     public void viewBlindBookings(Sport sport){

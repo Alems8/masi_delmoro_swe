@@ -21,17 +21,17 @@ public class BookingChecker {
         this.bd = bm.bd;
     }
 
-    public User addUser(Person person, String username) throws WrongNameException, AlreadySubscribedException {
-        try{checkPerson(person);}
-        catch(AlreadySubscribedException e){
-            throw new AlreadySubscribedException();
-        }
-        try{checkUser(username);}
-        catch (WrongNameException e) {
-            return bm.createUser(person, username, this);
-        }
-        throw new WrongNameException();
-    }
+//    public User addUser(Person person, String username) throws WrongNameException, AlreadySubscribedException {
+//        try{checkPerson(person);}
+//        catch(AlreadySubscribedException e){
+//            throw new AlreadySubscribedException();
+//        }
+//        try{checkUser(username);}
+//        catch (WrongNameException e) {
+//            return bm.createUser(person, username, this);
+//        }
+//        throw new WrongNameException();
+//    }
 
     public UserClub addClub(Club club, int joinClubPrice){
         return bm.addClub(club, joinClubPrice);

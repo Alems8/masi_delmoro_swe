@@ -1,12 +1,13 @@
 package DAO;
 
 import User.User;
+import User.Person;
 
 import java.util.ArrayList;
 
 public interface UserDao {
 
-    public User getUser(int id);
+    public User getUserById(int id);
 
     public void addUser(User user);
 
@@ -17,5 +18,7 @@ public interface UserDao {
     public boolean containsUser(User user);
 
 
+    public User getUserByUsername(String s);
 
+    public User getUserByPerson(Person person);
 }

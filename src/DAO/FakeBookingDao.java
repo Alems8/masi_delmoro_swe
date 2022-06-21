@@ -41,7 +41,12 @@ public class FakeBookingDao implements BookingDao{
     }
 
     public void removeBooking(Booking booking){
-        bookings.remove(booking);
+        for(int k : bookings.keySet()) {
+            if (bookings.get(k).equals(booking)) {
+                bookings.remove(k);
+                return;
+            }
+        }
     }
 
     public int getBookingsSize(){

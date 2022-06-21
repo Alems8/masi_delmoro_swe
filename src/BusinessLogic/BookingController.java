@@ -39,7 +39,7 @@ public class BookingController {
         }
         cc.holdField();
 
-        Booking booking = new PrivateBooking(cc.getCurrentClub(), cc.getCurrentField(), cc.getCurrentDate(), cc.getCurrentHour(), uc.getCurrentPlayers());
+        Booking booking = new PrivateBooking(cc.getCurrentClub(), cc.getCurrentField(), cc.getCurrentDate(), cc.getCurrentHour(), new ArrayList<>(uc.getCurrentPlayers()));
         bookingDao.addBooking(booking);
     }
 
@@ -149,6 +149,7 @@ public class BookingController {
                 }
             }
         }
+        deleteBooking();
     }
 
     void displayUserRecord() {

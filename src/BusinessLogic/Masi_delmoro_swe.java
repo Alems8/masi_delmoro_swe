@@ -94,7 +94,7 @@ public class Masi_delmoro_swe {
         matti.addFunds(250);
         france.addFunds(500);
         ale.addFunds(20);
-        eli.addFunds(24);
+        eli.addFunds(12);
         cami.addFunds(500);
         marcoRos.addFunds(100);
         lore.addFunds(600);
@@ -103,20 +103,16 @@ public class Masi_delmoro_swe {
         marti.addFunds(100);
         
         matti.bookField(Sport.SOCCER, "LaFiorita", "26/03/2022", 16,new String[]{"france", "cami", "marti", "ale", "eli", "marcoRos", "lore", "matte", "ludo"});
-        System.out.println(matti.getBalance());
-        System.out.println(france.getBalance());
-        System.out.println(lore.getBalance());
-        System.out.println(cami.getBalance());
-        System.out.println(bookingDao.getBookingsSize());
         matti.blindBook(Sport.PADEL, "LaFiorita", "26/03/2022", 16);
         System.out.println(matti.getBalance());
-        System.out.println(bookingDao.getBookingsSize());
-//        cami.viewBookings();
-//        cami.addMatchResult("eli", "ale", 1);
-//        cami.viewRecord();
-//        ale.viewRecord();
-//
-//        clb1.addMember(federica);
-//        System.out.println(userClub1.getMember(0).username);
+        cami.viewBookings();
+        cami.addMatchResult(new String[]{"france", "cami", "marti", "marcoRos", "eli"}, 1);
+        cami.viewRecord();
+        ale.viewRecord();
+
+        cami.deleteAccount();
+        ludo.bookField(Sport.PADEL, "LaFiorita", "30/06/2022", 16, new String[]{"france", "matti", "cami"});
+        cami.bookSpot(2);
+        System.out.println(bookingDao.getBooking(2).getPlayers().get(1).username);
     }
 }

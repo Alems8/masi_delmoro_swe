@@ -1,5 +1,6 @@
 package BusinessLogic;
 
+import Club.UserClub;
 import DAO.BookingDao;
 import DAO.FakeBookingDao;
 import Sport.Sport;
@@ -94,10 +95,24 @@ public class BookingController {
     void deleteUserBooking() throws WrongKeyException {
         if(!currentBooking.getPlayers().contains(uc.getCurrentUser()))
             throw new WrongKeyException();
+        UserClub club = currentBooking.getClub();
+        int price = currentBooking.getField().price;
+        if(club.isMember(uc.getCurrentUser()))
+            price = price - price*(club.getClub().memberDiscount)/100;
         if(currentBooking instanceof BlindBooking){
             removeBookingPlayer();
+            uc.refund(price);
             if (!currentBooking.getPlayers().isEmpty())
                 return;
+        }
+        else{
+            for(User u : currentBooking.getPlayers()) {
+                uc.setCurrentUser(u);
+                price = currentBooking.getField().price;
+                if(club.isMember(uc.getCurrentUser()))
+                    price = price - price*(club.getClub().memberDiscount)/100;
+                uc.refund(price);
+            }
         }
         deleteBooking();
         releaseField();
@@ -117,5 +132,37 @@ public class BookingController {
             throw new NoActiveBookingsException();
         for(int k : keys)
             System.out.println(k +bookingDao.getBooking(k).toString());
+    }
+
+    public void addMatchResult() {
+        Sport sport = currentBooking.getField().sport;
+        for (User u : currentBooking.getPlayers()){
+            if(!(u.record.containsKey(sport))) {
+                int[] result = new int[2];
+                u.record.put(sport, result);
+            }
+            u.record.get(sport)[0]++;
+            for(User w : uc.getCurrentPlayers()){
+                if(w.equals(u)){
+                    u.record.get(sport)[1]++;
+                    u.record.get(sport)[0]--;
+                }
+            }
+        }
+    }
+
+    void displayUserRecord() {
+        User user = uc.getCurrentUser();
+        System.out.println("Il tuo storico è: ");
+        for (Sport k : user.record.keySet()) {
+            System.out.println(k.name + ": " + user.record.get(k)[1] + " vittorie - " + user.record.get(k)[0] +
+                    " sconfitte");
+        }
+    }
+
+    void checkActiveBookings() throws PendingBookingException {
+        if(bookingDao.getUserKeys(uc.getCurrentUser()).size() != 0)
+            throw new PendingBookingException();
+        return;
     }
 }

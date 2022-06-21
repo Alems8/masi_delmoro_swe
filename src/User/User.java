@@ -29,7 +29,6 @@ public class User extends Subject {
     private int balance = 0;
     private final ArrayList<UserClub> favouriteClubs = new ArrayList<>();
     public Map<Sport, int[]> record = new HashMap();
-    BookingChecker bm;
 
     public User(String username, Person person, RequestManager rm) {
         this.username = username;
@@ -90,33 +89,18 @@ public class User extends Subject {
     }
     
     public void addFavouriteClub(String club){
-        bm.addFavouriteClub(this, club);
+        rm.addFavouriteClub(this, club);
     }
     
-    public void addMatchResult(String winner1, String winner2, int key){
-        ArrayList<String> winners = new ArrayList<>();
-        winners.add(winner1);
-        winners.add(winner2);
-        bm.addMatchResult(winners, key);
-    }
-
-    public void addMatchResult(String winner1, String winner2, String winner3, String winner4, String winner5, int key){
-        ArrayList<String> winners = new ArrayList<>();
-        winners.add(winner1);
-        winners.add(winner2);
-        winners.add(winner3);
-        winners.add(winner4);
-        winners.add(winner5);
-        bm.addMatchResult(winners, key);
+    public void addMatchResult(String [] users, int key){
+        ArrayList<String> winners = new ArrayList<>(Arrays.asList(users));
+        rm.addMatchResult(winners, key);
     }
     public void viewRecord(){
-        bm.displayUserRecord(this);
+        rm.displayUserRecord(this);
     }
     
     public void deleteAccount() {
-        try{bm.deleteUser(this);}
-        catch(PendingBookingException e) {
-            System.out.println("Hai delle prenotazioni in sospeso");
-        }
+        rm.deleteUser(this);
     }
 }

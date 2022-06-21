@@ -43,25 +43,30 @@ public class UserController {
         return currentUser;
     }
 
-    boolean checkBalance(User user, UserClub club, Field field){
-        int price = field.price;
-        if(club.isMember(user))
-            price = price - price*(club.getClub().memberDiscount)/100;
-
-        return user.getBalance() >= price;
+    boolean checkBalance(int price){
+        return currentUser.getBalance() >= price;
     }
 
     public void payBooking(UserClub club, Field field) throws LowBalanceException {
         int price = field.price;
-        if(!checkBalance(currentUser, club, field))
+        if(club.isMember(currentUser))
+            price = price - price*(club.getClub().memberDiscount)/100;
+
+        if(!checkBalance(price))
             throw new LowBalanceException();
 
-
-
-        if (club.isMember(currentUser))
-            price = price - price * club.getClub().memberDiscount / 100;
         currentUser.setBalance(currentUser.getBalance() - price);
+    }
 
+    void payJoining(UserClub club) throws LowBalanceException {
+        int price = club.joinClubPrice;
+        if(!checkBalance(price))
+            throw new LowBalanceException();
+        currentUser.setBalance(currentUser.getBalance() - price);
+    }
+
+    public void refund(int price) {
+        currentUser.setBalance(currentUser.getBalance() + price);
     }
 
     private void checkPerson(Person person) throws AlreadySubscribedException{
@@ -96,4 +101,13 @@ public class UserController {
         setCurrentUser(user);
         currentUser.setBalance(currentUser.getBalance() + money);
     }
+
+    public void deleteUser() {
+        userDao.removeUser(currentUser);
+    }
+
+    public void addFavouriteClub() {
+        //currentUser.getFavouriteClubs().add()
+    }
+
 }

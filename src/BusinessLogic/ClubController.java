@@ -107,7 +107,9 @@ public class ClubController {
         return userClub;
     }
 
-    public void addClubMember(User user) {
+    public void addClubMember(User user) throws AlreadySubscribedException {
+        if(currentClub.isMember(user))
+            throw new AlreadySubscribedException();
         currentClub.addMember(user);
     }
 }

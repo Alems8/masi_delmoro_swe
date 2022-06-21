@@ -97,19 +97,26 @@ public class RequestManager {
         bc.addBookingPlayer();
     }
 
-    public void requestJoinClub(User user, String club) { //FIX ME
-        try{cc.setCurrentClub(club);}
+    public void requestJoinClub(User user, String clb) { //FIX ME
+        try{cc.setCurrentClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non è iscritto al servizio");
             return;
         }
+        UserClub club = cc.getCurrentClub();
         uc.setCurrentUser(user);
         try{
-            uc.payJoining();
+            uc.payJoining(club);
             cc.addClubMember(user);
+        }
+        catch(LowBalanceException e){
+            System.out.println("Non hai credito sufficiente");
+            return;
         }
         catch(AlreadySubscribedException e) {
             System.out.println("Sei già associato a questo club");
+            int price = club.joinClubPrice;
+            uc.refund(price);
             return;
         }
     }
@@ -141,5 +148,49 @@ public class RequestManager {
         catch(NoActiveBookingsException e) {
             System.out.println("Non ci sono partite disponibili");
         }
+    }
+
+    public void addMatchResult(ArrayList<String> winners, int id) {
+        try{bc.setCurrentBooking(id);}
+        catch (WrongKeyException e) {
+            System.out.println("La chiave inserita non è corretta");
+            return;
+        }
+        try{uc.setCurrentPlayers(winners, winners.size());}
+        catch (NoFreeSpotException e){
+            System.out.println("Il numero di giocatori è sbagliato");
+            return;
+        }
+        catch (WrongNameException e){
+            System.out.println("Uno degli utenti selezionati non esiste");
+            return;
+        }
+
+        bc.addMatchResult();
+    }
+
+    public void displayUserRecord(User user) {
+        uc.setCurrentUser(user);
+        bc.displayUserRecord();
+    }
+
+    public void deleteUser(User user) {
+        uc.setCurrentUser(user);
+        try{bc.checkActiveBookings();}
+        catch (PendingBookingException e) {
+            System.out.println("Hai delle prenotazioni in sospeso");
+            return;
+        }
+        uc.deleteUser();
+    }
+
+    public void addFavouriteClub(User user, String club) { //FIX ME
+        try{cc.setCurrentClub(club);}
+        catch (WrongNameException e){
+            System.out.println("Il club non esiste o non è registrato al servizio");
+            return;
+        }
+        uc.setCurrentUser(user);
+        uc.addFavouriteClub();
     }
 }

@@ -27,6 +27,10 @@ public class BookingController {
         this.currentBooking = booking;
     }
 
+    Booking getCurrentBooking() {
+        return currentBooking;
+    }
+
     public void createBooking() {
         for (User u : uc.getCurrentPlayers()) {
             uc.setCurrentUser(u);

@@ -156,7 +156,7 @@ public class RequestManager {
             System.out.println("La chiave inserita non è corretta");
             return;
         }
-        try{uc.setCurrentPlayers(winners, winners.size());}
+        try{uc.setCurrentPlayers(winners, bc.getCurrentBooking().getPlayers().size()/2);}
         catch (NoFreeSpotException e){
             System.out.println("Il numero di giocatori è sbagliato");
             return;

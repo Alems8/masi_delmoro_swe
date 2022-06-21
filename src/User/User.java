@@ -74,7 +74,7 @@ public class User extends Subject {
     }
     
     public void viewBookings(){
-        bm.displayUserBookings(this);
+        rm.displayUserBookings(this);
     }
     
     public void blindBook(Sport sport, String clb, String date, int hour){

@@ -47,6 +47,15 @@ public class FakeBookingDao implements BookingDao{
         return bookings.size();
     }
 
+    public ArrayList<Integer> getUserKeys(User user){
+        ArrayList<Integer> userKeys = new ArrayList<>();
+        for(int i=1; i<bookings.size(); i++){
+            if(bookings.get(i).getPlayers().contains(user))
+                userKeys.add(i);
+        }
+        return userKeys;
+    }
+
     public void removeBookingPlayer(User user, int id) {
         Booking booking = getBooking(id);
         ((BlindBooking)booking).removePlayer(user);

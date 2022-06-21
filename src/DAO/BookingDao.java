@@ -4,6 +4,7 @@ import BusinessLogic.BlindBooking;
 import BusinessLogic.Booking;
 import User.User;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public interface BookingDao {
@@ -18,4 +19,7 @@ public interface BookingDao {
     public int getBookingsSize();
 
     public void removeBookingPlayer(User user, int id);
+
+    public ArrayList<Integer> getUserKeys(User user);
+
 }

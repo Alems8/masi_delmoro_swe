@@ -101,4 +101,12 @@ public class BookingController {
         deleteBooking();
         releaseField();
     }
+
+    public void displayUserBookings() throws NoActiveBookingsException {
+        ArrayList<Integer> keys = bookingDao.getUserKeys(uc.getCurrentUser());
+        if(keys.isEmpty())
+            throw new NoActiveBookingsException();
+        for(int k : keys)
+            System.out.println(k +bookingDao.getBooking(k).toString());
+    }
 }

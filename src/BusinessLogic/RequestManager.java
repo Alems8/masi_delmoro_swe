@@ -127,4 +127,12 @@ public class RequestManager {
             return;
         }
     }
+
+    public void displayUserBookings(User user) {
+        uc.setCurrentUser(user);
+        try{bc.displayUserBookings();}
+        catch (NoActiveBookingsException e) {
+            System.out.println("Non hai prenotazioni attive");
+        }
+    }
 }

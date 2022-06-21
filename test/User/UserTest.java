@@ -1,5 +1,7 @@
-package BusinessLogic;
+package User;
 
+import BusinessLogic.BalanceMonitor;
+import BusinessLogic.BlindBooking;
 import Club.Club;
 import Club.Sport;
 

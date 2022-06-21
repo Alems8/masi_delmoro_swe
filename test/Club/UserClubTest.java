@@ -1,5 +1,6 @@
-package BusinessLogic;
+package Club;
 
+import BusinessLogic.BalanceMonitor;
 import Club.Club;
 import User.Person;
 import org.junit.jupiter.api.BeforeEach;

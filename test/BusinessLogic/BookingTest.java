@@ -1,4 +1,4 @@
-package Booking;
+package BusinessLogic;
 
 import BusinessLogic.BalanceMonitor;
 import User.User;

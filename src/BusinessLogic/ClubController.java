@@ -7,6 +7,7 @@ import DAO.ClubDao;
 import DAO.FakeClubDao;
 import ObserverUtil.Observer;
 import Sport.Sport;
+import User.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -79,6 +80,9 @@ public class ClubController {
         return currentField;
     }
 
+    public boolean isMember(User user){
+        return currentClub.isMember(user);
+    }
 
     public void holdField() {
         ArrayList<Integer> times = currentField.timeTable.get(currentDate);
@@ -101,5 +105,9 @@ public class ClubController {
         club.addObserver(monitor);
         clubDao.addClub(userClub);
         return userClub;
+    }
+
+    public void addClubMember(User user) {
+        currentClub.addMember(user);
     }
 }

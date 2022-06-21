@@ -43,7 +43,7 @@ public class UserController {
         return currentUser;
     }
 
-    boolean checkBalance(User user, UserClub club, Field field) throws LowBalanceException {
+    boolean checkBalance(User user, UserClub club, Field field){
         int price = field.price;
         if(club.isMember(user))
             price = price - price*(club.getClub().memberDiscount)/100;

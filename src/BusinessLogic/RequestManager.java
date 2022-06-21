@@ -86,4 +86,31 @@ public class RequestManager {
     }
 
 
+
+    public void requestSpot(User user, int id) {
+        try{bc.setCurrentBooking(id);}
+        catch (WrongKeyException e) {
+            System.out.println("La chiave inserita non è corretta");
+            return;
+        }
+        uc.setCurrentUser(user);
+        bc.addBookingPlayer();
+    }
+
+    public void requestJoinClub(User user, String club) { //FIX ME
+        try{cc.setCurrentClub(club);}
+        catch (WrongNameException e){
+            System.out.println("Il club non è iscritto al servizio");
+            return;
+        }
+        uc.setCurrentUser(user);
+        try{
+            uc.payJoining();
+            cc.addClubMember(user);
+        }
+        catch(AlreadySubscribedException e) {
+            System.out.println("Sei già associato a questo club");
+            return;
+        }
+    }
 }

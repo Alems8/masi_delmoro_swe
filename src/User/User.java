@@ -55,7 +55,7 @@ public class User extends Subject {
     }
     
     public void joinClub(String club) {
-        bm.requestJoinClub(this, club);
+        rm.requestJoinClub(this, club);
     }
     
     public void bookField(Sport sport, String clb, String date, int hour, String [] users){
@@ -86,7 +86,7 @@ public class User extends Subject {
     }
     
     public void bookSpot(int key){
-        bm.requestSpot(this, key);
+        rm.requestSpot(this, key);
     }
     
     public void addFavouriteClub(String club){

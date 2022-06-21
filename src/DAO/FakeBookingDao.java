@@ -2,6 +2,7 @@ package DAO;
 
 import BusinessLogic.BlindBooking;
 import BusinessLogic.Booking;
+import Sport.Sport;
 import User.User;
 
 import java.util.ArrayList;
@@ -59,5 +60,15 @@ public class FakeBookingDao implements BookingDao{
     public void removeBookingPlayer(User user, int id) {
         Booking booking = getBooking(id);
         ((BlindBooking)booking).removePlayer(user);
+    }
+
+    public ArrayList<Integer> getBlindKeys(Sport sport){
+        ArrayList<Integer> blindKeys = new ArrayList<>();
+        for(int i=1; i<bookings.size(); i++){
+            Booking b = bookings.get(i);
+            if(b instanceof BlindBooking && !((BlindBooking) b).isFull() && b.getField().sport.equals(sport))
+                blindKeys.add(i);
+        }
+        return blindKeys;
     }
 }

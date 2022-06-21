@@ -2,6 +2,7 @@ package BusinessLogic;
 
 import DAO.BookingDao;
 import DAO.FakeBookingDao;
+import Sport.Sport;
 import User.User;
 
 import java.util.ArrayList;
@@ -104,6 +105,14 @@ public class BookingController {
 
     public void displayUserBookings() throws NoActiveBookingsException {
         ArrayList<Integer> keys = bookingDao.getUserKeys(uc.getCurrentUser());
+        if(keys.isEmpty())
+            throw new NoActiveBookingsException();
+        for(int k : keys)
+            System.out.println(k +bookingDao.getBooking(k).toString());
+    }
+
+    public void displayBlindBookings(Sport sport) throws NoActiveBookingsException {
+        ArrayList<Integer> keys = bookingDao.getBlindKeys(sport);
         if(keys.isEmpty())
             throw new NoActiveBookingsException();
         for(int k : keys)

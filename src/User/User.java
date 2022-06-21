@@ -82,7 +82,7 @@ public class User extends Subject {
     }
     
     public void viewBlindBookings(Sport sport){
-        bm.displayBlindBookings(sport);
+        rm.displayBlindBookings(sport);
     }
     
     public void bookSpot(int key){

@@ -135,4 +135,11 @@ public class RequestManager {
             System.out.println("Non hai prenotazioni attive");
         }
     }
+
+    public void displayBlindBookings(Sport sport) {
+        try{bc.displayBlindBookings(sport);}
+        catch(NoActiveBookingsException e) {
+            System.out.println("Non ci sono partite disponibili");
+        }
+    }
 }

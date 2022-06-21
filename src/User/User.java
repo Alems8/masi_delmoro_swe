@@ -70,7 +70,7 @@ public class User extends Subject {
     }
     
     public void deleteBooking(int id){
-        bm.deleteUserBooking(this, id);
+        rm.deleteUserBooking(this, id);
     }
     
     public void viewBookings(){

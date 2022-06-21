@@ -39,8 +39,8 @@ public class FakeBookingDao implements BookingDao{
         bookings.put(key++, booking);
     }
 
-    public void removeBooking(int id){
-        bookings.remove(id);
+    public void removeBooking(Booking booking){
+        bookings.remove(booking);
     }
 
     public int getBookingsSize(){

@@ -113,4 +113,18 @@ public class RequestManager {
             return;
         }
     }
+
+    public void deleteUserBooking(User user, int id) {
+        try{bc.setCurrentBooking(id);}
+        catch (WrongKeyException e) {
+            System.out.println("La chiave inserita non è corretta");
+            return;
+        }
+        uc.setCurrentUser(user);
+        try{bc.deleteUserBooking();}
+        catch(WrongKeyException e) {
+            System.out.println("Non hai diritti su questa partita");
+            return;
+        }
+    }
 }

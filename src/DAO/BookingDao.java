@@ -13,7 +13,7 @@ public interface BookingDao {
 
     public void addBooking(Booking booking);
 
-    public void removeBooking(int id);
+    public void removeBooking(Booking booking);
 
     public int getBookingsSize();
 

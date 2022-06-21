@@ -78,4 +78,27 @@ public class BookingController {
         }
         ((BlindBooking)currentBooking).addPlayer(uc.getCurrentUser());
     }
+
+    void removeBookingPlayer(){
+        currentBooking.getPlayers().remove(uc.getCurrentUser());
+    }
+
+    void deleteBooking(){
+        bookingDao.removeBooking(currentBooking);
+    }
+
+    void releaseField(){
+        currentBooking.getField().timeTable.get(currentBooking.getDate()).add(currentBooking.getHour());
+    }
+    void deleteUserBooking() throws WrongKeyException {
+        if(!currentBooking.getPlayers().contains(uc.getCurrentUser()))
+            throw new WrongKeyException();
+        if(currentBooking instanceof BlindBooking){
+            removeBookingPlayer();
+            if (!currentBooking.getPlayers().isEmpty())
+                return;
+        }
+        deleteBooking();
+        releaseField();
+    }
 }

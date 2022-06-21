@@ -1,8 +1,7 @@
 package DAO;
 
-import BusinessLogic.BlindBooking;
 import BusinessLogic.Booking;
-import Sport.Sport;
+import Club.Sport;
 import User.User;
 
 import java.util.ArrayList;
@@ -18,8 +17,6 @@ public interface BookingDao {
     void removeBooking(Booking booking);
 
     int getBookingsSize();
-
-    void removeBookingPlayer(User user, int id);
 
     ArrayList<Integer> getUserKeys(User user);
 

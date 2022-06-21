@@ -106,8 +106,8 @@ public class UserController {
         userDao.removeUser(currentUser);
     }
 
-    public void addFavouriteClub() {
-        //currentUser.getFavouriteClubs().add()
+    public void addFavouriteClub(UserClub club) {
+        currentUser.getFavouriteClubs().add(club);
     }
 
 }

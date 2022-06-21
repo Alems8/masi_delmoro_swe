@@ -9,11 +9,6 @@ public class FakeDaoFactory extends DaoFactory{
     }
 
     @Override
-    public FieldDao getFieldDao() {
-        return FakeFieldDao.getInstance();
-    }
-
-    @Override
     public ClubDao getClubDao() {
         return FakeClubDao.getInstance();
     }

@@ -2,9 +2,8 @@ package BusinessLogic;
 
 
 import Club.Club;
-import Club.Field;
 import Club.UserClub;
-import Sport.Sport;
+import Club.Sport;
 import User.User;
 import User.Person;
 
@@ -184,13 +183,13 @@ public class RequestManager {
         uc.deleteUser();
     }
 
-    public void addFavouriteClub(User user, String club) { //FIX ME
+    public void addFavouriteClub(User user, String club) {
         try{cc.setCurrentClub(club);}
         catch (WrongNameException e){
             System.out.println("Il club non esiste o non è registrato al servizio");
             return;
         }
         uc.setCurrentUser(user);
-        uc.addFavouriteClub();
+        uc.addFavouriteClub(cc.getCurrentClub());
     }
 }

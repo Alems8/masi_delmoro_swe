@@ -1,6 +1,5 @@
 package DAO;
 
-import BusinessLogic.WrongNameException;
 import User.User;
 import User.Person;
 

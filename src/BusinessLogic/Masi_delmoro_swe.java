@@ -11,9 +11,8 @@ import DAO.BookingDao;
 import DAO.DaoFactory;
 import User.Person;
 import User.User;
-import Sport.Sport;
+import Club.Sport;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -29,8 +28,7 @@ public class Masi_delmoro_swe {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        BookingManager manager = BookingManager.getInstance();
-        BookingChecker bm = new BookingChecker(manager);
+
         BookingDao bookingDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getBookingDao();
         Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getClubDao();
         Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
@@ -44,8 +42,8 @@ public class Masi_delmoro_swe {
         Club clb5 = new Club("Firenze Padel", 18, 9,8);
         
         clb1.addField("Soccer 1", Sport.SOCCER,8);
+        clb1.addField("Padel 1", Sport.PADEL,15);
         clb1.addField("Padel 2", Sport.PADEL,15);
-        clb1.addField("Padel 3", Sport.PADEL,15);
         clb2.addField("Soccer 1", Sport.SOCCER,8);
         clb2.addField("Padel 2", Sport.PADEL,15);
         clb3.addField("Soccer 1", Sport.SOCCER,8);
@@ -102,17 +100,22 @@ public class Masi_delmoro_swe {
         ludo.addFunds(500);
         marti.addFunds(100);
         
-        matti.bookField(Sport.SOCCER, "LaFiorita", "26/03/2022", 16,new String[]{"france", "cami", "marti", "ale", "eli", "marcoRos", "lore", "matte", "ludo"});
-        matti.blindBook(Sport.PADEL, "LaFiorita", "26/03/2022", 16);
+        matti.bookField(Sport.SOCCER, "LaFiorita", "26/03/2022", 16, new String[]{"france", "cami", "marti", "ale", "eli", "marcoRos", "lore", "matte", "ludo"});
+        matti.blindBook(Sport.PADEL, "LaFiorita", "26/07/2022", 16);
+
         System.out.println(matti.getBalance());
         cami.viewBookings();
         cami.addMatchResult(new String[]{"france", "cami", "marti", "marcoRos", "eli"}, 1);
         cami.viewRecord();
         ale.viewRecord();
 
-        cami.deleteAccount();
-        ludo.bookField(Sport.PADEL, "LaFiorita", "30/06/2022", 16, new String[]{"france", "matti", "cami"});
+        cami.viewBlindBookings(Sport.PADEL);
         cami.bookSpot(2);
-        System.out.println(bookingDao.getBooking(2).getPlayers().get(1).username);
+        ludo.bookSpot(2);
+        lore.bookSpot(2);
+        System.out.println(bookingDao.getBooking(2).getPlayers().size());
+        ale.viewBlindBookings(Sport.PADEL);
+        lore.deleteBooking(2);
+        ale.viewBlindBookings(Sport.PADEL);
     }
 }

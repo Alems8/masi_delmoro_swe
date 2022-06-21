@@ -5,11 +5,9 @@
  */
 package Club;
 
-import BusinessLogic.BookingChecker;
 import BusinessLogic.RequestManager;
 import ObserverUtil.Subject;
 import User.Person;
-import Sport.Sport;
 
 import java.util.ArrayList;
 

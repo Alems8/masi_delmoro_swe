@@ -4,12 +4,12 @@ import Club.UserClub;
 
 public interface ClubDao {
 
-    public void addClub(UserClub club);
+    void addClub(UserClub club);
 
-    public UserClub getClub(int id);
+    UserClub getClub(int id);
 
-    public int getClubsSize();
+    int getClubsSize();
 
-    public UserClub getClubByName(String clb);
+    UserClub getClubByName(String clb);
 
 }

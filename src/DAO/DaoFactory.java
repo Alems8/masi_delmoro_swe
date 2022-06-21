@@ -6,7 +6,6 @@ public abstract class DaoFactory {
 
 
     public abstract UserDao getUserDao();
-    public abstract FieldDao getFieldDao();
     public abstract ClubDao getClubDao();
     public abstract BookingDao getBookingDao();
 

@@ -6,7 +6,7 @@ import Club.UserClub;
 import DAO.ClubDao;
 import DAO.FakeClubDao;
 import ObserverUtil.Observer;
-import Sport.Sport;
+import Club.Sport;
 import User.User;
 
 import java.time.LocalDate;

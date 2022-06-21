@@ -1,13 +1,11 @@
 package Booking;
 
 import BusinessLogic.BalanceMonitor;
-import BusinessLogic.BookingManager;
-import BusinessLogic.BookingChecker;
 import User.User;
 import Club.Club;
 import Club.UserClub;
 import User.Person;
-import Sport.Sport;
+import Club.Sport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

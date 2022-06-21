@@ -6,12 +6,10 @@
 package User;
 
 
-import BusinessLogic.BookingChecker;
-import BusinessLogic.PendingBookingException;
 import BusinessLogic.RequestManager;
 import Club.UserClub;
 import ObserverUtil.Subject;
-import Sport.Sport;
+import Club.Sport;
 
 import java.util.ArrayList;
 import java.util.Arrays;

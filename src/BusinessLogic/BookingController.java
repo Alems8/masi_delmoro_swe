@@ -3,7 +3,7 @@ package BusinessLogic;
 import Club.UserClub;
 import DAO.BookingDao;
 import DAO.FakeBookingDao;
-import Sport.Sport;
+import Club.Sport;
 import User.User;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class BookingController {
     }
 
     void removeBookingPlayer(){
-        currentBooking.getPlayers().remove(uc.getCurrentUser());
+        ((BlindBooking)currentBooking).removePlayer(uc.getCurrentUser());
     }
 
     void deleteBooking(){
@@ -168,6 +168,5 @@ public class BookingController {
     void checkActiveBookings() throws PendingBookingException {
         if(bookingDao.getUserKeys(uc.getCurrentUser()).size() != 0)
             throw new PendingBookingException();
-        return;
     }
 }

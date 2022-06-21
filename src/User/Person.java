@@ -8,7 +8,6 @@ package User;
 import BusinessLogic.AlreadySubscribedException;
 import BusinessLogic.RequestManager;
 import BusinessLogic.WrongNameException;
-import BusinessLogic.BookingChecker;
 
 /**
  *

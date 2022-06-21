@@ -1,12 +1,8 @@
 package User;
 
 import BusinessLogic.BalanceMonitor;
-import BusinessLogic.BookingManager;
-import BusinessLogic.BookingChecker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTest {
     private Person marco, luigi, filippo;

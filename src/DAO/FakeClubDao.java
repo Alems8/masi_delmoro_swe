@@ -1,6 +1,5 @@
 package DAO;
 
-import BusinessLogic.WrongNameException;
 import Club.UserClub;
 import java.util.ArrayList;
 

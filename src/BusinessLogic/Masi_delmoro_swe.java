@@ -117,5 +117,8 @@ public class Masi_delmoro_swe {
         ale.viewBlindBookings(Sport.PADEL);
         lore.deleteBooking(2);
         ale.viewBlindBookings(Sport.PADEL);
+
+        clb1.addMember(federica);
+        System.out.println(userClub1.getMember(0).username);
     }
 }

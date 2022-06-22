@@ -96,6 +96,7 @@ public class BookingController {
     void releaseField(){
         currentBooking.getField().timeTable.get(currentBooking.getDate()).add(currentBooking.getHour());
     }
+
     void deleteUserBooking() throws WrongKeyException {
         if(!currentBooking.getPlayers().contains(uc.getCurrentUser()))
             throw new WrongKeyException();
@@ -118,8 +119,10 @@ public class BookingController {
                 uc.refund(price);
             }
         }
+        cc.setCurrentClub(club);
+        cc.setCurrentField(currentBooking.getField());
         deleteBooking();
-        releaseField();
+        cc.releaseField();
     }
 
     public void displayUserBookings() throws NoActiveBookingsException {

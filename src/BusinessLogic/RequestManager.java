@@ -33,7 +33,7 @@ public class RequestManager {
             return;
         }
 
-        try{cc.setCurrentField(sport, date, hour);}
+        try{cc.findField(sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
             return;
@@ -73,7 +73,7 @@ public class RequestManager {
             return;
         }
 
-        try{cc.setCurrentField(sport, date, hour);}
+        try{cc.findField(sport, date, hour);}
         catch(NoFreeFieldException e) {
             System.out.println("Nessun campo disponibile");
             return;

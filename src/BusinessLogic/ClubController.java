@@ -39,17 +39,30 @@ public class ClubController {
         clubDao = FakeClubDao.getInstance();
     }
 
+    void setCurrentClub(UserClub club) {
+        currentClub = club;
+    }
+
     void setCurrentClub(String clb) throws WrongNameException {
-        currentClub = clubDao.getClubByName(clb);
-        if (currentClub == null)
+        UserClub club = clubDao.getClubByName(clb);
+        if (club == null)
             throw new WrongNameException();
+        currentClub = club;
     }
 
     UserClub getCurrentClub(){
         return currentClub;
     }
 
-    void setCurrentField(Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
+    void setCurrentField(Field field){
+        currentField = field;
+    }
+
+    Field getCurrentField(){
+        return currentField;
+    }
+
+    void findField(Sport sport, LocalDate date, int hour) throws NoFreeFieldException {
         int i = 0;
         boolean found = false;
         Club club = currentClub.getClub();
@@ -71,22 +84,22 @@ public class ClubController {
         }
         if(!found)
             throw new NoFreeFieldException();
-        currentField = field;
+        setCurrentField(field);
         setCurrentDate(date);
         setCurrentHour(hour);
-    }
-
-    Field getCurrentField(){
-        return currentField;
     }
 
     public boolean isMember(User user){
         return currentClub.isMember(user);
     }
 
-    public void holdField() {
+    void holdField() {
         ArrayList<Integer> times = currentField.timeTable.get(currentDate);
         times.remove((Integer) currentHour);
+    }
+
+    void releaseField() {
+
     }
 
     private void checkClub(Club club) throws AlreadySubscribedException {

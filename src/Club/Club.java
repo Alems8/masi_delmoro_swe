@@ -50,7 +50,7 @@ public class Club extends Subject {
 
     public void addMember(Person person){
         members.add(person);
-        notifyObservers(members);
+        notifyObservers(person);
     }
 
     public Person getMember(int id){

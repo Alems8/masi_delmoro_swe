@@ -89,10 +89,6 @@ public class ClubController {
         setCurrentHour(hour);
     }
 
-    public boolean isMember(User user){
-        return currentClub.isMember(user);
-    }
-
     void holdField() {
         ArrayList<Integer> times = currentField.timeTable.get(currentDate);
         times.remove((Integer) currentHour);

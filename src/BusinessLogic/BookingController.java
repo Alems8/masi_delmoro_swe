@@ -93,7 +93,6 @@ public class BookingController {
         bookingDao.removeBooking(currentBooking);
     }
 
-
     void deleteUserBooking() throws WrongKeyException {
         if(!currentBooking.getPlayers().contains(uc.getCurrentUser()))
             throw new WrongKeyException();

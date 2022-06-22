@@ -96,7 +96,7 @@ public class RequestManager {
         bc.addBookingPlayer();
     }
 
-    public void requestJoinClub(User user, String clb) { //FIX ME
+    public void requestJoinClub(User user, String clb) {
         try{cc.setCurrentClub(clb);}
         catch (WrongNameException e){
             System.out.println("Il club non è iscritto al servizio");

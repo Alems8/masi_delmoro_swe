@@ -93,15 +93,12 @@ public class BookingController {
         bookingDao.removeBooking(currentBooking);
     }
 
-    void releaseField(){
-        currentBooking.getField().timeTable.get(currentBooking.getDate()).add(currentBooking.getHour());
-    }
 
     void deleteUserBooking() throws WrongKeyException {
         if(!currentBooking.getPlayers().contains(uc.getCurrentUser()))
             throw new WrongKeyException();
         UserClub club = currentBooking.getClub();
-        int price = currentBooking.getField().price;
+        int price = currentBooking.getField().price; //FIXME
         if(club.isMember(uc.getCurrentUser()))
             price = price - price*(club.getClub().memberDiscount)/100;
         if(currentBooking instanceof BlindBooking){
@@ -119,7 +116,8 @@ public class BookingController {
                 uc.refund(price);
             }
         }
-        cc.setCurrentClub(club);
+        cc.setCurrentDate(currentBooking.getDate());
+        cc.setCurrentHour(currentBooking.getHour());
         cc.setCurrentField(currentBooking.getField());
         deleteBooking();
         cc.releaseField();

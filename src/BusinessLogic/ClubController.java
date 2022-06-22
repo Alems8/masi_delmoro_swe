@@ -99,7 +99,7 @@ public class ClubController {
     }
 
     void releaseField() {
-
+        currentField.timeTable.get(currentDate).add(currentHour);
     }
 
     private void checkClub(Club club) throws AlreadySubscribedException {

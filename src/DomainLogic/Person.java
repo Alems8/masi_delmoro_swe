@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DomainModel;
+package DomainLogic;
 
 import BusinessLogic.AlreadySubscribedException;
 import BusinessLogic.RequestManager;
 import BusinessLogic.WrongNameException;
-import DomainModel.User;
 
 /**
  *

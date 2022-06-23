@@ -1,4 +1,4 @@
-package DomainModel;
+package DomainLogic;
 
 import java.util.ArrayList;
 

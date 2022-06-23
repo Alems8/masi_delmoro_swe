@@ -7,7 +7,7 @@ package BusinessLogic;
 
 import ObserverUtil.Observer;
 import ObserverUtil.Subject;
-import DomainModel.User;
+import DomainLogic.User;
 
 /**
  *

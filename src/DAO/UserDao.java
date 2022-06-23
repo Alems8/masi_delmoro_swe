@@ -1,7 +1,7 @@
 package DAO;
 
-import DomainModel.User;
-import DomainModel.Person;
+import DomainLogic.User;
+import DomainLogic.Person;
 
 public interface UserDao {
 

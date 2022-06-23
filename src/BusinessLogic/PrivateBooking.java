@@ -5,9 +5,9 @@
  */
 package BusinessLogic;
 
-import DomainModel.Field;
-import DomainModel.UserClub;
-import DomainModel.User;
+import DomainLogic.Field;
+import DomainLogic.UserClub;
+import DomainLogic.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

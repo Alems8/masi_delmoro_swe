@@ -1,10 +1,10 @@
 package BusinessLogic;
 
-import DomainModel.UserClub;
+import DomainLogic.UserClub;
 import DAO.BookingDao;
 import DAO.FakeBookingDao;
-import DomainModel.Sport;
-import DomainModel.User;
+import DomainLogic.Sport;
+import DomainLogic.User;
 
 import java.util.ArrayList;
 

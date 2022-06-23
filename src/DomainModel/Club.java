@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Club;
+package DomainModel;
 
 import BusinessLogic.RequestManager;
+import DomainModel.Sport;
+import DomainModel.UserClub;
 import ObserverUtil.Subject;
-import User.Person;
+import DomainModel.Person;
 
 import java.util.ArrayList;
 

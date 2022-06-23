@@ -1,11 +1,10 @@
 package BusinessLogic;
 
-import BusinessLogic.BalanceMonitor;
-import User.User;
-import Club.Club;
-import Club.UserClub;
-import User.Person;
-import Club.Sport;
+import DomainModel.User;
+import DomainModel.Club;
+import DomainModel.UserClub;
+import DomainModel.Person;
+import DomainModel.Sport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

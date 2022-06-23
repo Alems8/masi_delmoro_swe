@@ -2,8 +2,8 @@ package DAO;
 
 import BusinessLogic.BlindBooking;
 import BusinessLogic.Booking;
-import Club.Sport;
-import User.User;
+import DomainModel.Sport;
+import DomainModel.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,9 @@
 package Club;
 
 import BusinessLogic.BalanceMonitor;
-import User.Person;
+import DomainModel.Club;
+import DomainModel.Person;
+import DomainModel.Sport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

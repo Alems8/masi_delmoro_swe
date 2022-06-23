@@ -1,15 +1,15 @@
 package BusinessLogic;
 
-import Club.Club;
-import Club.UserClub;
+import DomainModel.Club;
+import DomainModel.UserClub;
 import DAO.ClubDao;
 import DAO.FakeClubDao;
 import DAO.FakeUserDao;
 import DAO.UserDao;
 import ObserverUtil.Observer;
 import ObserverUtil.Subject;
-import User.Person;
-import User.User;
+import DomainModel.Person;
+import DomainModel.User;
 
 public class MembersMonitor implements Observer {
     private static MembersMonitor instance = null;

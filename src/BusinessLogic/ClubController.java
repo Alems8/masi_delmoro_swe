@@ -1,13 +1,13 @@
 package BusinessLogic;
 
-import Club.Club;
-import Club.Field;
-import Club.UserClub;
+import DomainModel.Club;
+import DomainModel.Field;
+import DomainModel.UserClub;
 import DAO.ClubDao;
 import DAO.FakeClubDao;
 import ObserverUtil.Observer;
-import Club.Sport;
-import User.User;
+import DomainModel.Sport;
+import DomainModel.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

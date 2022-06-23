@@ -5,13 +5,13 @@
  */
 package BusinessLogic;
 
-import Club.Club;
-import Club.UserClub;
+import DomainModel.Club;
+import DomainModel.UserClub;
 import DAO.BookingDao;
 import DAO.DaoFactory;
-import User.Person;
-import User.User;
-import Club.Sport;
+import DomainModel.Person;
+import DomainModel.User;
+import DomainModel.Sport;
 
 import java.util.Objects;
 

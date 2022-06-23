@@ -1,6 +1,6 @@
 package DAO;
 
-import Club.UserClub;
+import DomainModel.UserClub;
 import java.util.ArrayList;
 
 public class FakeClubDao implements ClubDao{

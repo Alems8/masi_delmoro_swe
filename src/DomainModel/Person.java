@@ -25,14 +25,7 @@ public class Person {
     }
     
     public User subscribe(RequestManager rm, String username) {
-        User user = null;
-        try{user = rm.addUser(this, username);}
-        catch(WrongNameException e) {
-            System.out.println("Il nome utente non è disponibile");
-        }
-        catch(AlreadySubscribedException e) {
-            System.out.println("Sei già registrato al servizio");
-        }
+        User user = rm.addUser(this, username);
         return user;
     }
 }

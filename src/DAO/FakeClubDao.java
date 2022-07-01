@@ -24,6 +24,10 @@ public class FakeClubDao implements ClubDao{
         clubs.add(club);
     }
 
+    public boolean containsClub(UserClub club){
+        return clubs.contains(club);
+    }
+
     public UserClub getClub(int id){
         return clubs.get(id);
     }

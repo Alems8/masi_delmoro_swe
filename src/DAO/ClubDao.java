@@ -6,6 +6,8 @@ public interface ClubDao {
 
     void addClub(UserClub club);
 
+    boolean containsClub(UserClub club);
+
     UserClub getClub(int id);
 
     int getClubsSize();

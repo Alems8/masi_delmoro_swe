@@ -52,7 +52,7 @@ public class RequestManager {
         bc.createBooking();
     }
 
-    public User addUser(Person person, String username) throws WrongNameException, AlreadySubscribedException {
+    public User addUser(Person person, String username){
         return uc.createUser(person, username, this);
     }
 

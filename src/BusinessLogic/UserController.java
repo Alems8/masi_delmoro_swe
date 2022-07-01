@@ -1,11 +1,11 @@
 package BusinessLogic;
 
-import DomainLogic.Field;
-import DomainLogic.UserClub;
+import DomainModel.Field;
+import DomainModel.UserClub;
 import DAO.*;
 import ObserverUtil.Observer;
-import DomainLogic.User;
-import DomainLogic.Person;
+import DomainModel.User;
+import DomainModel.Person;
 
 import java.util.ArrayList;
 

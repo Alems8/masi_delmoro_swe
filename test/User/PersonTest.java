@@ -1,7 +1,7 @@
 package User;
 
 import BusinessLogic.BalanceMonitor;
-import DomainLogic.Person;
+import DomainModel.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

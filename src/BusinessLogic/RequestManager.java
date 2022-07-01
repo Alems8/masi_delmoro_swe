@@ -1,11 +1,11 @@
 package BusinessLogic;
 
 
-import DomainLogic.Club;
-import DomainLogic.UserClub;
-import DomainLogic.Sport;
-import DomainLogic.User;
-import DomainLogic.Person;
+import DomainModel.Club;
+import DomainModel.UserClub;
+import DomainModel.Sport;
+import DomainModel.User;
+import DomainModel.Person;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

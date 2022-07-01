@@ -1,10 +1,6 @@
 package BusinessLogic;
 
-import DomainLogic.User;
-import DomainLogic.Club;
-import DomainLogic.UserClub;
-import DomainLogic.Person;
-import DomainLogic.Sport;
+import DomainModel.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

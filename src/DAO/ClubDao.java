@@ -1,6 +1,6 @@
 package DAO;
 
-import DomainLogic.UserClub;
+import DomainModel.UserClub;
 
 public interface ClubDao {
 

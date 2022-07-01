@@ -3,11 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BusinessLogic;
-
-import DomainLogic.Field;
-import DomainLogic.UserClub;
-import DomainLogic.User;
+package DomainModel;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

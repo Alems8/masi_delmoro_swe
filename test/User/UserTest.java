@@ -1,12 +1,12 @@
 package User;
 
 import BusinessLogic.BalanceMonitor;
-import BusinessLogic.BlindBooking;
-import DomainLogic.Club;
-import DomainLogic.Sport;
+import DomainModel.BlindBooking;
+import DomainModel.Club;
+import DomainModel.Sport;
 
-import DomainLogic.Person;
-import DomainLogic.User;
+import DomainModel.Person;
+import DomainModel.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

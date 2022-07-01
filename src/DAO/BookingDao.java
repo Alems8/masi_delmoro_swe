@@ -1,8 +1,8 @@
 package DAO;
 
-import BusinessLogic.Booking;
-import DomainLogic.Sport;
-import DomainLogic.User;
+import DomainModel.Booking;
+import DomainModel.Sport;
+import DomainModel.User;
 
 import java.util.ArrayList;
 import java.util.Set;

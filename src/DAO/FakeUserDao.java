@@ -1,7 +1,7 @@
 package DAO;
 
-import DomainLogic.User;
-import DomainLogic.Person;
+import DomainModel.User;
+import DomainModel.Person;
 
 import java.util.ArrayList;
 

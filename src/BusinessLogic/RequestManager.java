@@ -16,12 +16,19 @@ public class RequestManager {
     final ClubController cc;
     final UserController uc;
     final BookingController bc;
+    private static RequestManager instance = null;
 
-    public RequestManager(){
+    private RequestManager(){
         this.cc = new ClubController();
         this.uc = new UserController();
         this.bc = new BookingController(cc, uc);
 
+    }
+
+    public static RequestManager getInstance() {
+        if(instance == null)
+            instance = new RequestManager();
+        return instance;
     }
 
     public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {

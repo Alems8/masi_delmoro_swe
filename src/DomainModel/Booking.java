@@ -19,7 +19,7 @@ public class Booking {
     protected LocalDate date;
     protected int hour;
     protected ArrayList<User> players;
-    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    protected final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Booking(UserClub club, Field field, LocalDate date, int hour, ArrayList<User> players) {
         this.club = club;

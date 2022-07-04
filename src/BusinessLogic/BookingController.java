@@ -12,6 +12,7 @@ public class BookingController {
     private final ClubController cc;
     private final BookingDao bookingDao;
     private Booking currentBooking;
+
     public BookingController(ClubController cc, UserController uc){
         this.uc = uc;
         this.cc = cc;
@@ -29,13 +30,17 @@ public class BookingController {
         return currentBooking;
     }
 
-    public void createBooking() {
-        for (User u : uc.getCurrentPlayers()) {
-            uc.setCurrentUser(u);
+    void createBooking() {
+        for (int i=0; i<uc.getCurrentPlayers().size(); i++) {
+            uc.setCurrentUser(uc.getCurrentPlayers().get(i));
             try {
                 uc.payBooking(cc.getCurrentClub(), cc.getCurrentField());
             } catch (LowBalanceException e) {
-                System.out.println("Il saldo di "+u.username+" non è sufficiente");
+                for(int j=0; j<i; j++) {
+                    uc.setCurrentUser(uc.getCurrentPlayers().get(j));
+                    uc.refund(cc.getCurrentClub(), cc.getCurrentField());
+                }
+                System.out.println("Il saldo di "+uc.getCurrentPlayers().get(i).username+" non è sufficiente");
                 return;
             }
         }
@@ -45,7 +50,7 @@ public class BookingController {
         bookingDao.addBooking(booking);
     }
 
-    public void createBlindBooking() {
+    void createBlindBooking() {
         try {
             uc.payBooking(cc.getCurrentClub(), cc.getCurrentField());
         } catch (LowBalanceException e) {
@@ -65,7 +70,7 @@ public class BookingController {
             throw new NoFreeSpotException();
     }
 
-    public void addBookingPlayer() {
+    void addBookingPlayer() {
         try {checkBlindBooking();}
         catch (WrongKeyException e) {
             System.out.print("La chiave inserita non è corretta");
@@ -95,7 +100,7 @@ public class BookingController {
         if(!currentBooking.getPlayers().contains(uc.getCurrentUser()))
             throw new WrongKeyException();
         UserClub club = currentBooking.getClub();
-        int price = currentBooking.getField().price; //FIXME
+        int price = currentBooking.getField().price;
         if(club.isMember(uc.getCurrentUser()))
             price = price - price*(club.getClub().memberDiscount)/100;
         if(currentBooking instanceof BlindBooking){
@@ -120,7 +125,7 @@ public class BookingController {
         cc.releaseField();
     }
 
-    public void displayUserBookings() throws NoActiveBookingsException {
+    void displayUserBookings() throws NoActiveBookingsException {
         ArrayList<Integer> keys = bookingDao.getUserKeys(uc.getCurrentUser());
         if(keys.isEmpty())
             throw new NoActiveBookingsException();
@@ -128,7 +133,7 @@ public class BookingController {
             System.out.println(k +bookingDao.getBooking(k).toString());
     }
 
-    public void displayBlindBookings(Sport sport) throws NoActiveBookingsException {
+    void displayBlindBookings(Sport sport) throws NoActiveBookingsException {
         ArrayList<Integer> keys = bookingDao.getBlindKeys(sport);
         if(keys.isEmpty())
             throw new NoActiveBookingsException();
@@ -136,7 +141,7 @@ public class BookingController {
             System.out.println(k +bookingDao.getBooking(k).toString());
     }
 
-    public void addMatchResult() {
+    void addMatchResult() {
         Sport sport = currentBooking.getField().sport;
         for (User u : currentBooking.getPlayers()){
             if(!(u.record.containsKey(sport))) {

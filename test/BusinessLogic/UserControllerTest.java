@@ -1,11 +1,10 @@
 package BusinessLogic;
 
-import DAO.BookingDao;
-import DAO.ClubDao;
+
 import DAO.DaoFactory;
 import DAO.UserDao;
 import DomainModel.*;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,36 +12,28 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 class UserControllerTest {
-    RequestManager rm;
-    UserDao userDao;
-    ClubDao clubDao;
-    BookingDao bookingDao;
-    User user1, user2, user3, user4;
-    UserClub club1;
-    UserController uc;
+    private static RequestManager rm;
+    private static UserDao userDao;
+    private static User user1, user2, user3;
+    private static UserClub club1;
+    private static UserController uc;
 
 
-    @BeforeEach
-    void setUp() {
-        this.bookingDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getBookingDao();
-        this.clubDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getClubDao();
-        this.userDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
-        RequestManager rm = new RequestManager();
-        this.uc = rm.uc;
+    @BeforeAll
+    static void setUp() {
+
+        userDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
+        RequestManager rm = RequestManager.getInstance();
+        uc = rm.uc;
         Person lorenzo = new Person("Lorenzo","Rossi","lore.rossi@gmail.com");
         Person elisabetta = new Person("Elisabetta","Bianchi","betti.bianchi@gmail.com");
         Person martina = new Person("Martina","Gialli","marti.gialli@gmail.com");
-        Person camilla = new Person("Camilla","Verdi","cami.verdi@gmail.com");
-        this.user1 = lorenzo.subscribe(rm, "lore");
-        this.user2 = elisabetta.subscribe(rm, "eli");
-        this.user3 = martina.subscribe(rm, "marti");
-        this.user4 = camilla.subscribe(rm, "cami");
-        user1.addFunds(110);
-        user3.addFunds(100);
-        user4.addFunds(100);
+        user1 = lorenzo.subscribe(rm, "lore");
+        user2 = elisabetta.subscribe(rm, "eli");
+        user3 = martina.subscribe(rm, "marti");
         Club clb1 = new Club("LaFiorita", 9, 23,5);
         clb1.addField("Padel 1", Sport.PADEL, 5);
-        this.club1 = clb1.subscribe(rm, 100);
+        club1 = clb1.subscribe(rm, 100);
     }
 
     @Test
@@ -75,6 +66,7 @@ class UserControllerTest {
 
     @Test
     void checkBalance() {
+        user1.setBalance(100);
         uc.setCurrentUser(user1);
         assertTrue(uc.checkBalance(50));
         assertTrue(uc.checkBalance(100));
@@ -84,6 +76,7 @@ class UserControllerTest {
     @Test
     void payBooking() throws LowBalanceException {
         uc.setCurrentUser(user1);
+        user1.setBalance(110);
         uc.payBooking(club1, club1.getClub().fields.get(0));
         assertEquals(105, uc.getCurrentUser().getBalance());
 
@@ -102,6 +95,7 @@ class UserControllerTest {
     @Test
     void payJoining() throws LowBalanceException {
         uc.setCurrentUser(user1);
+        user1.setBalance(110);
         uc.payJoining(club1);
         assertEquals(10, uc.getCurrentUser().getBalance());
 
@@ -116,6 +110,7 @@ class UserControllerTest {
     @Test
     void refund() {
         uc.setCurrentUser(user1);
+        user1.setBalance(110);
         uc.refund(20);
         assertEquals(130,uc.getCurrentUser().getBalance());
     }
@@ -124,13 +119,13 @@ class UserControllerTest {
     void createUser() {
         Person marte = new Person("Marte","Rossi","marte.rossi@gmail.com");
         User user5 = uc.createUser(marte,"marty",rm);
-        assertEquals(5,userDao.getUsersSize());
+        assertEquals(4,userDao.getUsersSize());
         assertTrue(userDao.containsUser(user5));
     }
 
     @Test
     void topUpUserBalance() {
-        uc.topUpUserBalance(user2,20);
+        uc.topUpUserBalance(user3,20);
         assertEquals(20, uc.getCurrentUser().getBalance());
     }
 

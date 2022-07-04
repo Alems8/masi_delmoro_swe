@@ -19,7 +19,7 @@ public class UserController {
     }
 
 
-    public void setCurrentPlayers(ArrayList<String> users, int size) throws WrongNameException, NoFreeSpotException {
+    void setCurrentPlayers(ArrayList<String> users, int size) throws WrongNameException, NoFreeSpotException {
         currentPlayers.clear();
         if (users.size() != size)
             throw new NoFreeSpotException();
@@ -36,11 +36,11 @@ public class UserController {
         return currentPlayers;
     }
 
-    public void setCurrentUser(User user){
+    void setCurrentUser(User user){
         this.currentUser = user;
     }
 
-    public User getCurrentUser(){
+    User getCurrentUser(){
         return currentUser;
     }
 
@@ -48,7 +48,7 @@ public class UserController {
         return currentUser.getBalance() >= price;
     }
 
-    public void payBooking(UserClub club, Field field) throws LowBalanceException {
+    void payBooking(UserClub club, Field field) throws LowBalanceException {
         int price = field.price;
         if(club.isMember(currentUser))
             price = price - price*(club.getClub().memberDiscount)/100;
@@ -66,7 +66,14 @@ public class UserController {
         currentUser.setBalance(currentUser.getBalance() - price);
     }
 
-    public void refund(int price) {
+    void refund(int price) {
+        currentUser.setBalance(currentUser.getBalance() + price);
+    }
+
+    void refund(UserClub club, Field field){
+        int price = field.price;
+        if(club.isMember(currentUser))
+            price = price - price*(club.getClub().memberDiscount)/100;
         currentUser.setBalance(currentUser.getBalance() + price);
     }
 
@@ -98,16 +105,16 @@ public class UserController {
         return user;
     }
 
-    public void topUpUserBalance(User user, int money){
+    void topUpUserBalance(User user, int money){
         setCurrentUser(user);
         currentUser.setBalance(currentUser.getBalance() + money);
     }
 
-    public void deleteUser() {
+    void deleteUser() {
         userDao.removeUser(currentUser);
     }
 
-    public void addFavouriteClub(UserClub club) {
+    void addFavouriteClub(UserClub club) {
         currentUser.getFavouriteClubs().add(club);
     }
 

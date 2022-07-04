@@ -42,4 +42,10 @@ public class BlindBooking extends Booking {
         players.remove(user);
         setFull(false);
     }
+
+    @Override
+    public String toString() {
+        return ")" + this.club.getClub().name + " - " + this.field.name + " - " + this.date.format(dtf) + "  "
+                +this.hour+" - posti disponibili: "+ (this.field.sport.numPlayers-this.players.size());
+    }
 }

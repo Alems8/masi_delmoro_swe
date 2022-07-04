@@ -32,7 +32,7 @@ public class Masi_delmoro_swe {
         BookingDao bookingDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getBookingDao();
         Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getClubDao();
         Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
-        RequestManager rm = new RequestManager();
+        RequestManager rm = RequestManager.getInstance();
 
 
         Club clb1 = new Club("LaFiorita", 9, 23,5);

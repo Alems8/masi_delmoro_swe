@@ -19,24 +19,26 @@ public class ClubController {
     private LocalDate currentDate;
     private int currentHour;
 
-    public LocalDate getCurrentDate() {
-        return currentDate;
-    }
-
-    public void setCurrentDate(LocalDate currentDate) {
-        this.currentDate = currentDate;
-    }
-
-    public int getCurrentHour() {
-        return currentHour;
-    }
-
-    public void setCurrentHour(int currentHour) {
-        this.currentHour = currentHour;
-    }
 
     public ClubController(){
         clubDao = FakeClubDao.getInstance();
+    }
+
+
+    LocalDate getCurrentDate() {
+        return currentDate;
+    }
+
+    void setCurrentDate(LocalDate currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    int getCurrentHour() {
+        return currentHour;
+    }
+
+    void setCurrentHour(int currentHour) {
+        this.currentHour = currentHour;
     }
 
     void setCurrentClub(UserClub club) {
@@ -103,7 +105,7 @@ public class ClubController {
             throw new AlreadySubscribedException();
     }
 
-    public UserClub addClub(Club club, int joinClubPrice) {
+    UserClub addClub(Club club, int joinClubPrice) {
         try{checkClub(club);}
         catch(AlreadySubscribedException e){
             System.out.println("Sei già registrato");
@@ -116,7 +118,7 @@ public class ClubController {
         return userClub;
     }
 
-    public void addClubMember(User user) throws AlreadySubscribedException {
+    void addClubMember(User user) throws AlreadySubscribedException {
         if(currentClub.isMember(user))
             throw new AlreadySubscribedException();
         currentClub.addMember(user);

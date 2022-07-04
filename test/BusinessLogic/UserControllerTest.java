@@ -1,17 +1,25 @@
 package BusinessLogic;
 
+import DAO.BookingDao;
+import DAO.ClubDao;
 import DAO.DaoFactory;
-import DomainModel.Club;
-import DomainModel.Person;
-import DomainModel.Sport;
-import DomainModel.User;
+import DAO.UserDao;
+import DomainModel.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 class UserControllerTest {
-
+    RequestManager rm;
+    UserDao userDao;
+    ClubDao clubDao;
+    BookingDao bookingDao;
+    User user1, user2, user3, user4;
+    UserClub club1;
+    UserController uc;
 
 
     @BeforeEach
@@ -20,6 +28,7 @@ class UserControllerTest {
         this.clubDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getClubDao();
         this.userDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
         RequestManager rm = new RequestManager();
+        this.uc = rm.uc;
         Person lorenzo = new Person("Lorenzo","Rossi","lore.rossi@gmail.com");
         Person elisabetta = new Person("Elisabetta","Bianchi","betti.bianchi@gmail.com");
         Person martina = new Person("Martina","Gialli","marti.gialli@gmail.com");
@@ -28,8 +37,7 @@ class UserControllerTest {
         this.user2 = elisabetta.subscribe(rm, "eli");
         this.user3 = martina.subscribe(rm, "marti");
         this.user4 = camilla.subscribe(rm, "cami");
-        user1.addFunds(100);
-        user2.addFunds(100);
+        user1.addFunds(110);
         user3.addFunds(100);
         user4.addFunds(100);
         Club clb1 = new Club("LaFiorita", 9, 23,5);
@@ -38,48 +46,106 @@ class UserControllerTest {
     }
 
     @Test
-    void setCurrentPlayers() {
+    void setCurrentPlayers() throws WrongNameException, NoFreeSpotException {
+        assertEquals(0,uc.getCurrentPlayers().size());
+        ArrayList<String> users = new ArrayList<>(){{add("lore");add("marti");}};
+        NoFreeSpotException thrown = assertThrows(
+                NoFreeSpotException.class,
+                () -> uc.setCurrentPlayers(users,3)
+        );
+        assertTrue(thrown.getMessage().contains("Nessun posto disponibile"));
+
+        uc.setCurrentPlayers(users,2);
+        assertEquals(2,uc.getCurrentPlayers().size());
+
+        users.add("fabri");
+        WrongNameException thrown2 = assertThrows(
+                WrongNameException.class,
+                () -> uc.setCurrentPlayers(users,3)
+        );
+        assertTrue(thrown2.getMessage().contains("Il nome inserito non è coretto"));
 
     }
 
     @Test
     void setCurrentUser() {
-
-    }
-
-    @Test
-    void getCurrentUser() {
+        uc.setCurrentUser(user1);
+        assertEquals(user1,uc.getCurrentUser());
     }
 
     @Test
     void checkBalance() {
+        uc.setCurrentUser(user1);
+        assertTrue(uc.checkBalance(50));
+        assertTrue(uc.checkBalance(100));
+        assertFalse(uc.checkBalance(120));
     }
 
     @Test
-    void payBooking() {
+    void payBooking() throws LowBalanceException {
+        uc.setCurrentUser(user1);
+        uc.payBooking(club1, club1.getClub().fields.get(0));
+        assertEquals(105, uc.getCurrentUser().getBalance());
+
+        user1.joinClub("LaFiorita");
+        uc.payBooking(club1, club1.getClub().fields.get(0));
+        assertEquals(0, uc.getCurrentUser().getBalance());
+
+        uc.setCurrentUser(user2);
+        LowBalanceException thrown = assertThrows(
+                LowBalanceException.class,
+                () -> uc.payBooking(club1, club1.getClub().fields.get(0))
+        );
+        assertTrue(thrown.getMessage().contains("Non hai abbastanza fondi per una prenotazione"));
     }
 
     @Test
-    void payJoining() {
+    void payJoining() throws LowBalanceException {
+        uc.setCurrentUser(user1);
+        uc.payJoining(club1);
+        assertEquals(10, uc.getCurrentUser().getBalance());
+
+        uc.setCurrentUser(user2);
+        LowBalanceException thrown = assertThrows(
+                LowBalanceException.class,
+                () -> uc.payBooking(club1, club1.getClub().fields.get(0))
+        );
+        assertTrue(thrown.getMessage().contains("Non hai abbastanza fondi per una prenotazione"));
     }
 
     @Test
     void refund() {
+        uc.setCurrentUser(user1);
+        uc.refund(20);
+        assertEquals(130,uc.getCurrentUser().getBalance());
     }
 
     @Test
     void createUser() {
+        Person marte = new Person("Marte","Rossi","marte.rossi@gmail.com");
+        User user5 = uc.createUser(marte,"marty",rm);
+        assertEquals(5,userDao.getUsersSize());
+        assertTrue(userDao.containsUser(user5));
     }
 
     @Test
     void topUpUserBalance() {
+        uc.topUpUserBalance(user2,20);
+        assertEquals(20, uc.getCurrentUser().getBalance());
     }
 
     @Test
     void deleteUser() {
+        uc.setCurrentUser(user2);
+        uc.deleteUser();
+        assertFalse(userDao.containsUser(user2));
     }
 
     @Test
     void addFavouriteClub() {
+        uc.setCurrentUser(user1);
+        uc.addFavouriteClub(club1);
+
+        assertTrue(uc.getCurrentUser().getFavouriteClubs().contains(club1));
     }
 }

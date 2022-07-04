@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class RequestManager {
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private final ClubController cc;
-    private final UserController uc;
-    private final BookingController bc;
+    final ClubController cc;
+    final UserController uc;
+    final BookingController bc;
 
     public RequestManager(){
         this.cc = new ClubController();
@@ -83,8 +83,6 @@ public class RequestManager {
 
         bc.createBlindBooking();
     }
-
-
 
     public void requestSpot(User user, int id) {
         try{bc.setCurrentBooking(id);}

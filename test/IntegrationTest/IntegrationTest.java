@@ -19,11 +19,11 @@ public class IntegrationTest {
     private static UserDao userDao;
     private static RequestManager rm;
 
-    private static Club clb1;
-    private static Club clb2;
-    private static Club clb3;
-    private static Club clb4;
-    private static Club clb5;
+    private static Club laFiorita;
+    private static Club gracciano;
+    private static Club upp;
+    private static Club certaldo;
+    private static Club firenzePadel;
 
     private static Person mattia;
     private static Person francesco;
@@ -45,49 +45,49 @@ public class IntegrationTest {
         userDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
         rm = RequestManager.getInstance();
 
-        clb1 = new Club("LaFiorita", 9, 23,25);
-        clb2 = new Club("Gracciano", 10, 18,18);
-        clb3 = new Club("UPP", 9, 23,15);
-        clb4 = new Club("Certaldo", 8, 1,20);
-        clb5 = new Club("Firenze Padel", 18, 9,14);
+        laFiorita = new Club("LaFiorita", 9, 23,25);
+        gracciano = new Club("Gracciano", 10, 18,18);
+        upp = new Club("UPP", 9, 23,15);
+        certaldo = new Club("Certaldo", 8, 1,20);
+        firenzePadel = new Club("Firenze Padel", 18, 9,14);
 
-        mattia = new Person("Mattia","Rossi","matt.rossi@gmail.com");
-        francesco = new Person("Francesco","Rossi","fra.rossi@gmail.com");
-        ludovico = new Person("Ludovico","Rossi","lud.rossi@gmail.com");
-        marta = new Person("Marta","Rossi","mart.rossi@gmail.com");
-        alessia = new Person("Alessia","Tedeschi","ale.tedeschi@gmail.com");
-        federica = new Person("Federica","Rossi","fede.rossi@gmail.com");
-        marco = new Person("Marco","Rossi","marco.rossi@gmail.com");
-        lorenzo = new Person("Lorenzo","Rossi","lore.rossi@gmail.com");
-        elisabetta = new Person("Elisabetta","Bianchi","betti.bianchi@gmail.com");
-        martina = new Person("Martina","Gialli","marti.gialli@gmail.com");
-        camilla = new Person("Camilla","Verdi","cami.verdi@gmail.com");
-        matteo = new Person("Matteo","Bianchi","matte.bianchi@gmail.com");
+        mattia = new Person("Mattia","Rossi","matt.ross@gmail.com");
+        francesco = new Person("Francesco","Rossi","fra.ross@gmail.com");
+        ludovico = new Person("Ludovico","Rossi","lud.ross@gmail.com");
+        marta = new Person("Marta","Rossi","mart.ross@gmail.com");
+        alessia = new Person("Alessia","Tedeschi","ale.tedesc@gmail.com");
+        federica = new Person("Federica","Rossi","fede.ross@gmail.com");
+        marco = new Person("Marco","Rossi","marco.ross@gmail.com");
+        lorenzo = new Person("Lorenzo","Rossi","lore.ross@gmail.com");
+        elisabetta = new Person("Elisabetta","Bianchi","bett.bianchi@gmail.com");
+        martina = new Person("Martina","Gialli","marti.giall@gmail.com");
+        camilla = new Person("Camilla","Verdi","cam.verdi@gmail.com");
+        matteo = new Person("Matteo","Bianchi","matt.bianchi@gmail.com");
     }
 
 
 
     @Test
     void allTest(){
-        clb1.addField("Soccer 1", Sport.SOCCER,8);
-        clb1.addField("Padel 1", Sport.PADEL,15);
-        clb1.addField("Padel 2", Sport.PADEL,15);
-        clb2.addField("Soccer 1", Sport.SOCCER,8);
-        clb2.addField("Padel 1", Sport.PADEL,15);
-        clb3.addField("Padel 1", Sport.PADEL,8);
-        clb4.addField("Soccer 1", Sport.SOCCER,8);
-        clb4.addField("Soccer 2", Sport.SOCCER,8);
-        clb4.addField("Padel 1", Sport.PADEL,12);
-        clb4.addField("Padel 4", Sport.PADEL,12);
-        clb5.addField("Padel 1", Sport.PADEL,12);
-        clb5.addField("Padel 2", Sport.PADEL,12);
-        clb5.addField("Padel 3", Sport.PADEL,15);
+        laFiorita.addField("Soccer 1", Sport.SOCCER,8);
+        laFiorita.addField("Padel 1", Sport.PADEL,15);
+        laFiorita.addField("Padel 2", Sport.PADEL,15);
+        gracciano.addField("Soccer 1", Sport.SOCCER,8);
+        gracciano.addField("Padel 1", Sport.PADEL,15);
+        upp.addField("Padel 1", Sport.PADEL,8);
+        certaldo.addField("Soccer 1", Sport.SOCCER,8);
+        certaldo.addField("Soccer 2", Sport.SOCCER,8);
+        certaldo.addField("Padel 1", Sport.PADEL,12);
+        certaldo.addField("Padel 4", Sport.PADEL,12);
+        firenzePadel.addField("Padel 1", Sport.PADEL,12);
+        firenzePadel.addField("Padel 2", Sport.PADEL,12);
+        firenzePadel.addField("Padel 3", Sport.PADEL,15);
 
-        UserClub userClub1 = clb1.subscribe(rm,100);
-        UserClub userClub2 = clb2.subscribe(rm, 200);
-        UserClub userClub3 = clb3.subscribe(rm, 120);
-        UserClub userClub4 = clb4.subscribe(rm, 150);
-        UserClub userClub5 = clb5.subscribe(rm, 90);
+        UserClub userClub1 = laFiorita.subscribe(rm,100);
+        UserClub userClub2 = gracciano.subscribe(rm, 200);
+        UserClub userClub3 = upp.subscribe(rm, 120);
+        UserClub userClub4 = certaldo.subscribe(rm, 150);
+        UserClub userClub5 = firenzePadel.subscribe(rm, 90);
 
         User matti = mattia.subscribe(rm, "matti");
         User france = francesco.subscribe(rm, "france");
@@ -124,7 +124,7 @@ public class IntegrationTest {
         mark.addFunds(50);
 
         //Test di MembersMonitor
-        clb4.addMember(lorenzo);
+        certaldo.addMember(lorenzo);
         assertTrue(userClub4.isMember(lore));
 
         //Test prenotazione al buio e BalanceMonitor

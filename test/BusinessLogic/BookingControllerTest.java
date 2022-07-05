@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,7 +94,7 @@ class BookingControllerTest {
         int exp = bookingDao.getBookingsSize();
         bc.createBlindBooking();
         assertEquals(++exp, bookingDao.getBookingsSize());
-        assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1)).containsUser(user8));
+        assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1)).containsUser(user8));
     }
 
     @Test
@@ -107,7 +105,7 @@ class BookingControllerTest {
         ((BlindBooking)booking).addPlayer(user9);
         ((BlindBooking)booking).addPlayer(user10);
         ((BlindBooking)booking).addPlayer(user11);
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
 
 
         NoFreeSpotException thrown = assertThrows(
@@ -171,9 +169,9 @@ class BookingControllerTest {
         user9.setBalance(100);
         user10.setBalance(100);
 
-        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user8);
+        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.now(),15, user8);
         bookingDao.addBooking(booking);
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
         uc.setCurrentUser(user9);
         WrongKeyException thrown1 = assertThrows(
                 WrongKeyException.class,
@@ -187,17 +185,17 @@ class BookingControllerTest {
         assertEquals(115,uc.getCurrentUser().getBalance());
         assertEquals(--exp,bookingDao.getBookingsSize());
 
-        Booking booking2 = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user8);
+        Booking booking2 = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.now(),15, user8);
         bookingDao.addBooking(booking2);
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
         ((BlindBooking)booking2).addPlayer(user9);
         bc.deleteUserBooking();
         assertEquals(120,uc.getCurrentUser().getBalance());
         assertEquals(++exp,bookingDao.getBookingsSize());
 
-        Booking booking3 = new PrivateBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, new ArrayList<>(){{add(user8);add(user10);}});
+        Booking booking3 = new PrivateBooking(club4, club4.getClub().fields.get(0), LocalDate.now(),15, new ArrayList<>(){{add(user8);add(user10);}});
         bookingDao.addBooking(booking3);
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
         assertEquals(++exp, bookingDao.getBookingsSize());
         bc.deleteUserBooking();
         assertEquals(105, user10.getBalance());

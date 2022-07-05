@@ -112,7 +112,8 @@ public class IntegrationTest {
         marty.addFunds(40);
 
         //Test di prenotazione effettuata e pagamento effettuato
-        matti.bookField(Sport.PADEL, "UPP", "15/08/2022",14,new String[]{"france", "ludo", "marty"});
+        matti.bookField(Sport.PADEL, "UPP", "15/08/2022",
+                14,new String[]{"france", "ludo", "marty"});
         assertEquals(1,bookingDao.getBookingsSize());
         assertEquals(23, france.getBalance());
         assertEquals(42, matti.getBalance());
@@ -144,7 +145,8 @@ public class IntegrationTest {
 
         //Test di rimborso per prenotazione invalida
         assertEquals(42, matti.getBalance());
-        matte.bookField(Sport.SOCCER, "Certaldo", "30/07/2022",21, new String[]{"matti", "marti", "eli", "ale", "ludo", "cami", "france", "mark", "fede"});
+        matte.bookField(Sport.SOCCER, "Certaldo", "30/07/2022",21,
+                new String[]{"matti", "marti", "eli", "ale", "ludo", "cami", "france", "mark", "fede"});
         assertEquals(42, matti.getBalance());
 
         marti.addFunds(20);
@@ -154,12 +156,14 @@ public class IntegrationTest {
         matte.addFunds(34);
 
         //Test cancellazione account
-        matte.bookField(Sport.SOCCER, "Certaldo", "30/07/2022",21, new String[]{"matti", "marti", "eli", "ale", "ludo", "cami", "france", "mark", "fede"});
+        matte.bookField(Sport.SOCCER, "Certaldo", "30/07/2022",21,
+                new String[]{"matti", "marti", "eli", "ale", "ludo", "cami", "france", "mark", "fede"});
         matte.deleteAccount();
         matte.deleteBooking(3);
         matte.deleteAccount();
         assertFalse(userDao.containsUser(matte));
-        eli.bookField(Sport.PADEL, "Certaldo", "18/08/2022", 15, new String[]{"matti", "matte", "mark"});
+        eli.bookField(Sport.PADEL, "Certaldo", "18/08/2022",
+                15, new String[]{"matti", "matte", "mark"});
 
         //Test prenotazione posto
         mark.viewBlindBookings(Sport.PADEL);
@@ -195,8 +199,10 @@ public class IntegrationTest {
         assertFalse(userDao.containsUser(lore));
 
         //Test occupazione campo
-        eli.bookField(Sport.PADEL, "UPP", "18/08/2022", 15, new String[]{"matti", "fede", "mark"});
-        ale.bookField(Sport.PADEL, "UPP", "18/08/2022", 15, new String[]{"cami","marty","ludo"});
+        eli.bookField(Sport.PADEL, "UPP", "18/08/2022",
+                15, new String[]{"matti", "fede", "mark"});
+        ale.bookField(Sport.PADEL, "UPP", "18/08/2022",
+                15, new String[]{"cami","marty","ludo"});
 
     }
 

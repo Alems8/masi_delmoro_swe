@@ -19,7 +19,8 @@ public class UserController {
     }
 
 
-    void setCurrentPlayers(ArrayList<String> users, int size) throws WrongNameException, NoFreeSpotException {
+    void setCurrentPlayers(ArrayList<String> users, int size) throws WrongNameException,
+            NoFreeSpotException {
         currentPlayers.clear();
         if (users.size() != size)
             throw new NoFreeSpotException();

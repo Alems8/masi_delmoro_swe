@@ -40,13 +40,15 @@ public class BookingController {
                     uc.setCurrentUser(uc.getCurrentPlayers().get(j));
                     uc.refund(cc.getCurrentClub(), cc.getCurrentField());
                 }
-                System.out.println("Il saldo di "+uc.getCurrentPlayers().get(i).username+" non è sufficiente");
+                System.out.println("Il saldo di "+uc.getCurrentPlayers().get(i).username
+                        +" non è sufficiente");
                 return;
             }
         }
         cc.holdField();
 
-        Booking booking = new PrivateBooking(cc.getCurrentClub(), cc.getCurrentField(), cc.getCurrentDate(), cc.getCurrentHour(), new ArrayList<>(uc.getCurrentPlayers()));
+        Booking booking = new PrivateBooking(cc.getCurrentClub(), cc.getCurrentField(),
+                cc.getCurrentDate(), cc.getCurrentHour(), new ArrayList<>(uc.getCurrentPlayers()));
         bookingDao.addBooking(booking);
     }
 
@@ -59,7 +61,8 @@ public class BookingController {
         }
         cc.holdField();
 
-        Booking booking = new BlindBooking(cc.getCurrentClub(), cc.getCurrentField(), cc.getCurrentDate(), cc.getCurrentHour(), uc.getCurrentUser());
+        Booking booking = new BlindBooking(cc.getCurrentClub(), cc.getCurrentField(),
+                cc.getCurrentDate(), cc.getCurrentHour(), uc.getCurrentUser());
         bookingDao.addBooking(booking);
     }
 

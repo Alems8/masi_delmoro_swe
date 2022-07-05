@@ -56,10 +56,12 @@ class BookingControllerTest {
         );
         assertTrue(thrown.getMessage().contains("La chiave della prenotazione è sbagliata"));
 
-        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user8);
+        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0),
+                LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user8);
         bookingDao.addBooking(booking);
 
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().
+                sorted().toList().get(bookingDao.getKeySet().size()-1));
         assertEquals(booking, bc.getCurrentBooking());
 
     }
@@ -68,17 +70,20 @@ class BookingControllerTest {
     void createBooking() throws WrongNameException, NoFreeSpotException {
         cc.setCurrentClub(club4);
         cc.setCurrentField(club4.getClub().fields.get(0));
-        cc.setCurrentDate(LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        cc.setCurrentDate(LocalDate.parse("04/07/2022",
+                DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         cc.setCurrentHour(15);
         user8.setBalance(110);
         uc.setCurrentPlayers(new ArrayList<>(){{add("loren");}}, 1);
 
-        club4.getClub().fields.get(0).timeTable.put(LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),new ArrayList<>(){{add(15);}});
+        club4.getClub().fields.get(0).timeTable.put(LocalDate.parse
+                ("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),new ArrayList<>(){{add(15);}});
 
-        int exp = bookingDao.getBookingsSize();
+        int exp = bookingDao.getBookingsSize() + 1;
         bc.createBooking();
-        assertEquals(++exp, bookingDao.getBookingsSize());
-        assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1)).containsUser(user8));
+        assertEquals(exp, bookingDao.getBookingsSize());
+        assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-1)).containsUser(user8));
     }
 
     @Test
@@ -100,12 +105,15 @@ class BookingControllerTest {
     @Test
     void checkBlindBooking() throws WrongKeyException {
         user8.setBalance(110);
-        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user8);
+        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0),
+                LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                15, user8);
         bookingDao.addBooking(booking);
         ((BlindBooking)booking).addPlayer(user9);
         ((BlindBooking)booking).addPlayer(user10);
         ((BlindBooking)booking).addPlayer(user11);
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().
+                stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
 
 
         NoFreeSpotException thrown = assertThrows(
@@ -114,9 +122,12 @@ class BookingControllerTest {
         );
         assertTrue(thrown.getMessage().contains("Nessun posto disponibile"));
 
-        Booking booking1 = new PrivateBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, new ArrayList<>(){{add(user8);}});
+        Booking booking1 = new PrivateBooking(club4, club4.getClub().fields.get(0),
+                LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                15, new ArrayList<>(){{add(user8);}});
         bookingDao.addBooking(booking1);
-        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().sorted().toList().get(bookingDao.getKeySet().size()-1));
+        bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().stream().
+                sorted().toList().get(bookingDao.getKeySet().size()-1));
         WrongKeyException thrown2 = assertThrows(
                 WrongKeyException.class,
                 () -> bc.checkBlindBooking()
@@ -221,7 +232,8 @@ class BookingControllerTest {
     @Test
     void checkActiveBookings() throws WrongKeyException, PendingBookingException {
         user12.setBalance(110);
-        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0), LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user12);
+        Booking booking = new BlindBooking(club4, club4.getClub().fields.get(0),
+                LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy")),15, user12);
         bookingDao.addBooking(booking);
         bc.setCurrentBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
         uc.setCurrentUser(user12);
@@ -232,9 +244,9 @@ class BookingControllerTest {
         );
         assertTrue(thrown.getMessage().contains("Hai delle prenotazioni in sospeso"));
 
-        int exp = bookingDao.getBookingsSize();
+        int exp = bookingDao.getBookingsSize() - 1;
         bc.deleteBooking();
         bc.checkActiveBookings();
-        assertEquals(--exp,bookingDao.getBookingsSize());
+        assertEquals(exp,bookingDao.getBookingsSize());
     }
 }

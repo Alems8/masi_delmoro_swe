@@ -76,7 +76,7 @@ class ClubControllerTest {
     @Test
     void findField() throws NoFreeFieldException {
         Sport sport = Sport.PADEL;
-        LocalDate date = LocalDate.parse("04/07/2022", DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate date = LocalDate.now();
         cc.setCurrentClub(club6);
 
         NoFreeFieldException thrown = assertThrows(

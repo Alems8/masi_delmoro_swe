@@ -117,7 +117,8 @@ class UserControllerTest {
     @Test
     void createUser() {
         int exp = userDao.getUsersSize() + 1;
-        Person marte = new Person("Marte","Rossi","marte.rossi@gmail.com");
+        Person marte = new Person("Marte","Rossi",
+                "marte.rossi@gmail.com");
         User user5 = uc.createUser(marte,"martyz",rm);
         assertEquals(exp,userDao.getUsersSize());
         assertTrue(userDao.containsUser(user5));

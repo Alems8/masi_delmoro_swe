@@ -81,7 +81,8 @@ class RequestManagerTest {
         user4.setBalance(100);
         rm.requestBlindBooking(Sport.PADEL, "Firenze", "02/07/2022", 12, user4);
         assertEquals(exp, bookingDao.getBookingsSize());
-        assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1)).containsUser(user4));
+        assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-1)).containsUser(user4));
     }
 
     @Test
@@ -117,18 +118,26 @@ class RequestManagerTest {
         players.add("ely");
         players.add("martuz");
         players.add("camy");
+
         rm.requestBooking(Sport.PADEL, "Firenze", "02/08/2022", 10, players);
 
-        rm.requestBlindBooking(Sport.PADEL, "Firenze", "02/09/2022", 12, user4);
-        rm.requestSpot(user5, bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
+        rm.requestBlindBooking(Sport.PADEL, "Firenze", "02/09/2022",
+                12, user4);
+        rm.requestSpot(user5, bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-1));
 
         int exp = bookingDao.getBookingsSize() - 1;
-        rm.deleteUserBooking(user5, bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
-        rm.deleteUserBooking(user4, bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-2));
-        assertEquals(exp, bookingDao.getBookingsSize());
-        assertFalse(bookingDao.getBooking(bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1)).containsUser(user5));
+        rm.deleteUserBooking(user5, bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-1));
+        rm.deleteUserBooking(user4, bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-2));
 
-        rm.deleteUserBooking(user4, bookingDao.getKeySet().stream().toList().get(bookingDao.getKeySet().size()-1));
+        assertEquals(exp, bookingDao.getBookingsSize());
+        assertFalse(bookingDao.getBooking(bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-1)).containsUser(user5));
+
+        rm.deleteUserBooking(user4, bookingDao.getKeySet().stream().
+                toList().get(bookingDao.getKeySet().size()-1));
         assertEquals(--exp, bookingDao.getBookingsSize());
     }
 
@@ -160,7 +169,8 @@ class RequestManagerTest {
 
     @Test
     void deleteUser() {
-        Person ludovica = new Person("Ludovica","Rossi","ludy.rossi@gmail.com");
+        Person ludovica = new Person("Ludovica","Rossi"
+                ,"ludy.rossi@gmail.com");
         User ludy = rm.addUser(ludovica, "ludy");
         rm.deleteUser(ludy);
         assertFalse(userDao.containsUser(ludy));

@@ -53,7 +53,8 @@ public class User extends Subject {
         rm.requestJoinClub(this, club);
     }
     
-    public void bookField(Sport sport, String clb, String date, int hour, String [] users){
+    public void bookField(Sport sport, String clb, String date, int hour,
+                          String [] users){
         ArrayList<String> players = new ArrayList<>(Arrays.asList(users));
         players.add(this.username);
         rm.requestBooking(sport, clb, date, hour, players);

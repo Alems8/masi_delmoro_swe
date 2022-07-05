@@ -31,12 +31,14 @@ public class RequestManager {
         return instance;
     }
 
-    public void requestBooking(Sport sport, String clb, String day, int hour, ArrayList<String> users) {
+    public void requestBooking(Sport sport, String clb, String day, int hour,
+                               ArrayList<String> users) {
         LocalDate date = LocalDate.parse(day, dtf);
 
         try{cc.setCurrentClub(clb);}
         catch (WrongNameException e){
-            System.out.println("Il club non esiste o non è registrato al servizio");
+            System.out.println("Il club non esiste o non è registrato al " +
+                    "servizio");
             return;
         }
 

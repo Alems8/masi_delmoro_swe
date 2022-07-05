@@ -27,7 +27,8 @@ public class BalanceMonitor implements Observer {
     @Override
     public void update(Object userBalance, Subject user) {
         if((int) userBalance < 10)
-            System.out.println(((User)user).username + ": il tuo credito si sta esaurendo");
+            System.out.println(((User)user).username + ": il tuo credito si" +
+                    " sta esaurendo");
     }
     
 }

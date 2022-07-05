@@ -23,7 +23,7 @@ class UserControllerTest {
     static void setUp() {
 
         userDao = Objects.requireNonNull(DaoFactory.getDaoFactory(1)).getUserDao();
-        RequestManager rm = RequestManager.getInstance();
+        rm = RequestManager.getInstance();
         uc = rm.uc;
         Person lorenzo = new Person("Lorenzo","Rossi","lore.rossi@gmail.com");
         Person elisabetta = new Person("Elisabetta","Bianchi","betti.bianchi@gmail.com");

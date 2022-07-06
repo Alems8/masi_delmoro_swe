@@ -146,7 +146,8 @@ public class IntegrationTest {
         //Test di rimborso per prenotazione invalida
         assertEquals(42, matti.getBalance());
         matte.bookField(Sport.SOCCER, "Certaldo", "30/07/2022",21,
-                new String[]{"matti", "marti", "eli", "ale", "ludo", "cami", "france", "mark", "fede"});
+                new String[]{"matti", "marti", "eli", "ale", "ludo", "cami",
+                        "france", "mark", "fede"});
         assertEquals(42, matti.getBalance());
 
         marti.addFunds(20);
@@ -157,7 +158,8 @@ public class IntegrationTest {
 
         //Test cancellazione account
         matte.bookField(Sport.SOCCER, "Certaldo", "30/07/2022",21,
-                new String[]{"matti", "marti", "eli", "ale", "ludo", "cami", "france", "mark", "fede"});
+                new String[]{"matti", "marti", "eli", "ale", "ludo", "cami",
+                        "france", "mark", "fede"});
         matte.deleteAccount();
         matte.deleteBooking(3);
         matte.deleteAccount();

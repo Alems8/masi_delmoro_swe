@@ -79,7 +79,8 @@ class RequestManagerTest {
     void requestBlindBooking() {
         int exp = bookingDao.getBookingsSize() + 1;
         user4.setBalance(100);
-        rm.requestBlindBooking(Sport.PADEL, "Firenze", "02/07/2022", 12, user4);
+        rm.requestBlindBooking(Sport.PADEL, "Firenze", "02/07/2022",
+                12, user4);
         assertEquals(exp, bookingDao.getBookingsSize());
         assertTrue(bookingDao.getBooking(bookingDao.getKeySet().stream().
                 toList().get(bookingDao.getKeySet().size()-1)).containsUser(user4));
@@ -119,7 +120,8 @@ class RequestManagerTest {
         players.add("martuz");
         players.add("camy");
 
-        rm.requestBooking(Sport.PADEL, "Firenze", "02/08/2022", 10, players);
+        rm.requestBooking(Sport.PADEL, "Firenze", "02/08/2022",
+                10, players);
 
         rm.requestBlindBooking(Sport.PADEL, "Firenze", "02/09/2022",
                 12, user4);

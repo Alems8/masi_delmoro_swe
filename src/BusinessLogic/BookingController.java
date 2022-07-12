@@ -40,7 +40,8 @@ public class BookingController {
                     uc.setCurrentUser(uc.getCurrentPlayers().get(j));
                     uc.refund(cc.getCurrentClub(), cc.getCurrentField());
                 }
-                System.out.println("Il saldo di "+uc.getCurrentPlayers().get(i).username
+                System.out.println("Il saldo di "+
+                        uc.getCurrentPlayers().get(i).username
                         +" non è sufficiente");
                 return;
             }
@@ -48,7 +49,8 @@ public class BookingController {
         cc.holdField();
 
         Booking booking = new PrivateBooking(cc.getCurrentClub(), cc.getCurrentField(),
-                cc.getCurrentDate(), cc.getCurrentHour(), new ArrayList<>(uc.getCurrentPlayers()));
+                cc.getCurrentDate(), cc.getCurrentHour(),
+                new ArrayList<>(uc.getCurrentPlayers()));
         bookingDao.addBooking(booking);
     }
 

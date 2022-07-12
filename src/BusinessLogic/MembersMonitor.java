@@ -30,9 +30,10 @@ public class MembersMonitor implements Observer {
     public void update(Object newMember, Subject club) {
         UserClub uc = clubDao.getClubByName(((Club)club).name);
         User user = userDao.getUserByPerson((Person)newMember);
-        if(!uc.isMember(user)){
-            uc.addMember(user);
+        if(user != null){
+            if(!uc.isMember(user)){
+                uc.addMember(user);
+            }
         }
-
     }
 }
